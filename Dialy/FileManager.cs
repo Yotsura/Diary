@@ -9,13 +9,15 @@ namespace Dialy
 {
     class FileManager
     {
-        public static Dictionary<string, string> GetAllDialy(string folderpath)
+        public static Dictionary<DateTime, string> GetAllDialy(string folderpath)
         {
-            var dialies = new Dictionary<string, string>();
+            var dialies = new Dictionary<DateTime, string>();
             var files = Directory.EnumerateFiles(folderpath, "*.log", System.IO.SearchOption.TopDirectoryOnly);
             foreach (var file in files)
             {
-                var date = new FileInfo(file).Name.Replace(".log", "");
+                var datetxt = new FileInfo(file).Name.Replace(".log", "").Replace("_","/");
+                DateTime.TryParse(datetxt, out var date);
+
                 var txt = File.ReadAllLines(file);
                 dialies.Add(date, String.Join("\r\n", txt));
             }

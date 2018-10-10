@@ -53,14 +53,16 @@ namespace Dialy
 
         private void SaveInvoke()
         {
-            mwvm.AllDiaries[DatePick.Text.Replace("/", "_")] = DialyTxt.Text;
+            DateTime.TryParse(DatePick.Text, out var day);
+            mwvm.AllDiaries[day] = DialyTxt.Text;
             FileManager.SaveFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"), DialyTxt.Text);
         }
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             DialyTxt.Text = string.Empty;
-            var request = DatePick.Text.Replace("/", "_");
+            DateTime.TryParse(DatePick.Text, out var request);
+            //var request = DatePick.Text.Replace("/", "_");
             if (!mwvm.AllDiaries.ContainsKey(request)) return;
             DialyTxt.Text = mwvm.AllDiaries[request];
         }
@@ -79,6 +81,7 @@ namespace Dialy
                     break;
                 case "<<":
                     day = date.AddDays(-7);
+                    //mwvm.NextRecord(day, "<<");
                     break;
                 case ">>":
                     day = date.AddDays(7);
