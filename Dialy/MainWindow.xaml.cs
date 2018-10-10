@@ -12,17 +12,79 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace Dialy
 {
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
+        internal Dialy.MainWindowViewModel mwvm;
         public MainWindow()
         {
             InitializeComponent();
+            mwvm = new MainWindowViewModel();
+            this.DataContext = mwvm;
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            DatePick.Text = DateTime.Today.ToString();
+            DialyTxt.FontSize = mwvm.FontSize;
+        }
+
+        private void FontZoom(object sender, RoutedEventArgs e)
+        {
+            mwvm.Zoom(((Button)sender).Content.ToString());
+            DialyTxt.FontSize = mwvm.FontSize;
+        }
+
+        private void SaveDialy(object sender, RoutedEventArgs e)
+        {
+            SaveInvoke();
+        }
+
+        private void SaveCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveInvoke();
+        }
+
+        private void SaveInvoke()
+        {
+            mwvm.AllDiaries[DatePick.Text.Replace("/", "_")] = DialyTxt.Text;
+            FileManager.SaveFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"), DialyTxt.Text);
+        }
+
+        private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DialyTxt.Text = string.Empty;
+            var request = DatePick.Text.Replace("/", "_");
+            if (!mwvm.AllDiaries.ContainsKey(request)) return;
+            DialyTxt.Text = mwvm.AllDiaries[request];
+        }
+
+        private void DateChangeButton(object sender, RoutedEventArgs e)
+        {
+            DateTime.TryParse(DatePick.Text, out var date);
+            var day = new DateTime();
+            switch (((Button)sender).Content)
+            {
+                case "<":
+                    day = date.AddDays(-1);
+                    break;
+                case ">":
+                    day = date.AddDays(1);
+                    break;
+                case "<<":
+                    day = date.AddDays(-7);
+                    break;
+                case ">>":
+                    day = date.AddDays(7);
+                    break;
+            }
+            DatePick.Text = day.ToString();
         }
     }
 }
