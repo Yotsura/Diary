@@ -9,9 +9,9 @@ namespace Dialy
 {
     class FileManager
     {
-        public static Dictionary<DateTime, string> GetAllDialy(string folderpath)
+        public static SortedDictionary<DateTime, string> GetAllDialy(string folderpath)
         {
-            var dialies = new Dictionary<DateTime, string>();
+            var dialies = new SortedDictionary<DateTime, string>();
             var files = Directory.EnumerateFiles(folderpath, "*.log", System.IO.SearchOption.TopDirectoryOnly);
             foreach (var file in files)
             {

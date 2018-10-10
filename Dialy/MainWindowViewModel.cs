@@ -24,7 +24,7 @@ namespace Dialy
 
         public string FolderPath;
 
-        public Dictionary<DateTime, string> AllDiaries;
+        public SortedDictionary<DateTime, string> AllDiaries;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
@@ -41,20 +41,31 @@ namespace Dialy
             AllDiaries = FileManager.GetAllDialy(FolderPath);
         }
 
-        //public string NextRecord(DateTime indicated,string operation)
-        //{
-        //    foreach(var key in AllDiaries.Keys)
-        //    {
-        //        if (DateTime.Parse(key) > indicated) continue;
+        public DateTime NextRecord(DateTime indicated, string operation)
+        {
+            var result = new DateTime();
 
-        //    }
+            //var test = new SortedDictionary<DateTime, string>();
+            //foreach (var diary in AllDiaries)
+            //{//>>押したとして。
+            //    if (diary.Key <= indicated) continue;
+            //    test.Add(diary.Key, diary.Value);
+            //}
+            //var test2 = test.First().Key;
 
+            if (operation == "<<")
+            {
+                var next = AllDiaries.Where(x => x.Key < indicated);
+                result = next.Last().Key;
+            }
+            else
+            {
+                var last = AllDiaries.Where(x => x.Key > indicated);
+                result = last.First().Key; ;
+            }
 
-        //    var next = AllDiaries.Where(x => DateTime.Parse(x.Key) > indicated);
-        //    var last = AllDiaries.Where(x => DateTime.Parse(x.Key) < indicated);
-
-        //    return "";
-        //}
+            return result;
+        }
 
         public void Zoom(string btn)
         {

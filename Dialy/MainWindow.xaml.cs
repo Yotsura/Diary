@@ -80,11 +80,10 @@ namespace Dialy
                     day = date.AddDays(1);
                     break;
                 case "<<":
-                    day = date.AddDays(-7);
-                    //mwvm.NextRecord(day, "<<");
+                    day = mwvm.NextRecord(date, "<<");
                     break;
                 case ">>":
-                    day = date.AddDays(7);
+                    day = mwvm.NextRecord(date, ">>");
                     break;
             }
             DatePick.Text = day.ToString();
