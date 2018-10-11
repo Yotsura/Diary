@@ -43,28 +43,9 @@ namespace Dialy
 
         public DateTime NextRecord(DateTime indicated, string operation)
         {
-            var result = new DateTime();
-
-            //var test = new SortedDictionary<DateTime, string>();
-            //foreach (var diary in AllDiaries)
-            //{//>>押したとして。
-            //    if (diary.Key <= indicated) continue;
-            //    test.Add(diary.Key, diary.Value);
-            //}
-            //var test2 = test.First().Key;
-
-            if (operation == "<<")
-            {
-                var next = AllDiaries.Where(x => x.Key < indicated);
-                result = next.Last().Key;
-            }
-            else
-            {
-                var last = AllDiaries.Where(x => x.Key > indicated);
-                result = last.First().Key; ;
-            }
-
-            return result;
+            var next= operation == "<<"? AllDiaries.Where(x => x.Key < indicated): AllDiaries.Where(x => x.Key > indicated);
+            if (!next.Any()) return indicated;
+            return operation == "<<" ? next.Last().Key: next.First().Key;
         }
 
         public void Zoom(string btn)
