@@ -34,7 +34,7 @@ namespace Dialy
             _allDiaries = allDiaries;
         }
 
-        public void SearchFunc(String words)
+        public void SearchFunc(String words, bool perfectmatch)
         {
             var targetWords = words.Split(' ');
             _hitList = _allDiaries;
@@ -43,20 +43,21 @@ namespace Dialy
                 _hitList = GetHitList(_hitList, word);
             }
             IndicateList = _hitList.Keys.ToList();
+            IndicateList.Reverse();
         }
 
         public SortedDictionary<DateTime, string> GetHitList
             (SortedDictionary<DateTime, string> population, string target)
         {
             var result = new SortedDictionary<DateTime, string>();
-            foreach(var date in population)
+            foreach (var date in population)
             {
-                if (date.Value.IndexOf(target) == -1) continue;
+                if (date.Value.IndexOf(target, StringComparison.CurrentCultureIgnoreCase) == -1) continue;
                 result.Add(date.Key, date.Value);
             }
             return result;
             //return population.Where(x => x.Value.IndexOf(target) != -1);
         }
-        
+
     }
 }

@@ -26,6 +26,7 @@ namespace Dialy
             InitializeComponent();
             _swvm = new SearchWindowViewModel(allDiaries);
             this.DataContext = _swvm;
+            TargetTxt.Focus();
         }
 
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
@@ -43,7 +44,7 @@ namespace Dialy
 
         private void InvokeSearch()
         {
-            _swvm.SearchFunc(TargetTxt.Text);
+            _swvm.SearchFunc(TargetTxt.Text, PerfectMatchCheck.IsChecked == true);
         }
     }
 }

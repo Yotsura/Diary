@@ -75,6 +75,9 @@ namespace Dialy
                 case ">":
                     day = date.AddDays(1);
                     break;
+                case "T":
+                    day = DateTime.Today;
+                    break;
                 case "<<":
                     day = mwvm.NextRecord(date, "<<");
                     break;
