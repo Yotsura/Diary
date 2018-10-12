@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Dialy
 {
@@ -86,8 +87,22 @@ namespace Dialy
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var searchWindow = new SearchWindow();
+            var searchWindow = new SearchWindow(mwvm.AllDiaries);
+            searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
             searchWindow.Show();
+        }
+
+        private void ReflectSearch(object sender, MouseButtonEventArgs e)
+        {
+            if (MessageLabel.Visibility == Visibility.Visible)
+            {
+                ShowMessageDialog("エラー", "未保存の変更があります");
+                return;
+            }
+            var s = (ListBox)sender;
+            if (s.ItemsSource == null) return;
+            var target = DateTime.TryParse(s.SelectedValue?.ToString(), out var result);
+            DatePick.SelectedDate = result;
         }
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
@@ -95,6 +110,11 @@ namespace Dialy
             MessageLabel.Visibility = mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value) ?
                 mwvm.AllDiaries[DatePick.SelectedDate.Value] == DialyTxt.Text ? Visibility.Collapsed : Visibility.Visible :
                 String.IsNullOrEmpty(DialyTxt.Text) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private async void ShowMessageDialog(string title, string message)
+        {
+            await this.ShowMessageAsync(title, message);
         }
     }
 }

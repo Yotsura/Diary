@@ -21,10 +21,29 @@ namespace Dialy
     public partial class SearchWindow : MetroWindow
     {
         SearchWindowViewModel _swvm;
-        public SearchWindow()
+        public SearchWindow(SortedDictionary<DateTime, string> allDiaries)
         {
             InitializeComponent();
-            _swvm = new SearchWindowViewModel();
+            _swvm = new SearchWindowViewModel(allDiaries);
+            this.DataContext = _swvm;
+        }
+
+        private void SearchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(TargetTxt.Text)) return;
+            InvokeSearch();
+        }
+
+        private void TargetTxt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            if (string.IsNullOrEmpty(TargetTxt.Text)) return;
+            InvokeSearch();
+        }
+
+        private void InvokeSearch()
+        {
+            _swvm.SearchFunc(TargetTxt.Text);
         }
     }
 }
