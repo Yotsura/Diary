@@ -41,35 +41,30 @@ namespace Dialy
             DialyTxt.FontSize = mwvm.FontSize;
         }
 
-        private void SaveDialy(object sender, RoutedEventArgs e)
-        {
-            SaveInvoke();
-        }
-
         private void SaveCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            SaveInvoke();
-        }
-
-        private void SaveInvoke()
         {
             DateTime.TryParse(DatePick.Text, out var day);
             mwvm.AllDiaries[day] = DialyTxt.Text;
             FileManager.SaveFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"), DialyTxt.Text);
+            MessageLabel.Visibility = Visibility.Collapsed;
         }
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             DialyTxt.Text = string.Empty;
-            DateTime.TryParse(DatePick.Text, out var request);
-            //var request = DatePick.Text.Replace("/", "_");
-            if (!mwvm.AllDiaries.ContainsKey(request)) return;
-            DialyTxt.Text = mwvm.AllDiaries[request];
+            if (!mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value)) return;
+            DialyTxt.Text = mwvm.AllDiaries[DatePick.SelectedDate.Value];
+        }
+
+        private void NextFile(object sender, ExecutedRoutedEventArgs e)
+        {//←と→を区別して<<か>>を渡したい
+            DateChangeButton(sender, e);
         }
 
         private void DateChangeButton(object sender, RoutedEventArgs e)
         {
-            DateTime.TryParse(DatePick.Text, out var date);
+            //DateTime.TryParse(DatePick.Text, out var date);
+            var date = DatePick.SelectedDate.Value;
             var day = new DateTime();
             switch (((Button)sender).Content)
             {
@@ -87,6 +82,19 @@ namespace Dialy
                     break;
             }
             DatePick.Text = day.ToString();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var searchWindow = new SearchWindow();
+            searchWindow.Show();
+        }
+
+        private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MessageLabel.Visibility = mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value) ?
+                mwvm.AllDiaries[DatePick.SelectedDate.Value] == DialyTxt.Text ? Visibility.Collapsed : Visibility.Visible :
+                String.IsNullOrEmpty(DialyTxt.Text) ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

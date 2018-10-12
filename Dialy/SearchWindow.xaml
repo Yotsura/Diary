@@ -1,0 +1,45 @@
+﻿<Controls:MetroWindow x:Class="Dialy.SearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:Dialy"
+        mc:Ignorable="d"
+        SaveWindowPosition="True"
+        Title="SearchWindow" Height="502" Width="409">
+    <Window.Resources>
+        <CollectionViewSource x:Key="NowDataView"  Source="{Binding IndicateList}" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="95"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <TextBox TextWrapping="Wrap" Name="TargetTxt" Grid.Column="1" Grid.Row="1"/>
+        <Button Content="Search" Name="SearchBtn" Grid.Column="3" Grid.Row="1"/>
+        <ListBox Name="HitListBox" ItemsSource="{Binding Source={StaticResource NowDataView}}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5"/>
+        <Grid Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <CheckBox Content="完全一致" Name="PerfectMatchCheck" Grid.Column="3"/>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>
