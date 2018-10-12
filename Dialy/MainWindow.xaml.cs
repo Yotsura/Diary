@@ -85,11 +85,15 @@ namespace Dialy
             DatePick.Text = day.ToString();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        bool SubWindowOpened;
+        private void OpenSearchWindow(object sender, ExecutedRoutedEventArgs e)
         {
+            if (SubWindowOpened == true) return;
             var searchWindow = new SearchWindow(mwvm.AllDiaries);
             searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
+            searchWindow.Closed += SearchWindow_Closed;
             searchWindow.Show();
+            SubWindowOpened = true;
         }
 
         private void ReflectSearch(object sender, MouseButtonEventArgs e)
@@ -103,6 +107,11 @@ namespace Dialy
             if (s.ItemsSource == null) return;
             var target = DateTime.TryParse(s.SelectedValue?.ToString(), out var result);
             DatePick.SelectedDate = result;
+        }
+
+        private void SearchWindow_Closed(object sender, EventArgs e)
+        {
+            SubWindowOpened = false;
         }
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
