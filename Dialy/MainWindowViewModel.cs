@@ -11,8 +11,8 @@ namespace Dialy
     class MainWindowViewModel : INotifyPropertyChanged
     {
         public int FontSize;
-        private string _indicateSize;
-        public string IndicateSize
+        private int _indicateSize;
+        public int IndicateSize
         {
             get => _indicateSize;
             set
@@ -35,7 +35,7 @@ namespace Dialy
         public MainWindowViewModel()
         {
             FontSize = Settings.Default.FontSize;
-            IndicateSize = FontSize.ToString();
+            IndicateSize = FontSize;
             FolderPath = String.IsNullOrEmpty(Settings.Default.FilePath) ?
                 System.IO.Directory.GetCurrentDirectory()+"\\Logs" : Settings.Default.FilePath;
             AllDiaries = FileManager.GetAllDialy(FolderPath);
@@ -51,7 +51,7 @@ namespace Dialy
         public void Zoom(string btn)
         {
             FontSize = btn == "+" ? FontSize + 3 : FontSize - 3;
-            IndicateSize = FontSize.ToString();
+            IndicateSize = FontSize;
         }
     }
 }

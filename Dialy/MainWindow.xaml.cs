@@ -88,15 +88,18 @@ namespace Dialy
             DatePick.Text = day.ToString();
         }
 
-        bool SubWindowOpened;
+        SearchWindow searchWindow;
         private void OpenSearchWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            if (SubWindowOpened == true) return;
-            var searchWindow = new SearchWindow(mwvm.AllDiaries);
+            if (searchWindow != null)
+            {
+                searchWindow.Activate();
+                return;
+            }
+            searchWindow = new SearchWindow(mwvm.AllDiaries);
             searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
             searchWindow.Closed += SearchWindow_Closed;
             searchWindow.Show();
-            SubWindowOpened = true;
         }
 
         private void ReflectSearch(object sender, MouseButtonEventArgs e)
@@ -114,7 +117,7 @@ namespace Dialy
 
         private void SearchWindow_Closed(object sender, EventArgs e)
         {
-            SubWindowOpened = false;
+            searchWindow = null;
         }
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
@@ -127,6 +130,12 @@ namespace Dialy
         private async void ShowMessageDialog(string title, string message)
         {
             await this.ShowMessageAsync(title, message);
+        }
+
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            Settings.Default.FontSize = mwvm.FontSize;
+            Settings.Default.Save();
         }
     }
 }
