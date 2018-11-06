@@ -111,7 +111,8 @@ namespace Dialy
             }
             var s = (ListBox)sender;
             if (s.ItemsSource == null) return;
-            var target = DateTime.TryParse(s.SelectedValue?.ToString(), out var result);
+            var result = searchWindow._swvm.IndicateList[s.SelectedIndex];
+            //var target = DateTime.TryParse(s.SelectedValue?.ToString(), out var result);
             DatePick.SelectedDate = result;
         }
 

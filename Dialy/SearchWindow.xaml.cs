@@ -20,7 +20,7 @@ namespace Dialy
     /// </summary>
     public partial class SearchWindow : MetroWindow
     {
-        SearchWindowViewModel _swvm;
+        public SearchWindowViewModel _swvm;
         public SearchWindow(SortedDictionary<DateTime, string> allDiaries)
         {
             InitializeComponent();

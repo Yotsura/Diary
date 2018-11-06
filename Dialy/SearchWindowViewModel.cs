@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dialy
 {
-    class SearchWindowViewModel : INotifyPropertyChanged
+    public class SearchWindowViewModel : INotifyPropertyChanged
     {
         SortedDictionary<DateTime, string> _allDiaries;
         SortedDictionary<DateTime, String> _hitList;
