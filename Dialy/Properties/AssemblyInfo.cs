@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Dialy")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP Inc.")]
+[assembly: AssemblyCompany("yuminaka")]
 [assembly: AssemblyProduct("Dialy")]
-[assembly: AssemblyCopyright("Copyright © HP Inc. 2018")]
+[assembly: AssemblyCopyright("Copyright © yuminaka. 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
