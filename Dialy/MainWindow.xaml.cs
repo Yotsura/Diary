@@ -104,6 +104,10 @@ namespace Dialy
 
         private async void ReflectSearch(object sender, MouseButtonEventArgs e)
         {
+            var s = (ListBox)sender;
+            if (s.ItemsSource == null) return;
+            var result = searchWindow._swvm.IndicateList[s.SelectedIndex];
+            if (DatePick.SelectedDate == result) return;
             if (MessageLabel.Visibility == Visibility.Visible)
             {
                 var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
@@ -111,10 +115,6 @@ namespace Dialy
                     MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
                 if (select == MessageDialogResult.Negative) return;
             }
-            var s = (ListBox)sender;
-            if (s.ItemsSource == null) return;
-            var result = searchWindow._swvm.IndicateList[s.SelectedIndex];
-            //var target = DateTime.TryParse(s.SelectedValue?.ToString(), out var result);
             DatePick.SelectedDate = result;
         }
 
