@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
         SaveWindowPosition="True"
-        Title="SearchWindow" Height="502" Width="409">
+        Title="SearchWindow" Height="600" Width="250">
     <Window.Resources>
         <CollectionViewSource x:Key="NowDataView"  Source="{Binding IndicateList}" />
     </Window.Resources>
