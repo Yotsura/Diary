@@ -102,12 +102,14 @@ namespace Dialy
             searchWindow.Show();
         }
 
-        private void ReflectSearch(object sender, MouseButtonEventArgs e)
+        private async void ReflectSearch(object sender, MouseButtonEventArgs e)
         {
             if (MessageLabel.Visibility == Visibility.Visible)
             {
-                ShowMessageDialog("エラー", "未保存の変更があります");
-                return;
+                var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+                var select = await this.ShowMessageAsync("エラー", "未保存の変更があります。変更を破棄しますか？",
+                    MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
+                if (select == MessageDialogResult.Negative) return;
             }
             var s = (ListBox)sender;
             if (s.ItemsSource == null) return;
