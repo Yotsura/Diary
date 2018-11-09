@@ -39,7 +39,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <CheckBox Content="完全一致" Name="PerfectMatchCheck" Grid.Column="3"/>
+            <CheckBox Content="完全一致" Name="PerfectMatchCheck" Grid.Column="3" IsEnabled="False"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>
