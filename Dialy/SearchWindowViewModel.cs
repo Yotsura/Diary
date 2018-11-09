@@ -36,7 +36,7 @@ namespace Dialy
 
         public void SearchFunc(String words, bool perfectmatch)
         {
-            var targetWords = words.Split(' ');
+            var targetWords = words.Split(new string[] { " ", "　" }, StringSplitOptions.RemoveEmptyEntries);
             _hitList = _allDiaries;
             foreach (var word in targetWords)
             {
