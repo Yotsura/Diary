@@ -34,13 +34,30 @@ namespace Dialy
             _allDiaries = allDiaries;
         }
 
-        public void SearchFunc(String words, bool perfectmatch)
+        public void SearchFunc(String words, bool orsearch)
         {
             var targetWords = words.Split(new string[] { " ", "　" }, StringSplitOptions.RemoveEmptyEntries);
             _hitList = _allDiaries;
-            foreach (var word in targetWords)
+
+            if (orsearch)
             {
-                _hitList = GetHitList(_hitList, word);
+                var temp = new SortedDictionary<DateTime, string>();
+                foreach (var word in targetWords)
+                {
+                    var temp2 = GetHitList(_hitList, word);
+                    foreach(var key in temp2.Keys)
+                    {
+                        temp[key] = temp2[key];
+                    }
+                }
+                _hitList = temp;
+            }
+            else
+            {
+                foreach (var word in targetWords)
+                {
+                    _hitList = GetHitList(_hitList, word);
+                }
             }
             IndicateList = _hitList.Keys.ToList();
             IndicateList.Reverse();

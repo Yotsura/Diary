@@ -44,7 +44,7 @@ namespace Dialy
 
         private void InvokeSearch()
         {
-            _swvm.SearchFunc(TargetTxt.Text, PerfectMatchCheck.IsChecked == true);
+            _swvm.SearchFunc(TargetTxt.Text, OrSearch.IsChecked == true);
         }
     }
 }
