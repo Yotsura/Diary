@@ -140,5 +140,18 @@ namespace Dialy
             Settings.Default.FontSize = mwvm.FontSize;
             Settings.Default.Save();
         }
+
+        private async void DelRecord(object sender, RoutedEventArgs e)
+        {
+            var day = DatePick.SelectedDate.Value;
+            if (!mwvm.AllDiaries.ContainsKey(day)) return;
+            var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+            var select = await this.ShowMessageAsync("確認", "本当に削除しますか？",
+                MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
+            if (select == MessageDialogResult.Negative) return;
+            mwvm.AllDiaries.Remove(day);
+            FileManager.DeleteFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"));
+            DialyTxt.Text = string.Empty;
+        }
     }
 }

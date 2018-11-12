@@ -30,5 +30,12 @@ namespace Dialy
             var alllines = txt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             File.WriteAllLines(filepath, alllines);
         }
+
+        public static void DeleteFile(string folderPath, string date)
+        {
+            var filepath = $"{folderPath}\\{date}.log";
+            if (!File.Exists(filepath)) return;
+            File.Delete(filepath);
+        }
     }
 }
