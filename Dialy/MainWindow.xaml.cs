@@ -47,7 +47,8 @@ namespace Dialy
         {
             DateTime.TryParse(DatePick.Text, out var day);
             mwvm.AllDiaries[day] = DiaryTxt.Text;
-            FileManager.SaveFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"), DiaryTxt.Text);
+            var year = DatePick.SelectedDate.Value.Year.ToString();
+            FileManager.SaveFile(mwvm.FolderPath, year, DatePick.Text.Replace("/", "_"), DiaryTxt.Text);
             MessageLabel.Visibility = Visibility.Collapsed;
         }
 
@@ -140,7 +141,8 @@ namespace Dialy
                 MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
             if (select == MessageDialogResult.Negative) return;
             mwvm.AllDiaries.Remove(day);
-            FileManager.DeleteFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"));
+            var year = day.Year.ToString();
+            FileManager.DeleteFile(mwvm.FolderPath, year, DatePick.Text.Replace("/", "_"));
             DiaryTxt.Text = string.Empty;
         }
 
