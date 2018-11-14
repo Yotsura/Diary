@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
         SaveWindowPosition="True"
-        Title="MainWindow" Height="600" Width="800" Loaded="MetroWindow_Loaded" Closed="MetroWindow_Closed">
+        Title="Diary" Height="600" Width="800" Loaded="MetroWindow_Loaded" Closed="MetroWindow_Closed">
     <Window.CommandBindings>
         <CommandBinding Command="Save" Executed="SaveCommand" />
         <CommandBinding Command="Open" Executed="OpenSearchWindow" />
