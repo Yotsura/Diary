@@ -10,7 +10,6 @@ namespace Dialy
     public class SearchWindowViewModel : INotifyPropertyChanged
     {
         SortedDictionary<DateTime, string> _allDiaries;
-        SortedDictionary<DateTime, String> _hitList;
 
         private List<DateTime> _indicateList;
         public List<DateTime> IndicateList
@@ -37,33 +36,32 @@ namespace Dialy
         public void SearchFunc(String words, bool orsearch)
         {
             var targetWords = words.Split(new string[] { " ", "　" }, StringSplitOptions.RemoveEmptyEntries);
-            _hitList = _allDiaries;
-
-            if (orsearch)
-            {
-                var temp = new SortedDictionary<DateTime, string>();
-                foreach (var word in targetWords)
-                {
-                    var temp2 = GetHitList(_hitList, word);
-                    foreach(var key in temp2.Keys)
-                    {
-                        temp[key] = temp2[key];
-                    }
-                }
-                _hitList = temp;
-            }
-            else
-            {
-                foreach (var word in targetWords)
-                {
-                    _hitList = GetHitList(_hitList, word);
-                }
-            }
-            IndicateList = _hitList.Keys.ToList();
+            IndicateList = orsearch ? OrSearcher(targetWords) : AndSearcher(targetWords);
             IndicateList.Reverse();
         }
 
-        public SortedDictionary<DateTime, string> GetHitList
+        private List<DateTime> OrSearcher(string[] targetWords)
+        {
+            var hitList = new SortedDictionary<DateTime, string>();
+            foreach (var word in targetWords)
+            {
+                var temp = GetHitList(_allDiaries, word);
+                temp.Keys.ToList().ForEach(key => hitList[key] = temp[key]);
+            }
+            return hitList.Keys.ToList();
+        }
+
+        private List<DateTime> AndSearcher(string[] targetWords)
+        {
+            var hitList = _allDiaries;
+            foreach (var word in targetWords)
+            {
+                hitList = GetHitList(hitList, word);
+            }
+            return hitList.Keys.ToList();
+        }
+
+        private SortedDictionary<DateTime, string> GetHitList
             (SortedDictionary<DateTime, string> population, string target)
         {
             var result = new SortedDictionary<DateTime, string>();
@@ -73,7 +71,6 @@ namespace Dialy
                 result.Add(date.Key, date.Value);
             }
             return result;
-            //return population.Where(x => x.Value.IndexOf(target) != -1);
         }
 
     }
