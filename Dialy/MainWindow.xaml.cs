@@ -146,7 +146,7 @@ namespace Dialy
 
         private void ReloadRecords(object sender, RoutedEventArgs e)
         {
-            mwvm.AllDiaries = FileManager.GetAllDialy(mwvm.FolderPath);
+            mwvm.AllDiaries = FileManager.GetAllDiaries(mwvm.FolderPath);
             var date = DatePick.SelectedDate.Value;
             DiaryTxt.Text = mwvm.AllDiaries.ContainsKey(date) ? mwvm.AllDiaries[date] : string.Empty;
         }

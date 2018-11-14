@@ -38,7 +38,7 @@ namespace Dialy
             IndicateSize = FontSize;
             FolderPath = String.IsNullOrEmpty(Settings.Default.FilePath) ?
                 System.IO.Directory.GetCurrentDirectory()+"\\Logs" : Settings.Default.FilePath;
-            AllDiaries = FileManager.GetAllDialy(FolderPath);
+            AllDiaries = FileManager.GetAllDiaries(FolderPath);
         }
 
         public DateTime NextRecord(DateTime indicated, string operation)

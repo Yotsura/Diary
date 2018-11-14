@@ -9,19 +9,17 @@ namespace Dialy
 {
     class FileManager
     {
-        public static SortedDictionary<DateTime, string> GetAllDialy(string folderpath)
+        public static SortedDictionary<DateTime, string> GetAllDiaries(string folderpath)
         {
-            var dialies = new SortedDictionary<DateTime, string>();
+            var diaries = new SortedDictionary<DateTime, string>();
             var files = Directory.EnumerateFiles(folderpath, "*.log", System.IO.SearchOption.TopDirectoryOnly);
             foreach (var file in files)
             {
                 var datetxt = new FileInfo(file).Name.Replace(".log", "").Replace("_","/");
-                DateTime.TryParse(datetxt, out var date);
-
-                var txt = File.ReadAllLines(file);
-                dialies.Add(date, String.Join("\r\n", txt));
+                if (!DateTime.TryParse(datetxt, out var date)) continue;
+                diaries[date] = String.Join("\r\n", File.ReadAllLines(file));
             }
-            return dialies;
+            return diaries;
         }
 
         public static void SaveFile(string folderPath,string date, string txt)
