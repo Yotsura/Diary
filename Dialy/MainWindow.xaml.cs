@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
 
 namespace Dialy
 {
@@ -159,13 +160,14 @@ namespace Dialy
 
         private void CreateBackUp(object sender, RoutedEventArgs e)
         {
-            FileManager.CreateBackUp(mwvm.AllDiaries);
-            ShowMessageDialog("確認", "バックアップを作成しました。");
+            if(FileManager.CreateBackUp(mwvm.AllDiaries))ShowMessageDialog("確認", "バックアップを作成しました。");
         }
 
         private void OpenBackUp(object sender, RoutedEventArgs e)
         {
-
+            var filename = FileManager.FileDialog();
+            if (filename == string.Empty) return;
+            if (FileManager.OpenBackUp(filename)) ShowMessageDialog("確認", "バックアップを解凍しました。");
         }
     }
 }
