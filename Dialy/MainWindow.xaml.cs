@@ -152,5 +152,20 @@ namespace Dialy
             var date = DatePick.SelectedDate.Value;
             DiaryTxt.Text = mwvm.AllDiaries.ContainsKey(date) ? mwvm.AllDiaries[date] : string.Empty;
         }
+        private async void ShowMessageDialog(string title, string message)
+        {
+            await this.ShowMessageAsync(title, message);
+        }
+
+        private void CreateBackUp(object sender, RoutedEventArgs e)
+        {
+            FileManager.CreateBackUp(mwvm.AllDiaries);
+            ShowMessageDialog("確認", "バックアップを作成しました。");
+        }
+
+        private void OpenBackUp(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

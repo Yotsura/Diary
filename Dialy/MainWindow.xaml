@@ -36,6 +36,8 @@
                 <MenuItem Header="保存" InputGestureText="Ctrl+S" Command="Save"/>
                 <MenuItem Header="レコードを再読込" Click="ReloadRecords"/>
                 <MenuItem Header="表示中のレコードを削除" Click="DelRecord"/>
+                <MenuItem Header="バックアップ作成" Click="CreateBackUp"/>
+                <MenuItem Header="バックアップを解凍" Click="OpenBackUp"/>
             </MenuItem>
             <MenuItem Header="検索(_S)">
                 <MenuItem Header="単語を検索" InputGestureText="Ctrl+F" Command="Open"/>

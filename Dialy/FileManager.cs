@@ -37,5 +37,27 @@ namespace Dialy
             if (!File.Exists(filepath)) return;
             File.Delete(filepath);
         }
+
+        public static void CreateBackUp(SortedDictionary<DateTime, string>alldiaries)
+        {
+            var folderpath = $"{System.IO.Directory.GetCurrentDirectory()}\\BackUp";
+            if (!Directory.Exists(folderpath)) Directory.CreateDirectory(folderpath);
+
+
+            var filename = $"{DateTime.Now.ToString("yyyyMMdd HHmmss")}.log";
+            var filepath = $"{folderpath}\\{filename}";
+
+            var alllines=new string[] {$"{DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss")}作成バックアップ"};
+            foreach (var diary in alldiaries)
+            {
+                var header = new string[] { Environment.NewLine,
+                    "______________________________________________________________________"
+                    ,diary.Key.ToString("yyyyMMdd")};
+                alllines = alllines.Concat(header)
+                    .Concat(diary.Value.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)).ToArray();
+            }
+            
+            File.WriteAllLines(filepath, alllines);
+        }
     }
 }
