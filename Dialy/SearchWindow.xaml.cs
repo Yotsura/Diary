@@ -26,6 +26,10 @@ namespace Dialy
             InitializeComponent();
             _swvm = new SearchWindowViewModel(allDiaries);
             this.DataContext = _swvm;
+        }
+
+        private void ForcusTxt(object sender, EventArgs e)
+        {
             TargetTxt.Focus();
         }
 
