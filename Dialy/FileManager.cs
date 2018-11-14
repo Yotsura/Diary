@@ -22,18 +22,18 @@ namespace Dialy
             return diaries;
         }
 
-        public static void SaveFile(string folderPath, string year, string date, string txt)
+        public static void SaveFile(string topFolderpath, string year, string date, string txt)
         {
-            var folderPath2 = $"{folderPath}\\{year}";
-            if (!Directory.Exists(folderPath2)) Directory.CreateDirectory(folderPath2);
-            var filepath = $"{folderPath2}\\{date}.log";
+            var folderpath = $"{topFolderpath}\\{year}";
+            if (!Directory.Exists(folderpath)) Directory.CreateDirectory(folderpath);
+            var filepath = $"{folderpath}\\{date}.log";
             var alllines = txt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             File.WriteAllLines(filepath, alllines);
         }
 
-        public static void DeleteFile(string folderPath, string year, string date)
+        public static void DeleteFile(string topFolderpath, string year, string date)
         {
-            var filepath = $"{folderPath}\\{year}\\{date}.log";
+            var filepath = $"{topFolderpath}\\{year}\\{date}.log";
             if (!File.Exists(filepath)) return;
             File.Delete(filepath);
         }
