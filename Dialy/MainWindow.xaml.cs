@@ -33,38 +33,33 @@ namespace Dialy
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             DatePick.Text = DateTime.Today.ToString();
-            DialyTxt.FontSize = mwvm.FontSize;
+            DiaryTxt.FontSize = mwvm.FontSize;
+            DiaryTxt.Focus();
         }
 
         private void FontZoom(object sender, RoutedEventArgs e)
         {
             mwvm.Zoom(((Button)sender).Content.ToString());
-            DialyTxt.FontSize = mwvm.FontSize;
+            DiaryTxt.FontSize = mwvm.FontSize;
         }
 
         private void SaveCommand(object sender, ExecutedRoutedEventArgs e)
         {
             DateTime.TryParse(DatePick.Text, out var day);
-            mwvm.AllDiaries[day] = DialyTxt.Text;
-            FileManager.SaveFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"), DialyTxt.Text);
+            mwvm.AllDiaries[day] = DiaryTxt.Text;
+            FileManager.SaveFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"), DiaryTxt.Text);
             MessageLabel.Visibility = Visibility.Collapsed;
         }
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            DialyTxt.Text = string.Empty;
+            DiaryTxt.Text = string.Empty;
             if (!mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value)) return;
-            DialyTxt.Text = mwvm.AllDiaries[DatePick.SelectedDate.Value];
-        }
-
-        private void NextFile(object sender, ExecutedRoutedEventArgs e)
-        {//←と→を区別して<<か>>を渡したい
-            DateChangeButton(sender, e);
+            DiaryTxt.Text = mwvm.AllDiaries[DatePick.SelectedDate.Value];
         }
 
         private void DateChangeButton(object sender, RoutedEventArgs e)
         {
-            //DateTime.TryParse(DatePick.Text, out var date);
             var date = DatePick.SelectedDate.Value;
             var day = new DateTime();
             switch (((Button)sender).Content)
@@ -126,13 +121,8 @@ namespace Dialy
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             MessageLabel.Visibility = mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value) ?
-                mwvm.AllDiaries[DatePick.SelectedDate.Value] == DialyTxt.Text ? Visibility.Collapsed : Visibility.Visible :
-                String.IsNullOrEmpty(DialyTxt.Text) ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        private async void ShowMessageDialog(string title, string message)
-        {
-            await this.ShowMessageAsync(title, message);
+                mwvm.AllDiaries[DatePick.SelectedDate.Value] == DiaryTxt.Text ? Visibility.Collapsed : Visibility.Visible :
+                String.IsNullOrEmpty(DiaryTxt.Text) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void MetroWindow_Closed(object sender, EventArgs e)
@@ -151,7 +141,7 @@ namespace Dialy
             if (select == MessageDialogResult.Negative) return;
             mwvm.AllDiaries.Remove(day);
             FileManager.DeleteFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"));
-            DialyTxt.Text = string.Empty;
+            DiaryTxt.Text = string.Empty;
         }
     }
 }

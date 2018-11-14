@@ -45,7 +45,7 @@
                 <MenuItem Header="設定"/>
             </MenuItem>
         </Menu>
-        <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Name="DialyTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" />
+        <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" />
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30"/>
