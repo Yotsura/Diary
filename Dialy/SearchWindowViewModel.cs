@@ -61,16 +61,11 @@ namespace Dialy
             return hitList.Keys.ToList();
         }
 
-        private SortedDictionary<DateTime, string> GetHitList
-            (SortedDictionary<DateTime, string> population, string target)
+        private SortedDictionary<DateTime, string> GetHitList(SortedDictionary<DateTime, string> hitList, string word)
         {
-            var result = new SortedDictionary<DateTime, string>();
-            foreach (var date in population)
-            {
-                if (date.Value.IndexOf(target, StringComparison.CurrentCultureIgnoreCase) == -1) continue;
-                result.Add(date.Key, date.Value);
-            }
-            return result;
+            return new SortedDictionary<DateTime, string>(hitList
+                .Where(date => date.Value.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) != -1)
+                .ToDictionary(x => x.Key, x => x.Value));
         }
 
     }
