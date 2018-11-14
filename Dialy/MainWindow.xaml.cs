@@ -143,5 +143,12 @@ namespace Dialy
             FileManager.DeleteFile(mwvm.FolderPath, DatePick.Text.Replace("/", "_"));
             DiaryTxt.Text = string.Empty;
         }
+
+        private void ReloadRecords(object sender, RoutedEventArgs e)
+        {
+            mwvm.AllDiaries = FileManager.GetAllDialy(mwvm.FolderPath);
+            var date = DatePick.SelectedDate.Value;
+            DiaryTxt.Text = mwvm.AllDiaries.ContainsKey(date) ? mwvm.AllDiaries[date] : string.Empty;
+        }
     }
 }

@@ -34,7 +34,7 @@
         <Menu Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3">
             <MenuItem Header="ファイル(_C)">
                 <MenuItem Header="保存" InputGestureText="Ctrl+S" Command="Save"/>
-                <MenuItem Header="すべて保存" IsEnabled="False"/>
+                <MenuItem Header="レコードを再読込" Click="ReloadRecords"/>
                 <MenuItem Header="表示中のレコードを削除" Click="DelRecord"/>
             </MenuItem>
             <MenuItem Header="検索(_S)">
