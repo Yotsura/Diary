@@ -51,14 +51,14 @@ namespace Dialy
             var alllines=new string[] {$"{DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss")}作成バックアップ"};
             foreach (var diary in alldiaries)
             {
-                var header = new string[] { Environment.NewLine,
-                    "______________________________________________________________________"
+                var header = new string[] { "______________________________________________________________________"
                     ,diary.Key.ToString("yyyyMMdd")};
+                var detail = diary.Value.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 alllines = alllines.Concat(header)
-                    .Concat(diary.Value.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)).ToArray();
+                    .Concat(detail).ToArray();
             }
-            
-            File.WriteAllLines(filepath, alllines);
+
+            File.WriteAllText(filepath, string.Join("\r\n", alllines));
 
             return true;
         }
@@ -68,7 +68,7 @@ namespace Dialy
             var text = File.ReadAllText(filepath);
             var records = new SortedDictionary<DateTime, string>();
 
-            string[] del = { "______________________________________________________________________" };
+            string[] del = { "\r\n______________________________________________________________________" };
             var dialies = text.Split(del, StringSplitOptions.None);
             foreach (var dialy in dialies)
             {
