@@ -23,25 +23,25 @@ namespace Dialy
             return diaries;
         }
 
-        public static void SaveFile(string topFolderpath, string year, string date, string txt)
+        public static void SaveFile(string topFolderpath, DateTime day, string txt)
         {
-            var folderpath = $"{topFolderpath}\\{year}";
+            var folderpath = $"{topFolderpath}\\{day.ToString("yyyy")}";
             if (!Directory.Exists(folderpath)) Directory.CreateDirectory(folderpath);
-            var filepath = $"{folderpath}\\{date}.log";
+            var filepath = $"{folderpath}\\{day.ToString("yyyy_MM_dd")}.log";
             var alllines = txt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             File.WriteAllLines(filepath, alllines);
         }
 
-        public static void DeleteFile(string topFolderpath, string year, string date)
+        public static void DeleteFile(string topFolderpath, DateTime day)
         {
-            var filepath = $"{topFolderpath}\\{year}\\{date}.log";
+            var filepath = $"{topFolderpath}\\{day.ToString("yyyy")}\\{day.ToString("yyyy_MM_dd")}.log";
             if (!File.Exists(filepath)) return;
             File.Delete(filepath);
         }
 
         public static bool CreateBackUp(SortedDictionary<DateTime, string>alldiaries)
         {
-            var folderpath = $"{Directory.GetCurrentDirectory()}\\BackUp";
+            var folderpath = $"{Directory.GetCurrentDirectory()}\\BackUps";
             if (!Directory.Exists(folderpath)) Directory.CreateDirectory(folderpath);
 
 
@@ -89,7 +89,7 @@ namespace Dialy
             Directory.CreateDirectory(folderpath);
             foreach (var diary in records)
             {
-                SaveFile(folderpath, diary.Key.Year.ToString(), diary.Key.ToString("yyyy_MM_dd"), diary.Value);
+                SaveFile(folderpath, diary.Key, diary.Value);
             }
             return true;
         }
