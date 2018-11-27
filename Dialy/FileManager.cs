@@ -82,7 +82,7 @@ namespace Dialy
 
             //Logの形に出力
             var filenum = filepath.Split('\\').Last().Replace(".log", "");
-            var folderpath = $"{System.IO.Directory.GetCurrentDirectory()}\\BackUp\\{filenum}";
+            var folderpath = $"{System.IO.Directory.GetCurrentDirectory()}\\BackUps\\{filenum}";
             if (Directory.Exists(folderpath)) return false;
             Directory.CreateDirectory(folderpath);
             folderpath = $"{folderpath}\\Logs";
