@@ -57,12 +57,32 @@
                 <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Name="Today" Content="T" Click="DateChangeButton"/>
-            <Button Grid.Column="1" Name="LastRecord" Content="&lt;&lt;" Click="DateChangeButton"/>
-            <Button Grid.Column="2" Name="LastDay" Content="&lt;" Click="DateChangeButton"/>
+            <Button Grid.Column="0" Name="Today" Content="T" Click="DateChangeButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="今日のレコード"/>
+                </ToolTipService.ToolTip>
+            </Button>
+            <Button Grid.Column="1" Name="LastRecord" Content="&lt;&lt;" Click="DateChangeButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="前のレコード"/>
+                </ToolTipService.ToolTip>
+            </Button>
+            <Button Grid.Column="2" Name="LastDay" Content="&lt;" Click="DateChangeButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="前日"/>
+                </ToolTipService.ToolTip>
+            </Button>
             <DatePicker Grid.Column="3" Name="DatePick" SelectedDateChanged="DatePick_SelectedDateChanged"/>
-            <Button Grid.Column="4" Name="NextDay" Content="&gt;" Click="DateChangeButton"/>
-            <Button Grid.Column="5" Name="NextRecord" Content="&gt;&gt;" Click="DateChangeButton"/>
+            <Button Grid.Column="4" Name="NextDay" Content="&gt;" Click="DateChangeButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="翌日"/>
+                </ToolTipService.ToolTip>
+            </Button>
+            <Button Grid.Column="5" Name="NextRecord" Content="&gt;&gt;" Click="DateChangeButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="次のレコード"/>
+                </ToolTipService.ToolTip>
+            </Button>
         </Grid>
         <Grid Grid.Column="2" Grid.Row="2">
             <Grid.ColumnDefinitions>
