@@ -25,8 +25,6 @@ namespace Dialy
 
         public SortedDictionary<DateTime, string> AllDiaries;
 
-        public string TaskTxt = "test";
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {

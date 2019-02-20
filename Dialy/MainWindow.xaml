@@ -45,7 +45,7 @@
                 <MenuItem Header="設定" IsEnabled="False"/>
                 <MenuItem Header="バックアップ作成" Click="CreateBackUp"/>
                 <MenuItem Header="バックアップを解凍" Click="OpenBackUp"/>
-                <MenuItem Header="taskwindowtest" Click="OpenTestWindow"/>
+                <MenuItem Header="タスク" Click="OpenTaskWindow"/>
             </MenuItem>
         </Menu>
         <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}"/>

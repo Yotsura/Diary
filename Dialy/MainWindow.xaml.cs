@@ -23,7 +23,7 @@ namespace Dialy
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        internal Dialy.MainWindowViewModel _mwvm;
+        MainWindowViewModel _mwvm;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace Dialy
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             DatePick.Text = DateTime.Today.ToString();
-            OpenTestWindow(sender, e);
+            OpenTaskWindow(sender, e);
             DiaryTxt.Focus();
         }
 
@@ -55,7 +55,7 @@ namespace Dialy
         {
             //DiaryTxt = new TextBox();
             DiaryTxt.Clear();
-            DiaryTxt.Undo.ClearValue
+            //DiaryTxt.Undo.ClearValue
             //DiaryTxt.Text = string.Empty;
             if (!_mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value)) return;
             DiaryTxt.Text = _mwvm.AllDiaries[DatePick.SelectedDate.Value];
@@ -176,35 +176,33 @@ namespace Dialy
             this.Topmost = TopMostCheck.IsChecked == true;
         }
 
-        TestWindow testWindow;
-        private void OpenTestWindow(object sender, RoutedEventArgs e)
+        TaskWindow _taskWindow;
+        private void OpenTaskWindow(object sender, RoutedEventArgs e)
         {
-            if (testWindow != null)
+            if (_taskWindow != null)
             {
-                testWindow.WindowState = WindowState.Normal;
-                testWindow.Activate();
+                _taskWindow.WindowState = WindowState.Normal;
+                _taskWindow.Activate();
                 return;
             }
-            _mwvm.TaskTxt = FileManager.OpenFile(_mwvm.FolderPath);
-            testWindow = new TestWindow(_mwvm.TaskTxt,Settings.Default.TaskFontSize);
-            testWindow.TaskTxt.TextChanged += TaskTxt_TextChanged;
-            testWindow.Closed += TestWindow_Closed;
-            testWindow.Show();
+            _taskWindow = new TaskWindow(FileManager.OpenTaskFile(_mwvm.FolderPath), Settings.Default.TaskFontSize);
+            _taskWindow.TaskTxt.TextChanged += TaskTxt_TextChanged;
+            _taskWindow.Closed += TaskWindow_Closed;
+            _taskWindow.Show();
         }
 
         public void TaskTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             var test = ((TextBox)sender).Text;
-            _mwvm.TaskTxt = test;
-            FileManager.SaveFile(_mwvm.FolderPath, _mwvm.TaskTxt);
+            FileManager.SaveFile(_mwvm.FolderPath, test);
         }
 
-        private void TestWindow_Closed(object sender, EventArgs e)
+        private void TaskWindow_Closed(object sender, EventArgs e)
         {
-            Int32.TryParse(testWindow.FontSize.Content.ToString(), out var size);
+            Int32.TryParse(_taskWindow.FontSize.Content.ToString(), out var size);
             Settings.Default.TaskFontSize = size;
             Settings.Default.Save();
-            testWindow = null;
+            _taskWindow = null;
         }
     }
 }

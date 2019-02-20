@@ -39,7 +39,7 @@ namespace Dialy
             File.WriteAllLines(filepath, alllines);
         }
 
-        public static string OpenFile(string topFolderpath)
+        public static string OpenTaskFile(string topFolderpath)
         {
             var filepath = $"{topFolderpath}\\taskTxt.log";
             if (!File.Exists(filepath)) return String.Empty;
