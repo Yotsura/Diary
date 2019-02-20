@@ -32,6 +32,20 @@ namespace Dialy
             File.WriteAllLines(filepath, alllines);
         }
 
+        public static void SaveFile(string topFolderpath, string txt)
+        {
+            var filepath = $"{topFolderpath}\\taskTxt.log";
+            var alllines = txt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            File.WriteAllLines(filepath, alllines);
+        }
+
+        public static string OpenFile(string topFolderpath)
+        {
+            var filepath = $"{topFolderpath}\\taskTxt.log";
+            if (!File.Exists(filepath)) return String.Empty;
+            return String.Join("\r\n", File.ReadAllLines(filepath));
+        }
+
         public static void DeleteFile(string topFolderpath, DateTime day)
         {
             var filepath = $"{topFolderpath}\\{day.ToString("yyyy")}\\{day.ToString("yyyy_MM_dd")}.log";

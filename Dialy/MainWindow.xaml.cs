@@ -23,39 +23,42 @@ namespace Dialy
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        internal Dialy.MainWindowViewModel mwvm;
+        internal Dialy.MainWindowViewModel _mwvm;
         public MainWindow()
         {
             InitializeComponent();
-            mwvm = new MainWindowViewModel();
-            this.DataContext = mwvm;
+            _mwvm = new MainWindowViewModel();
+            this.DataContext = _mwvm;
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             DatePick.Text = DateTime.Today.ToString();
-            DiaryTxt.FontSize = mwvm.FontSize;
+            OpenTestWindow(sender, e);
             DiaryTxt.Focus();
         }
 
         private void FontZoom(object sender, RoutedEventArgs e)
         {
-            mwvm.Zoom(((Button)sender).Content.ToString());
-            DiaryTxt.FontSize = mwvm.FontSize;
+            var btn = ((Button)sender).Content.ToString();
+            _mwvm.IndicateSize = btn == "+" ? _mwvm.IndicateSize + 3 : _mwvm.IndicateSize - 3;
         }
 
         private void SaveCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            mwvm.AllDiaries[DatePick.SelectedDate.Value] = DiaryTxt.Text;
-            FileManager.SaveFile(mwvm.FolderPath, DatePick.SelectedDate.Value, DiaryTxt.Text);
+            _mwvm.AllDiaries[DatePick.SelectedDate.Value] = DiaryTxt.Text;
+            FileManager.SaveFile(_mwvm.FolderPath, DatePick.SelectedDate.Value, DiaryTxt.Text);
             MessageLabel.Visibility = Visibility.Collapsed;
         }
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            DiaryTxt.Text = string.Empty;
-            if (!mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value)) return;
-            DiaryTxt.Text = mwvm.AllDiaries[DatePick.SelectedDate.Value];
+            //DiaryTxt = new TextBox();
+            DiaryTxt.Clear();
+            DiaryTxt.Undo.ClearValue
+            //DiaryTxt.Text = string.Empty;
+            if (!_mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value)) return;
+            DiaryTxt.Text = _mwvm.AllDiaries[DatePick.SelectedDate.Value];
         }
 
         private void DateChangeButton(object sender, RoutedEventArgs e)
@@ -74,10 +77,10 @@ namespace Dialy
                     day = DateTime.Today;
                     break;
                 case "<<":
-                    day = mwvm.NextRecord(date, "<<");
+                    day = _mwvm.NextRecord(date, "<<");
                     break;
                 case ">>":
-                    day = mwvm.NextRecord(date, ">>");
+                    day = _mwvm.NextRecord(date, ">>");
                     break;
             }
             DatePick.Text = day.ToString();
@@ -88,10 +91,11 @@ namespace Dialy
         {
             if (searchWindow != null)
             {
+                searchWindow.WindowState = WindowState.Normal;
                 searchWindow.Activate();
                 return;
             }
-            searchWindow = new SearchWindow(mwvm.AllDiaries);
+            searchWindow = new SearchWindow(_mwvm.AllDiaries);
             searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
             searchWindow.Closed += SearchWindow_Closed;
             searchWindow.Show();
@@ -120,35 +124,35 @@ namespace Dialy
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            MessageLabel.Visibility = mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value) ?
-                mwvm.AllDiaries[DatePick.SelectedDate.Value] == DiaryTxt.Text ? Visibility.Collapsed : Visibility.Visible :
+            MessageLabel.Visibility = _mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value) ?
+                _mwvm.AllDiaries[DatePick.SelectedDate.Value] == DiaryTxt.Text ? Visibility.Collapsed : Visibility.Visible :
                 String.IsNullOrEmpty(DiaryTxt.Text) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void MetroWindow_Closed(object sender, EventArgs e)
         {
-            Settings.Default.FontSize = mwvm.FontSize;
+            Settings.Default.FontSize = _mwvm.IndicateSize;
             Settings.Default.Save();
         }
 
         private async void DelRecord(object sender, RoutedEventArgs e)
         {
             var day = DatePick.SelectedDate.Value;
-            if (!mwvm.AllDiaries.ContainsKey(day)) return;
+            if (!_mwvm.AllDiaries.ContainsKey(day)) return;
             var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
             var select = await this.ShowMessageAsync("確認", "本当に削除しますか？",
                 MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
             if (select == MessageDialogResult.Negative) return;
-            mwvm.AllDiaries.Remove(day);
-            FileManager.DeleteFile(mwvm.FolderPath, day);
+            _mwvm.AllDiaries.Remove(day);
+            FileManager.DeleteFile(_mwvm.FolderPath, day);
             DiaryTxt.Text = string.Empty;
         }
 
         private void ReloadRecords(object sender, RoutedEventArgs e)
         {
-            mwvm.AllDiaries = FileManager.GetAllDiaries(mwvm.FolderPath);
+            _mwvm.AllDiaries = FileManager.GetAllDiaries(_mwvm.FolderPath);
             var date = DatePick.SelectedDate.Value;
-            DiaryTxt.Text = mwvm.AllDiaries.ContainsKey(date) ? mwvm.AllDiaries[date] : string.Empty;
+            DiaryTxt.Text = _mwvm.AllDiaries.ContainsKey(date) ? _mwvm.AllDiaries[date] : string.Empty;
         }
         private async void ShowMessageDialog(string title, string message)
         {
@@ -157,7 +161,7 @@ namespace Dialy
 
         private void CreateBackUp(object sender, RoutedEventArgs e)
         {
-            if(FileManager.CreateBackUp(mwvm.AllDiaries))ShowMessageDialog("確認", "バックアップを作成しました。");
+            if (FileManager.CreateBackUp(_mwvm.AllDiaries)) ShowMessageDialog("確認", "バックアップを作成しました。");
         }
 
         private void OpenBackUp(object sender, RoutedEventArgs e)
@@ -165,6 +169,42 @@ namespace Dialy
             var filename = FileManager.FileDialog();
             if (filename == string.Empty) return;
             if (FileManager.OpenBackUp(filename)) ShowMessageDialog("確認", "バックアップを解凍しました。");
+        }
+
+        private void TopMostCheck_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            this.Topmost = TopMostCheck.IsChecked == true;
+        }
+
+        TestWindow testWindow;
+        private void OpenTestWindow(object sender, RoutedEventArgs e)
+        {
+            if (testWindow != null)
+            {
+                testWindow.WindowState = WindowState.Normal;
+                testWindow.Activate();
+                return;
+            }
+            _mwvm.TaskTxt = FileManager.OpenFile(_mwvm.FolderPath);
+            testWindow = new TestWindow(_mwvm.TaskTxt,Settings.Default.TaskFontSize);
+            testWindow.TaskTxt.TextChanged += TaskTxt_TextChanged;
+            testWindow.Closed += TestWindow_Closed;
+            testWindow.Show();
+        }
+
+        public void TaskTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var test = ((TextBox)sender).Text;
+            _mwvm.TaskTxt = test;
+            FileManager.SaveFile(_mwvm.FolderPath, _mwvm.TaskTxt);
+        }
+
+        private void TestWindow_Closed(object sender, EventArgs e)
+        {
+            Int32.TryParse(testWindow.FontSize.Content.ToString(), out var size);
+            Settings.Default.TaskFontSize = size;
+            Settings.Default.Save();
+            testWindow = null;
         }
     }
 }

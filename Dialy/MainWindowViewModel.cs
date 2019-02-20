@@ -10,7 +10,6 @@ namespace Dialy
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
-        public int FontSize;
         private int _indicateSize;
         public int IndicateSize
         {
@@ -26,6 +25,8 @@ namespace Dialy
 
         public SortedDictionary<DateTime, string> AllDiaries;
 
+        public string TaskTxt = "test";
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
@@ -34,24 +35,17 @@ namespace Dialy
 
         public MainWindowViewModel()
         {
-            FontSize = Settings.Default.FontSize;
-            IndicateSize = FontSize;
+            IndicateSize = Settings.Default.FontSize;
             FolderPath = String.IsNullOrEmpty(Settings.Default.FilePath) ?
-                System.IO.Directory.GetCurrentDirectory()+"\\Logs" : Settings.Default.FilePath;
+                System.IO.Directory.GetCurrentDirectory() + "\\Logs" : Settings.Default.FilePath;
             AllDiaries = FileManager.GetAllDiaries(FolderPath);
         }
 
         public DateTime NextRecord(DateTime indicated, string operation)
         {
-            var next= operation == "<<"? AllDiaries.Where(x => x.Key < indicated): AllDiaries.Where(x => x.Key > indicated);
+            var next = operation == "<<" ? AllDiaries.Where(x => x.Key < indicated) : AllDiaries.Where(x => x.Key > indicated);
             if (!next.Any()) return indicated;
-            return operation == "<<" ? next.Last().Key: next.First().Key;
-        }
-
-        public void Zoom(string btn)
-        {
-            FontSize = btn == "+" ? FontSize + 3 : FontSize - 3;
-            IndicateSize = FontSize;
+            return operation == "<<" ? next.Last().Key : next.First().Key;
         }
     }
 }
