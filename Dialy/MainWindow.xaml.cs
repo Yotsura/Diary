@@ -126,6 +126,13 @@ namespace Dialy
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if(MessageLabel.Visibility == Visibility.Visible 
+                && MessageBox.Show("未保存の変更があります。変更を破棄しますか？"
+                ,"警告",MessageBoxButton.OKCancel,MessageBoxImage.Warning)==MessageBoxResult.Cancel)
+            {
+                e.Cancel=true;
+                return;
+            }
             Settings.Default.FontSize = _mwvm.IndicateSize;
             Settings.Default.Save();
         }
