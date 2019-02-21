@@ -19,7 +19,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="5"/>
             <RowDefinition/>
-            <RowDefinition Height="5"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding TaskTxt}" Name="TaskTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}"/>
         <Grid Grid.Column="1" Grid.Row="1">

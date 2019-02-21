@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
 
 namespace Dialy
 {
@@ -53,16 +42,22 @@ namespace Dialy
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            //DiaryTxt = new TextBox();
             DiaryTxt.Clear();
-            //DiaryTxt.Undo.ClearValue
-            //DiaryTxt.Text = string.Empty;
             if (!_mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value)) return;
             DiaryTxt.Text = _mwvm.AllDiaries[DatePick.SelectedDate.Value];
+            DiaryTxt.IsUndoEnabled = false;
+            DiaryTxt.IsUndoEnabled = true;
         }
 
-        private void DateChangeButton(object sender, RoutedEventArgs e)
+        private async void DateChangeButton(object sender, RoutedEventArgs e)
         {
+            if (MessageLabel.Visibility == Visibility.Visible)
+            {
+                var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+                var select = await this.ShowMessageAsync("エラー", "未保存の変更があります。変更を破棄しますか？",
+                    MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
+                if (select == MessageDialogResult.Negative) return;
+            }
             var date = DatePick.SelectedDate.Value;
             var day = new DateTime();
             switch (((Button)sender).Content)
@@ -86,26 +81,26 @@ namespace Dialy
             DatePick.Text = day.ToString();
         }
 
-        SearchWindow searchWindow;
+        SearchWindow _searchWindow;
         private void OpenSearchWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            if (searchWindow != null)
+            if (_searchWindow != null)
             {
-                searchWindow.WindowState = WindowState.Normal;
-                searchWindow.Activate();
+                _searchWindow.WindowState = WindowState.Normal;
+                _searchWindow.Activate();
                 return;
             }
-            searchWindow = new SearchWindow(_mwvm.AllDiaries);
-            searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
-            searchWindow.Closed += SearchWindow_Closed;
-            searchWindow.Show();
+            _searchWindow = new SearchWindow(_mwvm.AllDiaries);
+            _searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
+            _searchWindow.Closed += SearchWindow_Closed;
+            _searchWindow.Show();
         }
 
         private async void ReflectSearch(object sender, MouseButtonEventArgs e)
         {
             var s = (ListBox)sender;
             if (s.ItemsSource == null) return;
-            var result = searchWindow._swvm.IndicateList[s.SelectedIndex];
+            var result = _searchWindow._swvm.IndicateList[s.SelectedIndex];
             if (DatePick.SelectedDate == result) return;
             if (MessageLabel.Visibility == Visibility.Visible)
             {
@@ -119,7 +114,7 @@ namespace Dialy
 
         private void SearchWindow_Closed(object sender, EventArgs e)
         {
-            searchWindow = null;
+            _searchWindow = null;
         }
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
@@ -129,7 +124,7 @@ namespace Dialy
                 String.IsNullOrEmpty(DiaryTxt.Text) ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void MetroWindow_Closed(object sender, EventArgs e)
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Settings.Default.FontSize = _mwvm.IndicateSize;
             Settings.Default.Save();
@@ -154,6 +149,7 @@ namespace Dialy
             var date = DatePick.SelectedDate.Value;
             DiaryTxt.Text = _mwvm.AllDiaries.ContainsKey(date) ? _mwvm.AllDiaries[date] : string.Empty;
         }
+
         private async void ShowMessageDialog(string title, string message)
         {
             await this.ShowMessageAsync(title, message);

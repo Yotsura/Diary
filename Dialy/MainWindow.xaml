@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
         SaveWindowPosition="True"
-        Title="Diary" Height="600" Width="800" Loaded="MetroWindow_Loaded" Closed="MetroWindow_Closed">
+        Title="Diary" Height="600" Width="800" Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing">
     <Window.CommandBindings>
         <CommandBinding Command="Save" Executed="SaveCommand" />
         <CommandBinding Command="Open" Executed="OpenSearchWindow" />
@@ -46,6 +46,9 @@
                 <MenuItem Header="バックアップ作成" Click="CreateBackUp"/>
                 <MenuItem Header="バックアップを解凍" Click="OpenBackUp"/>
                 <MenuItem Header="タスク" Click="OpenTaskWindow"/>
+            </MenuItem>
+            <MenuItem Header="ヘルプ(_H)" Click="ShowVerInfo">
+                <MenuItem Header="バージョン情報"/>
             </MenuItem>
         </Menu>
         <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}"/>
