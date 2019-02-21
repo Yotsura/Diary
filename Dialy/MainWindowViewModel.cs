@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Configuration;
 
 namespace Dialy
 {
@@ -33,10 +34,17 @@ namespace Dialy
 
         public MainWindowViewModel()
         {
+            if (!SettingExsistCheck()) Settings.Default.Upgrade();
             IndicateSize = Settings.Default.FontSize;
             FolderPath = String.IsNullOrEmpty(Settings.Default.FilePath) ?
                 System.IO.Directory.GetCurrentDirectory() + "\\Logs" : Settings.Default.FilePath;
             AllDiaries = FileManager.GetAllDiaries(FolderPath);
+        }
+
+        private bool SettingExsistCheck()
+        {
+            return File.Exists(ConfigurationManager.OpenExeConfiguration(
+                ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
         }
 
         public DateTime NextRecord(DateTime indicated, string operation)

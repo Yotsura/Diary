@@ -200,5 +200,12 @@ namespace Dialy
             Settings.Default.Save();
             _taskWindow = null;
         }
+
+        private async void ShowVerInfo(object sender, RoutedEventArgs e)
+        {
+            var verInfo = App.ResourceAssembly.GetName().Version;
+            var ver = $"{verInfo.Major}.{verInfo.Minor}.{verInfo.Build}";
+            await this.ShowMessageAsync("バージョン情報", $"ver{ver}");
+        }
     }
 }
