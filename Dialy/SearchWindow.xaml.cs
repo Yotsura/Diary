@@ -51,19 +51,22 @@ namespace Dialy
             _swvm.SearchFunc(TargetTxt.Text, OrSearch.IsChecked == true);
         }
 
+        Dictionary<DateTime, SecondWindow> SecondWindows=new Dictionary<DateTime, SecondWindow>();
+        SecondWindow _secondWindow;
         private void ShowSecondWindow(object sender, RoutedEventArgs e)
         {
             if (HitListBox.SelectedIndex == -1) return;
             var date = (DateTime)HitListBox.SelectedItem;
-            if (DateTime.Today == date.Date) return;
-            SecondWindow secondWindow = new SecondWindow(date, _swvm._allDiaries[date], _swvm._fontSize);
-            secondWindow.Save.Click += SaveRecord;
-            secondWindow.Show();
+            if (DateTime.Today == date.Date || SecondWindows.Keys.Contains(date)) return;
+            _secondWindow = new SecondWindow(date, _swvm._allDiaries[date], _swvm._fontSize);
+            _secondWindow.Save.Click += SaveRecord;
+            SecondWindows[date] = _secondWindow;
+            _secondWindow.Show();
         }
 
         private void SaveRecord(object sender, RoutedEventArgs e)
         {
-
+            _swvm._allDiaries[(DateTime)HitListBox.SelectedItem] = _secondWindow.DiaryTxt.Text;
         }
     }
 }
