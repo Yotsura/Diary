@@ -42,9 +42,11 @@ namespace Dialy
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            var date = DatePick.SelectedDate.Value;
+            Today.IsEnabled = date.Date != DateTime.Today;
             DiaryTxt.Clear();
-            if (!_mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value)) return;
-            DiaryTxt.Text = _mwvm.AllDiaries[DatePick.SelectedDate.Value];
+            if (!_mwvm.AllDiaries.ContainsKey(date)) return;
+            DiaryTxt.Text = _mwvm.AllDiaries[date];
             DiaryTxt.IsUndoEnabled = false;
             DiaryTxt.IsUndoEnabled = true;
         }
