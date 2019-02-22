@@ -26,7 +26,7 @@ namespace Dialy
             _swvm = new SecondWindowViewModel(date, diaryTxt, fontSize);
             this.DataContext = _swvm;
         }
-        SecondWindowViewModel _swvm;
+        public SecondWindowViewModel _swvm;
 
         private void FontZoom(object sender, RoutedEventArgs e)
         {

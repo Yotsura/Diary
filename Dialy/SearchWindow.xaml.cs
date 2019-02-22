@@ -67,6 +67,7 @@ namespace Dialy
         private void SaveRecord(object sender, RoutedEventArgs e)
         {
             _swvm._allDiaries[(DateTime)HitListBox.SelectedItem] = _secondWindow.DiaryTxt.Text;
+            FileManager.SaveFile(Dialy.Settings.Default.FolderPath, _secondWindow._swvm.IndicateDate, _secondWindow.DiaryTxt.Text);
         }
     }
 }

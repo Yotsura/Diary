@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dialy
 {
-    class SecondWindowViewModel : INotifyPropertyChanged
+    public class SecondWindowViewModel : INotifyPropertyChanged
     {
         private int _indicateSize;
         public int IndicateSize
