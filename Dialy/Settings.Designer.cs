@@ -38,12 +38,12 @@ namespace Dialy {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FilePath {
+        public string FolderPath {
             get {
-                return ((string)(this["FilePath"]));
+                return ((string)(this["FolderPath"]));
             }
             set {
-                this["FilePath"] = value;
+                this["FolderPath"] = value;
             }
         }
         

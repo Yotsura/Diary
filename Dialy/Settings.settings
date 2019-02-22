@@ -5,7 +5,7 @@
     <Setting Name="FontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="FilePath" Type="System.String" Scope="User">
+    <Setting Name="FolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="TaskFontSize" Type="System.Int32" Scope="User">

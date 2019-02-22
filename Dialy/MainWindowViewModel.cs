@@ -36,9 +36,9 @@ namespace Dialy
         {
             if (!SettingExsistCheck()) Settings.Default.Upgrade();
             IndicateSize = Settings.Default.FontSize;
-            FolderPath = String.IsNullOrEmpty(Settings.Default.FilePath) ?
-                System.IO.Directory.GetCurrentDirectory() + "\\Logs" : Settings.Default.FilePath;
-            Settings.Default.FilePath = FolderPath;
+            FolderPath = String.IsNullOrEmpty(Settings.Default.FolderPath) ?
+                System.IO.Directory.GetCurrentDirectory() + "\\Logs" : Settings.Default.FolderPath;
+            Settings.Default.FolderPath = FolderPath;
             Settings.Default.Save();
             AllDiaries = FileManager.GetAllDiaries(FolderPath);
         }
