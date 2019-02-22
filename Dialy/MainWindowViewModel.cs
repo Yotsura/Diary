@@ -38,6 +38,8 @@ namespace Dialy
             IndicateSize = Settings.Default.FontSize;
             FolderPath = String.IsNullOrEmpty(Settings.Default.FilePath) ?
                 System.IO.Directory.GetCurrentDirectory() + "\\Logs" : Settings.Default.FilePath;
+            Settings.Default.FilePath = FolderPath;
+            Settings.Default.Save();
             AllDiaries = FileManager.GetAllDiaries(FolderPath);
         }
 

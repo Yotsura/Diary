@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dialy
 {
     public class SearchWindowViewModel : INotifyPropertyChanged
     {
-        SortedDictionary<DateTime, string> _allDiaries;
+        public SortedDictionary<DateTime, string> _allDiaries;
+        public int _fontSize;
 
         private List<DateTime> _indicateList;
         public List<DateTime> IndicateList
@@ -28,9 +27,10 @@ namespace Dialy
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public SearchWindowViewModel(SortedDictionary<DateTime, string> allDiaries)
+        public SearchWindowViewModel(SortedDictionary<DateTime, string> allDiaries,int fontSize)
         {
             _allDiaries = allDiaries;
+            _fontSize = fontSize;
         }
 
         public void SearchFunc(String words, bool orsearch)

@@ -92,7 +92,7 @@ namespace Dialy
                 _searchWindow.Activate();
                 return;
             }
-            _searchWindow = new SearchWindow(_mwvm.AllDiaries);
+            _searchWindow = new SearchWindow(_mwvm.AllDiaries,_mwvm.IndicateSize);
             _searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
             _searchWindow.Closed += SearchWindow_Closed;
             _searchWindow.Show();
@@ -100,6 +100,7 @@ namespace Dialy
 
         private async void ReflectSearch(object sender, MouseButtonEventArgs e)
         {
+            if (e.LeftButton != MouseButtonState.Pressed) return;
             var s = (ListBox)sender;
             if (s.ItemsSource == null) return;
             var result = _searchWindow._swvm.IndicateList[s.SelectedIndex];

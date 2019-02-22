@@ -1,0 +1,44 @@
+﻿<Controls:MetroWindow x:Class="Dialy.SecondWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:Dialy"
+        mc:Ignorable="d"
+        SaveWindowPosition="True"
+        Title="SecondWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding DiaryTxt}" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}"/>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Name="ZoomOut" Content="-" Click="FontZoom"/>
+            <Label Grid.Column="1" Name="FontSize" Content="{Binding IndicateSize}"/>
+            <Button Grid.Column="2" Name="ZoomIn" Content="+" Click="FontZoom"/>
+            <Button Grid.Column="4" Name="Save" Content="Save"/>
+            <Label Grid.Column="6" Name="Date" Content="{Binding IndicateDate}"/>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>

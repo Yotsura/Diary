@@ -21,10 +21,10 @@ namespace Dialy
     public partial class SearchWindow : MetroWindow
     {
         public SearchWindowViewModel _swvm;
-        public SearchWindow(SortedDictionary<DateTime, string> allDiaries)
+        public SearchWindow(SortedDictionary<DateTime, string> allDiaries,int fontSize)
         {
             InitializeComponent();
-            _swvm = new SearchWindowViewModel(allDiaries);
+            _swvm = new SearchWindowViewModel(allDiaries, fontSize);
             this.DataContext = _swvm;
         }
 
@@ -49,6 +49,25 @@ namespace Dialy
         private void InvokeSearch()
         {
             _swvm.SearchFunc(TargetTxt.Text, OrSearch.IsChecked == true);
+        }
+
+        Dictionary<DateTime, SecondWindow> SecondWindows=new Dictionary<DateTime, SecondWindow>();
+        SecondWindow _secondWindow;
+        private void ShowSecondWindow(object sender, RoutedEventArgs e)
+        {
+            if (HitListBox.SelectedIndex == -1) return;
+            var date = (DateTime)HitListBox.SelectedItem;
+            if (DateTime.Today == date.Date || SecondWindows.Keys.Contains(date)) return;
+            _secondWindow = new SecondWindow(date, _swvm._allDiaries[date], _swvm._fontSize);
+            _secondWindow.Save.Click += SaveRecord;
+            SecondWindows[date] = _secondWindow;
+            _secondWindow.Show();
+        }
+
+        private void SaveRecord(object sender, RoutedEventArgs e)
+        {
+            _swvm._allDiaries[(DateTime)HitListBox.SelectedItem] = _secondWindow.DiaryTxt.Text;
+            FileManager.SaveFile(Dialy.Settings.Default.FolderPath, _secondWindow._swvm.IndicateDate, _secondWindow.DiaryTxt.Text);
         }
     }
 }
