@@ -54,34 +54,16 @@ namespace Dialy
         private void ShowSecondWindow(object sender, RoutedEventArgs e)
         {
             if (HitListBox.SelectedIndex == -1) return;
-            var s = (ListBox)sender;
-            if (s.ItemsSource == null) return;
-            var result = _swvm.IndicateList[s.SelectedIndex];
-            SecondWindow secondWindow = new SecondWindow(result, _swvm._allDiaries[result], _swvm._fontSize);
+            var date = (DateTime)HitListBox.SelectedItem;
+            if (DateTime.Today == date.Date) return;
+            SecondWindow secondWindow = new SecondWindow(date, _swvm._allDiaries[date], _swvm._fontSize);
+            secondWindow.Save.Click += SaveRecord;
+            secondWindow.Show();
         }
 
-        private void CreateContextMenu_MouseRightButton(object sender, MouseButtonEventArgs e)
+        private void SaveRecord(object sender, RoutedEventArgs e)
         {
-            if (e.RightButton != MouseButtonState.Pressed) return;
 
-            HitListBox.ContextMenu = null;
-
-            if (!HitCheck(HitListBox, e)) return;
-
-            //ContextMenuを作成する。
-            MenuItem menuitem = new MenuItem { Header = "別ウィンドウで開く" };
-            menuitem.PreviewMouseLeftButtonDown += ShowSecondWindow;;
-
-            ContextMenu contextmenu = new ContextMenu();
-            contextmenu.Items.Add(menuitem);
-            HitListBox.ContextMenu = contextmenu;
-        }
-
-        public static bool HitCheck(ListBox listBox, MouseButtonEventArgs e)
-        {
-            if (!(listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem) is DataGridRow ctrl)) return false;
-            if (null == ctrl.InputHitTest(e.GetPosition(ctrl))) return false;
-            return true;
         }
     }
 }

@@ -37,7 +37,7 @@
             <Button Grid.Column="0" Name="ZoomOut" Content="-" Click="FontZoom"/>
             <Label Grid.Column="1" Name="FontSize" Content="{Binding IndicateSize}"/>
             <Button Grid.Column="2" Name="ZoomIn" Content="+" Click="FontZoom"/>
-            <Button Grid.Column="2" Name="Save" Content="Save"/>
+            <Button Grid.Column="4" Name="Save" Content="Save"/>
             <Label Grid.Column="6" Name="Date" Content="{Binding IndicateDate}"/>
         </Grid>
     </Grid>
