@@ -21,6 +21,17 @@ namespace Dialy
             }
         }
 
+        private string _recordTxt;
+        public string RecordTxt
+        {
+            get => _recordTxt;
+            set
+            {
+                _recordTxt = value;
+                OnPropertyChanged(nameof(RecordTxt));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {

@@ -49,6 +49,8 @@ namespace Dialy
         private void InvokeSearch()
         {
             _swvm.SearchFunc(TargetTxt.Text, OrSearch.IsChecked == true);
+            HitListBox.SelectedIndex = 1;
+            HitListBox.SelectedIndex = 0;
         }
 
         Dictionary<DateTime, SecondWindow> SecondWindows=new Dictionary<DateTime, SecondWindow>();
@@ -82,6 +84,13 @@ namespace Dialy
             Settings.Default.TaskFontSize = size;
             Settings.Default.Save();
             SecondWindows.Remove(date);
+        }
+
+        private void HitListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var date = (DateTime)HitListBox.SelectedValue;
+            var txt = _swvm._allDiaries[date];
+            _swvm.RecordTxt = txt;
         }
     }
 }
