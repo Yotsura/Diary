@@ -51,7 +51,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <ListBox Grid.Column="0" Name="HitListBox" ItemsSource="{Binding Source={StaticResource NowDataView}}" ContextMenu="{DynamicResource menu}" SelectionChanged="HitListBox_SelectionChanged"/>
-            <TextBlock Grid.Column="1" Name="RecordTxt" Text="{Binding RecordTxt}" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True"/>
+            <ScrollViewer x:Name ="TextScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <TextBlock  Name="RecordTxt" Text="{Binding RecordTxt}"/>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Controls:MetroWindow>
