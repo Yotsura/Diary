@@ -53,39 +53,6 @@ namespace Dialy
             HitListBox.SelectedIndex = 0;
         }
 
-        Dictionary<DateTime, SecondWindow> SecondWindows=new Dictionary<DateTime, SecondWindow>();
-        //SecondWindow _secondWindow;
-        private void ShowSecondWindow(object sender, RoutedEventArgs e)
-        {
-            if (HitListBox.SelectedIndex == -1) return;
-            var date = (DateTime)HitListBox.SelectedItem;
-            if (SecondWindows.Keys.Contains(date)) return;
-            var _secondWindow = new SecondWindow(date, _swvm._allDiaries[date], _swvm._fontSize);
-            _secondWindow.Save.Click += SaveRecord;
-            _secondWindow.Closed += SecondWindow_Closed;
-            SecondWindows[date] = _secondWindow;
-            _secondWindow.Show();
-        }
-
-        private void SaveRecord(object sender, RoutedEventArgs e)
-        {
-            var date = (DateTime)HitListBox.SelectedItem;
-            _swvm._allDiaries[(DateTime)HitListBox.SelectedItem] = SecondWindows[date].DiaryTxt.Text;
-            FileManager.SaveFile(Dialy.Settings.Default.FolderPath,
-                SecondWindows[date]._swvm.IndicateDate, SecondWindows[date].DiaryTxt.Text);
-        }
-
-        private void SecondWindow_Closed(object sender, EventArgs e)
-        {
-            var record = (SecondWindow)sender;
-            var date = record._swvm.IndicateDate;
-            var size = record._swvm.IndicateSize;
-
-            Settings.Default.TaskFontSize = size;
-            Settings.Default.Save();
-            SecondWindows.Remove(date);
-        }
-
         private void HitListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var date = (DateTime)HitListBox.SelectedValue;

@@ -10,9 +10,6 @@
         Title="SearchWindow" Height="600" Width="250" Activated="ForcusTxt">
     <Window.Resources>
         <CollectionViewSource x:Key="NowDataView"  Source="{Binding IndicateList}" />
-        <ContextMenu x:Key="menu">
-            <MenuItem Header="別ウィンドウで開く" Click="ShowSecondWindow"/>
-        </ContextMenu>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

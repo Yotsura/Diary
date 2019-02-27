@@ -70,10 +70,6 @@
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchWindowViewModel.cs" />
-    <Compile Include="SecondWindow.xaml.cs">
-      <DependentUpon>SecondWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SecondWindowViewModel.cs" />
     <Compile Include="Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -96,10 +92,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="SearchWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SecondWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
