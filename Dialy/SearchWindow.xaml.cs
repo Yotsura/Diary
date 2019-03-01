@@ -70,5 +70,10 @@ namespace Dialy
             var btn = ((Button)sender).Content.ToString();
             _swvm.IndicateSize = btn == "+" ? _swvm.IndicateSize + 3 : _swvm.IndicateSize - 3;
         }
+
+        private void FocusSearchWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            TargetTxt.Focus();
+        }
     }
 }

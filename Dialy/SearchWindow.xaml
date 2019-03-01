@@ -11,6 +11,12 @@
     <Window.Resources>
         <CollectionViewSource x:Key="NowDataView"  Source="{Binding IndicateList}" />
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" Executed="FocusSearchWindow" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="Open" Gesture="Ctrl+F"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
