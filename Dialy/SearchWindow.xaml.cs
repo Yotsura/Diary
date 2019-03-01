@@ -35,26 +35,31 @@ namespace Dialy
 
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(TargetTxt.Text)) return;
             InvokeSearch();
         }
 
         private void TargetTxt_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            if (string.IsNullOrEmpty(TargetTxt.Text)) return;
             InvokeSearch();
         }
 
         private void InvokeSearch()
         {
             _swvm.SearchFunc(TargetTxt.Text, OrSearch.IsChecked == true);
+            if (_swvm.IndicateList.Count < 1) return;
             HitListBox.SelectedIndex = 1;
             HitListBox.SelectedIndex = 0;
+            HitListBox.Focus();
         }
 
         private void HitListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (HitListBox.SelectedValue == null)
+            {
+                _swvm.RecordTxt = String.Empty;
+                return;
+            }
             var date = (DateTime)HitListBox.SelectedValue;
             var txt = _swvm._allDiaries[date];
             _swvm.RecordTxt = txt;
