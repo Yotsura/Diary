@@ -26,6 +26,12 @@ namespace Dialy
             InitializeComponent();
             _swvm = new SearchWindowViewModel(allDiaries, fontSize);
             this.DataContext = _swvm;
+
+            if (Settings.Default.SearchWindowStat == null) return;
+            this.Top = Settings.Default.SearchWindowStat.Top;
+            this.Left = Settings.Default.SearchWindowStat.Left;
+            this.Width = Settings.Default.SearchWindowStat.Width;
+            this.Height = Settings.Default.SearchWindowStat.Height;
         }
 
         private void ForcusTxt(object sender, EventArgs e)

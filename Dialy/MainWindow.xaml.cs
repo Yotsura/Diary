@@ -19,6 +19,12 @@ namespace Dialy
             InitializeComponent();
             _mwvm = new MainWindowViewModel();
             this.DataContext = _mwvm;
+
+            if (Settings.Default.MainWindowStat == null) return;
+            this.Top = Settings.Default.MainWindowStat.Top;
+            this.Left = Settings.Default.MainWindowStat.Left;
+            this.Width = Settings.Default.MainWindowStat.Width;
+            this.Height = Settings.Default.MainWindowStat.Height;
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -119,6 +125,7 @@ namespace Dialy
         private void SearchWindow_Closed(object sender, EventArgs e)
         {
             Settings.Default.SearchFontSize = _searchWindow._swvm.IndicateSize;
+            Settings.Default.SearchWindowStat = new WindowStat { Height = _searchWindow.Height, Width = _searchWindow.Width, Left = _searchWindow.Left, Top = _searchWindow.Top };
             Settings.Default.Save();
             _searchWindow = null;
         }
@@ -139,6 +146,7 @@ namespace Dialy
                 e.Cancel=true;
                 return;
             }
+            Settings.Default.MainWindowStat = new WindowStat { Height = this.Height, Width = this.Width, Left = this.Left, Top = this.Top };
             Settings.Default.FontSize = _mwvm.IndicateSize;
             Settings.Default.Save();
         }
@@ -209,6 +217,7 @@ namespace Dialy
         private void TaskWindow_Closed(object sender, EventArgs e)
         {
             Int32.TryParse(_taskWindow.FontSize.Content.ToString(), out var size);
+            Settings.Default.TaskWindowStat = new WindowStat { Height = _taskWindow.Height, Width = _taskWindow.Width, Left = _taskWindow.Left, Top = _taskWindow.Top };
             Settings.Default.TaskFontSize = size;
             Settings.Default.Save();
             _taskWindow = null;

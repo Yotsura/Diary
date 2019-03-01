@@ -6,7 +6,6 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
-        SaveWindowPosition="True"
         Title="Diary" Height="600" Width="800" Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing">
     <Window.CommandBindings>
         <CommandBinding Command="Save" Executed="SaveCommand" />

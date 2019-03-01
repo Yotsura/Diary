@@ -70,5 +70,47 @@ namespace Dialy {
                 this["SearchFontSize"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public Dialy.WindowStat MainWindowStat
+        {
+            get
+            {
+                return (Dialy.WindowStat)(this["MainWindowStat"]);
+            }
+            set
+            {
+                this["MainWindowStat"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public Dialy.WindowStat TaskWindowStat
+        {
+            get
+            {
+                return (Dialy.WindowStat)(this["TaskWindowStat"]);
+            }
+            set
+            {
+                this["TaskWindowStat"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public Dialy.WindowStat SearchWindowStat
+        {
+            get
+            {
+                return (Dialy.WindowStat)(this["SearchWindowStat"]);
+            }
+            set
+            {
+                this["SearchWindowStat"] = value;
+            }
+        }
     }
 }

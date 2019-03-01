@@ -23,9 +23,15 @@ namespace Dialy
     {
         public TaskWindow(string taskTxt,int fontSize)
         {
+            InitializeComponent();
             _twvm = new TaskWindowViewModel(taskTxt, fontSize);
             this.DataContext = _twvm;
-            InitializeComponent();
+
+            if (Settings.Default.TaskWindowStat == null) return;
+            this.Top = Settings.Default.TaskWindowStat.Top;
+            this.Left = Settings.Default.TaskWindowStat.Left;
+            this.Width = Settings.Default.TaskWindowStat.Width;
+            this.Height = Settings.Default.TaskWindowStat.Height;
         }
 
         TaskWindowViewModel _twvm;

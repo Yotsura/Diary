@@ -6,7 +6,6 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
-        SaveWindowPosition="True"
         Title="TaskWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
