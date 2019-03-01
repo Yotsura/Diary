@@ -8,7 +8,16 @@ namespace Dialy
     public class SearchWindowViewModel : INotifyPropertyChanged
     {
         public SortedDictionary<DateTime, string> _allDiaries;
-        public int _fontSize;
+        private int _indicateSize;
+        public int IndicateSize
+        {
+            get => _indicateSize;
+            set
+            {
+                _indicateSize = value;
+                OnPropertyChanged(nameof(IndicateSize));
+            }
+        }
 
         private List<DateTime> _indicateList;
         public List<DateTime> IndicateList
@@ -41,7 +50,7 @@ namespace Dialy
         public SearchWindowViewModel(SortedDictionary<DateTime, string> allDiaries,int fontSize)
         {
             _allDiaries = allDiaries;
-            _fontSize = fontSize;
+            IndicateSize = fontSize;
         }
 
         public void SearchFunc(String words, bool orsearch)

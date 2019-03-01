@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -92,7 +93,7 @@ namespace Dialy
                 _searchWindow.Activate();
                 return;
             }
-            _searchWindow = new SearchWindow(_mwvm.AllDiaries,_mwvm.IndicateSize);
+            _searchWindow = new SearchWindow(_mwvm.AllDiaries,Settings.Default.SearchFontSize);
             _searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
             _searchWindow.Closed += SearchWindow_Closed;
             _searchWindow.Show();
@@ -117,6 +118,8 @@ namespace Dialy
 
         private void SearchWindow_Closed(object sender, EventArgs e)
         {
+            Settings.Default.SearchFontSize = _searchWindow._swvm.IndicateSize;
+            Settings.Default.Save();
             _searchWindow = null;
         }
 

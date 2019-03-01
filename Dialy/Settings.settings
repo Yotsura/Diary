@@ -3,13 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="FontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">20</Value>
+      <Value Profile="(Default)">17</Value>
     </Setting>
     <Setting Name="FolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="TaskFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">20</Value>
+      <Value Profile="(Default)">14</Value>
+    </Setting>
+    <Setting Name="SearchFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">14</Value>
     </Setting>
   </Settings>
 </SettingsFile>

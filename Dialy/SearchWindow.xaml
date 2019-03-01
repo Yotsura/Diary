@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
         SaveWindowPosition="True"
-        Title="SearchWindow" Height="600" Width="250" Activated="ForcusTxt">
+        Title="SearchWindow" Height="600" Width="250" MinWidth="250" Activated="ForcusTxt">
     <Window.Resources>
         <CollectionViewSource x:Key="NowDataView"  Source="{Binding IndicateList}" />
     </Window.Resources>
@@ -21,7 +21,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="27"/>
             <RowDefinition Height="5"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
@@ -37,19 +37,30 @@
         </Grid>
         <Grid Grid.Column="1" Grid.Row="3">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <CheckBox Content="OR検索" Name="OrSearch" Grid.Column="1"/>
+            <Label Grid.Column="0" Content="Hit："/>
+            <Label Grid.Column="1" Name="HitCount" Content="{Binding IndicateList.Count}"/>
+            <Button Grid.Column="3" Name="ZoomOut" Content="-" Click="FontZoom"/>
+            <Label Grid.Column="4" Name="FontSize" Content="{Binding IndicateSize}"/>
+            <Button Grid.Column="5" Name="ZoomIn" Content="+" Click="FontZoom"/>
+            <CheckBox Content="OR検索" Name="OrSearch" Grid.Column="7"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListBox Grid.Column="0" Name="HitListBox" ItemsSource="{Binding Source={StaticResource NowDataView}}" ContextMenu="{DynamicResource menu}" SelectionChanged="HitListBox_SelectionChanged"/>
+            <ListBox Grid.Column="0" Name="HitListBox" ItemsSource="{Binding Source={StaticResource NowDataView}}" SelectionChanged="HitListBox_SelectionChanged"/>
             <ScrollViewer x:Name ="TextScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <TextBlock  Name="RecordTxt" Text="{Binding RecordTxt}"/>
+                <TextBlock  Name="RecordTxt" Text="{Binding RecordTxt}" FontSize="{Binding IndicateSize}"/>
             </ScrollViewer>
         </Grid>
     </Grid>

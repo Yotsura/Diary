@@ -25,7 +25,7 @@ namespace Dialy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("17")]
         public int FontSize {
             get {
                 return ((int)(this["FontSize"]));
@@ -49,13 +49,25 @@ namespace Dialy {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("14")]
         public int TaskFontSize {
             get {
                 return ((int)(this["TaskFontSize"]));
             }
             set {
                 this["TaskFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("14")]
+        public int SearchFontSize {
+            get {
+                return ((int)(this["SearchFontSize"]));
+            }
+            set {
+                this["SearchFontSize"] = value;
             }
         }
     }
