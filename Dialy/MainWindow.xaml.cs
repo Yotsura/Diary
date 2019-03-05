@@ -100,16 +100,28 @@ namespace Dialy
                 return;
             }
             _searchWindow = new SearchWindow(_mwvm.AllDiaries,Settings.Default.SearchFontSize);
-            _searchWindow.HitListBox.MouseDoubleClick += ReflectSearch;
+            _searchWindow.HitListBox.MouseDoubleClick += CheckMouseButton;
+            _searchWindow.HitListBox.KeyDown += CheckKey;
             _searchWindow.Closed += SearchWindow_Closed;
             _searchWindow.Show();
         }
 
-        private async void ReflectSearch(object sender, MouseButtonEventArgs e)
+        private void CheckMouseButton(object sender ,MouseButtonEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed) return;
+            ReflectSearch(sender, e);
+        }
+
+        private void CheckKey(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            ReflectSearch(sender, e);
+        }
+
+        private async void ReflectSearch<T>(object sender, T e)
+        {
             var s = (ListBox)sender;
-            if (s.ItemsSource == null) return;
+            if (s.ItemsSource == null || s.SelectedIndex == -1) return;
             var result = _searchWindow._swvm.IndicateList[s.SelectedIndex];
             if (DatePick.SelectedDate == result) return;
             if (MessageLabel.Visibility == Visibility.Visible)
