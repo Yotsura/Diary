@@ -56,6 +56,7 @@ namespace Dialy
             DiaryTxt.Text = _mwvm.AllDiaries[date];
             DiaryTxt.IsUndoEnabled = false;
             DiaryTxt.IsUndoEnabled = true;
+            DiaryTxt.Focus();
         }
 
         private async void DateChangeButton(object sender, RoutedEventArgs e)
