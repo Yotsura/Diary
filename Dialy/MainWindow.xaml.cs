@@ -253,14 +253,14 @@ namespace Dialy
             var foreTxt = txt.Substring(0, calet);
             if (!foreTxt.EndsWith("\r\n")) return;
 
-            var test = foreTxt.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
-            var lastLine = test[test.Count - 2];
+            var lines = foreTxt.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+            var lastLine = lines[lines.Count - 2];
             var exTxt = "";
 
             foreach (var t in lastLine.ToCharArray())
             {
-                if (Space.Contains(t)) exTxt += t;
-                if (!Head.Contains(t)) continue;
+                if (Space.Contains(t)) { exTxt += t; continue; }
+                if (!Head.Contains(t)) break;
                 exTxt += t;
                 break;
             }
