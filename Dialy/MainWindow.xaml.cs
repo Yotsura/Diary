@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -241,5 +243,31 @@ namespace Dialy
             var ver = $"{verInfo.Major}.{verInfo.Minor}.{verInfo.Build}";
             await this.ShowMessageAsync("バージョン情報", $"ver{ver}");
         }
+
+        private void InheritLineHead(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            var calet = ((TextBox)sender).SelectionStart;
+            var txt = ((TextBox)sender).Text;
+            var foreTxt = txt.Substring(0, calet);
+            if (!foreTxt.EndsWith("\r\n")) return;
+
+            var lines = foreTxt.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+            var lastLine = lines[lines.Count - 2];
+            var exTxt = "";
+
+            foreach (var t in lastLine.ToCharArray())
+            {
+                if (Space.Contains(t)) { exTxt += t; continue; }
+                if (!Head.Contains(t)) break;
+                exTxt += t;
+                break;
+            }
+
+            DiaryTxt.Text = foreTxt + exTxt + txt.Substring(calet);
+            ((TextBox)sender).SelectionStart = calet + exTxt.Length;
+        }
+        private static List<char> Space = new List<char> { ' ', '　', '\t', };
+        private static List<char> Head = new List<char> { '〇', '・', '#', '＞', '>' };
     }
 }
