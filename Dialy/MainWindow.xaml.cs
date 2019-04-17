@@ -52,8 +52,7 @@ namespace Dialy
             var date = DatePick.SelectedDate.Value;
             Today.IsEnabled = date.Date != DateTime.Today;
             DiaryTxt.Clear();
-            if (!_mwvm.AllDiaries.ContainsKey(date)) return;
-            DiaryTxt.Text = _mwvm.AllDiaries[date];
+            if (_mwvm.AllDiaries.ContainsKey(date)) DiaryTxt.Text = _mwvm.AllDiaries[date];
             DiaryTxt.IsUndoEnabled = false;
             DiaryTxt.IsUndoEnabled = true;
             DiaryTxt.Focus();
