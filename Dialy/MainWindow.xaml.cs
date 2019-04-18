@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Dialy.Funcs;
 
 namespace Dialy
 {
@@ -42,7 +43,7 @@ namespace Dialy
             _mwvm.IndicateSize = btn == "+" ? _mwvm.IndicateSize + 3 : _mwvm.IndicateSize - 3;
         }
 
-        private void SaveCommand(object sender, ExecutedRoutedEventArgs e)
+        private void SaveInvoke(object sender, ExecutedRoutedEventArgs e)
         {
             _mwvm.AllDiaries[DatePick.SelectedDate.Value] = DiaryTxt.Text;
             FileManager.SaveFile(_mwvm.FolderPath, DatePick.SelectedDate.Value, DiaryTxt.Text);
@@ -90,58 +91,6 @@ namespace Dialy
                     break;
             }
             DatePick.Text = day.ToString();
-        }
-
-        SearchWindow _searchWindow;
-        private void OpenSearchWindow(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (_searchWindow != null)
-            {
-                _searchWindow.WindowState = WindowState.Normal;
-                _searchWindow.Activate();
-                return;
-            }
-            _searchWindow = new SearchWindow(_mwvm.AllDiaries,Settings.Default.SearchFontSize);
-            _searchWindow.HitListBox.MouseDoubleClick += CheckMouseButton;
-            _searchWindow.HitListBox.KeyDown += CheckKey;
-            _searchWindow.Closed += SearchWindow_Closed;
-            _searchWindow.Show();
-        }
-
-        private void CheckMouseButton(object sender ,MouseButtonEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed) return;
-            ReflectSearch(sender, e);
-        }
-
-        private void CheckKey(object sender, KeyEventArgs e)
-        {
-            if (e.Key != Key.Enter) return;
-            ReflectSearch(sender, e);
-        }
-
-        private async void ReflectSearch<T>(object sender, T e)
-        {
-            var s = (ListBox)sender;
-            if (s.ItemsSource == null || s.SelectedIndex == -1) return;
-            var result = _searchWindow._swvm.IndicateList[s.SelectedIndex];
-            if (DatePick.SelectedDate == result) return;
-            if (MessageLabel.Visibility == Visibility.Visible)
-            {
-                var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
-                var select = await this.ShowMessageAsync("エラー", "未保存の変更があります。変更を破棄しますか？",
-                    MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
-                if (select == MessageDialogResult.Negative) return;
-            }
-            DatePick.SelectedDate = result;
-        }
-
-        private void SearchWindow_Closed(object sender, EventArgs e)
-        {
-            Settings.Default.SearchFontSize = _searchWindow._swvm.IndicateSize;
-            Settings.Default.SearchWindowStat = new WindowStat { Height = _searchWindow.Height, Width = _searchWindow.Width, Left = _searchWindow.Left, Top = _searchWindow.Top };
-            Settings.Default.Save();
-            _searchWindow = null;
         }
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
@@ -207,6 +156,66 @@ namespace Dialy
             this.Topmost = TopMostCheck.IsChecked == true;
         }
 
+        private async void ShowVerInfo(object sender, RoutedEventArgs e)
+        {
+            var verInfo = App.ResourceAssembly.GetName().Version;
+            var ver = $"{verInfo.Major}.{verInfo.Minor}.{verInfo.Build}";
+            await this.ShowMessageAsync("バージョン情報", $"ver{ver}");
+        }
+
+        private void InheritLineHead(object sender, KeyEventArgs e)
+        {
+            TxtFuncs.InheritLineHead(sender, e, Settings.Default.HeadSpaces, Settings.Default.HeadMarks);
+        }
+
+        SearchWindow _searchWindow;
+        private void OpenSearchWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_searchWindow != null)
+            {
+                _searchWindow.WindowState = WindowState.Normal;
+                _searchWindow.Activate();
+                return;
+            }
+            _searchWindow = new SearchWindow(_mwvm.AllDiaries, Settings.Default.SearchFontSize);
+            _searchWindow.HitListBox.MouseDoubleClick += CheckMouseButton;
+            _searchWindow.HitListBox.KeyDown += CheckKey;
+            _searchWindow.Closed += SearchWindow_Closed;
+            _searchWindow.Show();
+        }
+        private void CheckMouseButton(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton != MouseButtonState.Pressed) return;
+            ReflectSearch(sender, e);
+        }
+        private void CheckKey(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            ReflectSearch(sender, e);
+        }
+        private async void ReflectSearch<T>(object sender, T e)
+        {
+            var s = (ListBox)sender;
+            if (s.ItemsSource == null || s.SelectedIndex == -1) return;
+            var result = _searchWindow._swvm.IndicateList[s.SelectedIndex];
+            if (DatePick.SelectedDate == result) return;
+            if (MessageLabel.Visibility == Visibility.Visible)
+            {
+                var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+                var select = await this.ShowMessageAsync("エラー", "未保存の変更があります。変更を破棄しますか？",
+                    MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
+                if (select == MessageDialogResult.Negative) return;
+            }
+            DatePick.SelectedDate = result;
+        }
+        private void SearchWindow_Closed(object sender, EventArgs e)
+        {
+            Settings.Default.SearchFontSize = _searchWindow._swvm.IndicateSize;
+            Settings.Default.SearchWindowStat = new WindowStat { Height = _searchWindow.Height, Width = _searchWindow.Width, Left = _searchWindow.Left, Top = _searchWindow.Top };
+            Settings.Default.Save();
+            _searchWindow = null;
+        }
+
         TaskWindow _taskWindow;
         private void OpenTaskWindow(object sender, RoutedEventArgs e)
         {
@@ -221,13 +230,11 @@ namespace Dialy
             _taskWindow.Closed += TaskWindow_Closed;
             _taskWindow.Show();
         }
-
         public void TaskTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             var test = ((TextBox)sender).Text;
             FileManager.SaveFile(_mwvm.FolderPath, test);
         }
-
         private void TaskWindow_Closed(object sender, EventArgs e)
         {
             Int32.TryParse(_taskWindow.FontSize.Content.ToString(), out var size);
@@ -237,37 +244,38 @@ namespace Dialy
             _taskWindow = null;
         }
 
-        private async void ShowVerInfo(object sender, RoutedEventArgs e)
+        SettingWindow _settingWindow;
+        private void OpenSettingWindow(object sender, RoutedEventArgs e)
         {
-            var verInfo = App.ResourceAssembly.GetName().Version;
-            var ver = $"{verInfo.Major}.{verInfo.Minor}.{verInfo.Build}";
-            await this.ShowMessageAsync("バージョン情報", $"ver{ver}");
-        }
-
-        private void InheritLineHead(object sender, KeyEventArgs e)
-        {
-            if (e.Key != Key.Enter) return;
-            var calet = ((TextBox)sender).SelectionStart;
-            var txt = ((TextBox)sender).Text;
-            var foreTxt = txt.Substring(0, calet);
-            if (!foreTxt.EndsWith("\r\n")) return;
-
-            var lines = foreTxt.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
-            var lastLine = lines[lines.Count - 2];
-            var exTxt = "";
-
-            foreach (var t in lastLine.ToCharArray())
+            if (_settingWindow != null)
             {
-                if (Space.Contains(t)) { exTxt += t; continue; }
-                if (!Head.Contains(t)) break;
-                exTxt += t;
-                break;
+                _settingWindow.WindowState = WindowState.Normal;
+                _settingWindow.Activate();
+                return;
             }
-
-            DiaryTxt.Text = foreTxt + exTxt + txt.Substring(calet);
-            ((TextBox)sender).SelectionStart = calet + exTxt.Length;
+            _settingWindow = new SettingWindow();
+            _settingWindow.HeadSpace.Text = String.Join("", Settings.Default.HeadSpaces);
+            _settingWindow.HeadMark.Text = String.Join("", Settings.Default.HeadMarks);
+            _settingWindow.SaveSettingBtn.Click += SaveSetting;
+            _settingWindow.Closed += SettingWindow_Closed;
+            _settingWindow.CancelChangeBtn.Click += CancelChange;
+            _settingWindow.ShowDialog();
         }
-        private static List<char> Space = new List<char> { ' ', '　', '\t', };
-        private static List<char> Head = new List<char> { '〇', '・', '#', '＞', '>' };
+        private void SettingWindow_Closed(object sender, EventArgs e)
+        {
+            _settingWindow = null;
+        }
+        private void SaveSetting(object sender, RoutedEventArgs e)
+        {
+            Settings.Default.HeadSpaces = _settingWindow.HeadSpace.Text.ToCharArray().ToList();
+            Settings.Default.HeadMarks = _settingWindow.HeadMark.Text.ToCharArray().ToList();
+            Settings.Default.Save();
+            _settingWindow.Close();
+        }
+        private void CancelChange(object sender, RoutedEventArgs e)
+        {
+            _settingWindow.HeadSpace.Text = String.Join("", Settings.Default.HeadSpaces);
+            _settingWindow.HeadMark.Text = String.Join("", Settings.Default.HeadMarks);
+        }
     }
 }

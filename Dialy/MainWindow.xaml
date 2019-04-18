@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Diary" Height="600" Width="800" Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing">
     <Window.CommandBindings>
-        <CommandBinding Command="Save" Executed="SaveCommand" />
+        <CommandBinding Command="Save" Executed="SaveInvoke" />
         <CommandBinding Command="Open" Executed="OpenSearchWindow" />
     </Window.CommandBindings>
     <Window.InputBindings>
@@ -41,7 +41,7 @@
             </MenuItem>
             <MenuItem Header="オプション(_O)">
                 <MenuItem Name="TopMostCheck" IsCheckable="True" Header="最前面表示" Checked="TopMostCheck_CheckChanged" Unchecked="TopMostCheck_CheckChanged"/>
-                <MenuItem Header="設定" IsEnabled="False"/>
+                <MenuItem Header="設定" Click="OpenSettingWindow"/>
                 <MenuItem Header="バックアップ作成" Click="CreateBackUp"/>
                 <MenuItem Header="バックアップを解凍" Click="OpenBackUp"/>
                 <MenuItem Header="タスク" Click="OpenTaskWindow"/>
