@@ -39,6 +39,8 @@ namespace Dialy
             FolderPath = String.IsNullOrEmpty(Settings.Default.FolderPath) ?
                 System.IO.Directory.GetCurrentDirectory() + "\\Logs" : Settings.Default.FolderPath;
             Settings.Default.FolderPath = FolderPath;
+            if(Settings.Default.HeadSpaces==null)Settings.Default.HeadSpaces= new List<char> { ' ', '　', '\t', };
+            if (Settings.Default.HeadMarks == null) Settings.Default.HeadMarks = new List<char> { '〇', '・', '#', '＞', '>' };
             Settings.Default.Save();
             AllDiaries = FileManager.GetAllDiaries(FolderPath);
         }

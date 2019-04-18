@@ -112,5 +112,33 @@ namespace Dialy {
                 this["SearchWindowStat"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public System.Collections.Generic.List<char> HeadSpaces
+        {
+            get
+            {
+                return ((System.Collections.Generic.List<char>)(this["HeadSpaces"]));
+            }
+            set
+            {
+                this["HeadSpaces"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public System.Collections.Generic.List<char> HeadMarks
+        {
+            get
+            {
+                return ((System.Collections.Generic.List<char>)(this["HeadMarks"]));
+            }
+            set
+            {
+                this["HeadMarks"] = value;
+            }
+        }
     }
 }
