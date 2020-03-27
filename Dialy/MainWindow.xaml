@@ -5,15 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Dialy"
+        xmlns:commands="clr-namespace:Dialy.Commands"
         mc:Ignorable="d"
         Title="Diary" Height="600" Width="800" Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing">
     <Window.CommandBindings>
         <CommandBinding Command="Save" Executed="SaveInvoke" />
         <CommandBinding Command="Open" Executed="OpenSearchWindow" />
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextRecord}" Executed="MoveNext"/>
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.PrevRecord}" Executed="MovePrev" />
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" Executed="MoveNextDay"/>
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.PreDate}" Executed="MovePrevDay" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="Save" Gesture="Ctrl+S"/>
         <KeyBinding Command="Open" Gesture="Ctrl+F"/>
+        <KeyBinding Command="{x:Static commands:MyApplicationCommands.PrevRecord}" CommandParameter="prev" Gesture="Ctrl+Q"/>
+        <KeyBinding Command="{x:Static commands:MyApplicationCommands.PreDate}" CommandParameter="prev" Gesture="Ctrl+W"/>
+        <KeyBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" CommandParameter="next" Gesture="Ctrl+E"/>
+        <KeyBinding Command="{x:Static commands:MyApplicationCommands.NextRecord}" CommandParameter="next" Gesture="Ctrl+R"/>
     </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -50,7 +59,7 @@
                 <MenuItem Header="バージョン情報"/>
             </MenuItem>
         </Menu>
-        <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding IndicatedDiary,Mode=OneWay}" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30"/>
@@ -75,7 +84,7 @@
                     <ToolTip Content="前日"/>
                 </ToolTipService.ToolTip>
             </Button>
-            <DatePicker Grid.Column="3" Name="DatePick" SelectedDateChanged="DatePick_SelectedDateChanged"/>
+            <DatePicker Grid.Column="3" Name="DatePick" SelectedDate="{Binding SelectedDate,Mode=TwoWay}" SelectedDateChanged="DatePick_SelectedDateChanged"/>
             <Button Grid.Column="4" Name="NextDay" Content="&gt;" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
                     <ToolTip Content="翌日"/>
@@ -99,7 +108,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1" Name="ZoomOut" Content="-" Click="FontZoom"/>
             <Button Grid.Column="3" Name="ZoomIn" Content="+" Click="FontZoom"/>
-            <Label Grid.Column="2" Name="FontSize" Content="{Binding IndicateSize}"/>
+            <Label Grid.Column="2" Name="FontSize" Content="{Binding IndicateSize,Mode=OneWay}"/>
             <Label Grid.Column="5" Name="MessageLabel" Content="*未保存の変更があります。" Visibility="Collapsed"/>
         </Grid>
     </Grid>

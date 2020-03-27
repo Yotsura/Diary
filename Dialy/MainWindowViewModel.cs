@@ -12,6 +12,8 @@ namespace Dialy
     class MainWindowViewModel : INotifyPropertyChanged
     {
         private int _indicateSize;
+        private DateTime _selectedDate;
+        private string _indicatedDiary;
         public int IndicateSize
         {
             get => _indicateSize;
@@ -19,6 +21,29 @@ namespace Dialy
             {
                 _indicateSize = value;
                 OnPropertyChanged(nameof(IndicateSize));
+            }
+        }
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+
+                var date = SelectedDate;
+                IndicatedDiary = "";
+                if (AllDiaries.ContainsKey(date)) IndicatedDiary = AllDiaries[date];
+
+                OnPropertyChanged(nameof(SelectedDate));
+            }
+        }
+        public string IndicatedDiary
+        {
+            get => _indicatedDiary;
+            set
+            {
+                _indicatedDiary = value;
+                OnPropertyChanged(nameof(IndicatedDiary));
             }
         }
 

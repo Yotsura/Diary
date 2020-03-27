@@ -32,7 +32,8 @@ namespace Dialy
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            DatePick.Text = DateTime.Today.ToString();
+            //DatePick.Text = DateTime.Today.ToString();
+            _mwvm.SelectedDate = DateTime.Today;
             OpenTaskWindow(sender, e);
             DiaryTxt.Focus();
         }
@@ -45,22 +46,40 @@ namespace Dialy
 
         private void SaveInvoke(object sender, ExecutedRoutedEventArgs e)
         {
-            _mwvm.AllDiaries[DatePick.SelectedDate.Value] = DiaryTxt.Text;
-            FileManager.SaveFile(_mwvm.FolderPath, DatePick.SelectedDate.Value, DiaryTxt.Text);
+            var txt = DiaryTxt.Text;
+            _mwvm.AllDiaries[DatePick.SelectedDate.Value] = txt;
+            //_mwvm.AllDiaries[DatePick.SelectedDate.Value] = _mwvm.IndicatedDiary;
+            FileManager.SaveFile(_mwvm.FolderPath, _mwvm.SelectedDate, txt);
             MessageLabel.Visibility = Visibility.Collapsed;
         }
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            var date = DatePick.SelectedDate.Value;
+            var date = _mwvm.SelectedDate;
             Today.IsEnabled = date.Date != DateTime.Today;
-            DiaryTxt.Clear();
-            if (_mwvm.AllDiaries.ContainsKey(date)) DiaryTxt.Text = _mwvm.AllDiaries[date];
+            //DiaryTxt.Clear();
+            //if (_mwvm.AllDiaries.ContainsKey(date)) DiaryTxt.Text = _mwvm.AllDiaries[date];
             DiaryTxt.IsUndoEnabled = false;
             DiaryTxt.IsUndoEnabled = true;
             DiaryTxt.Focus();
         }
 
+        void MoveNext(object sender, RoutedEventArgs e)
+        {
+            DateChangeButton(NextRecord, null);
+        }
+        void MovePrev(object sender, RoutedEventArgs e)
+        {
+            DateChangeButton(LastRecord, null);
+        }
+        void MoveNextDay(object sender, RoutedEventArgs e)
+        {
+            DateChangeButton(NextDay, null);
+        }
+        void MovePrevDay(object sender, RoutedEventArgs e)
+        {
+            DateChangeButton(LastDay, null);
+        }
         private async void DateChangeButton(object sender, RoutedEventArgs e)
         {
             if (MessageLabel.Visibility == Visibility.Visible)
@@ -70,7 +89,7 @@ namespace Dialy
                     MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
                 if (select == MessageDialogResult.Negative) return;
             }
-            var date = DatePick.SelectedDate.Value;
+            var date = _mwvm.SelectedDate;
             var day = new DateTime();
             switch (((Button)sender).Content)
             {
@@ -90,14 +109,16 @@ namespace Dialy
                     day = _mwvm.NextRecord(date, ">>");
                     break;
             }
-            DatePick.Text = day.ToString();
+            _mwvm.SelectedDate = day;
         }
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            MessageLabel.Visibility = _mwvm.AllDiaries.ContainsKey(DatePick.SelectedDate.Value) ?
-                _mwvm.AllDiaries[DatePick.SelectedDate.Value] == DiaryTxt.Text ? Visibility.Collapsed : Visibility.Visible :
-                String.IsNullOrEmpty(DiaryTxt.Text) ? Visibility.Collapsed : Visibility.Visible;
+            //var test = ((TextBox)sender).Text == _mwvm.IndicatedDiary;
+            MessageLabel.Visibility = ((TextBox)sender).Text == _mwvm.IndicatedDiary ? Visibility.Collapsed : Visibility.Visible;
+            //MessageLabel.Visibility = _mwvm.AllDiaries.ContainsKey(_mwvm.SelectedDate) ?
+            //    _mwvm.AllDiaries[_mwvm.SelectedDate] == _mwvm.IndicatedDiary ? Visibility.Collapsed : Visibility.Visible :
+            //    String.IsNullOrEmpty(_mwvm.IndicatedDiary) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -116,7 +137,7 @@ namespace Dialy
 
         private async void DelRecord(object sender, RoutedEventArgs e)
         {
-            var day = DatePick.SelectedDate.Value;
+            var day = _mwvm.SelectedDate;
             if (!_mwvm.AllDiaries.ContainsKey(day)) return;
             var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
             var select = await this.ShowMessageAsync("確認", "本当に削除しますか？",
@@ -124,14 +145,14 @@ namespace Dialy
             if (select == MessageDialogResult.Negative) return;
             _mwvm.AllDiaries.Remove(day);
             FileManager.DeleteFile(_mwvm.FolderPath, day);
-            DiaryTxt.Text = string.Empty;
+            _mwvm.IndicatedDiary = string.Empty;
         }
 
         private void ReloadRecords(object sender, RoutedEventArgs e)
         {
             _mwvm.AllDiaries = FileManager.GetAllDiaries(_mwvm.FolderPath);
-            var date = DatePick.SelectedDate.Value;
-            DiaryTxt.Text = _mwvm.AllDiaries.ContainsKey(date) ? _mwvm.AllDiaries[date] : string.Empty;
+            var date = _mwvm.SelectedDate;
+            _mwvm.IndicatedDiary = _mwvm.AllDiaries.ContainsKey(date) ? _mwvm.AllDiaries[date] : string.Empty;
         }
 
         private async void ShowMessageDialog(string title, string message)
