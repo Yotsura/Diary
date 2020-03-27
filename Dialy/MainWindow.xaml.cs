@@ -80,6 +80,10 @@ namespace Dialy
         {
             DateChangeButton(LastDay, null);
         }
+        void IndicateToday(object sender, RoutedEventArgs e)
+        {
+            DateChangeButton(Today, null);
+        }
         private async void DateChangeButton(object sender, RoutedEventArgs e)
         {
             if (MessageLabel.Visibility == Visibility.Visible)

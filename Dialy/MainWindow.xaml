@@ -15,6 +15,7 @@
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.PrevRecord}" Executed="MovePrev" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" Executed="MoveNextDay"/>
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.PreDate}" Executed="MovePrevDay" />
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.Today}" Executed="IndicateToday" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="Save" Gesture="Ctrl+S"/>
@@ -23,6 +24,7 @@
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.PreDate}" CommandParameter="prev" Gesture="Ctrl+W"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" CommandParameter="next" Gesture="Ctrl+E"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.NextRecord}" CommandParameter="next" Gesture="Ctrl+R"/>
+        <KeyBinding Command="{x:Static commands:MyApplicationCommands.Today}" CommandParameter="next" Gesture="Ctrl+T"/>
     </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>

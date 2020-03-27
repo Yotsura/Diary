@@ -25,5 +25,9 @@ namespace Dialy.Commands
                             = new RoutedUICommand("Load Prev Date",
                                                   "PrevDate",
                                                   typeof(MyApplicationCommands));
+        public static RoutedUICommand Today
+                            = new RoutedUICommand("Indicate Today",
+                                                  "Today",
+                                                  typeof(MyApplicationCommands));
     }
 }
