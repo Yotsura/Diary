@@ -34,7 +34,7 @@ namespace Dialy
         {
             //DatePick.Text = DateTime.Today.ToString();
             _mwvm.SelectedDate = DateTime.Today;
-            OpenTaskWindow(sender, e);
+            //OpenTaskWindow(sender, e);
             DiaryTxt.Focus();
         }
 

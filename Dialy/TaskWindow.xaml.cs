@@ -35,7 +35,10 @@ namespace Dialy
         }
 
         TaskWindowViewModel _twvm;
-
+        private void ForcusTxt(object sender, EventArgs e)
+        {
+            TaskTxt.Focus();
+        }
         private void FontZoom(object sender, RoutedEventArgs e)
         {
             var btn = ((Button)sender).Content.ToString();

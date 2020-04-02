@@ -29,5 +29,9 @@ namespace Dialy.Commands
                             = new RoutedUICommand("Indicate Today",
                                                   "Today",
                                                   typeof(MyApplicationCommands));
+        public static RoutedUICommand TaskWindow
+                            = new RoutedUICommand("Open Task Window",
+                                                  "TaskWindow",
+                                                  typeof(MyApplicationCommands));
     }
 }
