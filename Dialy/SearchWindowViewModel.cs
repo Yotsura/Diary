@@ -66,7 +66,8 @@ namespace Dialy
             foreach (var word in targetWords)
             {
                 var temp = GetHitList(_allDiaries, word);
-                temp.Keys.ToList().ForEach(key => hitList[key] = temp[key]);
+                //temp.Keys.ToList().ForEach(key => hitList[key] = temp[key]);
+                temp.Keys.AsParallel().ForAll(key => hitList[key] = temp[key]);
             }
             return hitList.Keys.ToList();
         }

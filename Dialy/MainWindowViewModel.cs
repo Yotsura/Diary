@@ -31,9 +31,7 @@ namespace Dialy
                 _selectedDate = value;
 
                 var date = SelectedDate;
-                IndicatedDiary = "";
-                if (AllDiaries.ContainsKey(date)) IndicatedDiary = AllDiaries[date];
-
+                IndicatedDiary = AllDiaries.ContainsKey(date) ? AllDiaries[date] : "";
                 OnPropertyChanged(nameof(SelectedDate));
             }
         }

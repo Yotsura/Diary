@@ -65,6 +65,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\MyApplicationCommands.cs" />
+    <Compile Include="Model\DiaryRecord.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Funcs\TxtFuncs.cs" />
     <Compile Include="MainWindowViewModel.cs" />
@@ -84,7 +85,7 @@
       <DependentUpon>TaskWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TaskWindowViewModel.cs" />
-    <Compile Include="WindowStat.cs" />
+    <Compile Include="Model\WindowStat.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

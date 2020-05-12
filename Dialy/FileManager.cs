@@ -12,14 +12,13 @@ namespace Dialy
     {
         public static SortedDictionary<DateTime, string> GetAllDiaries(string folderpath)
         {
-            var diaries = new SortedDictionary<DateTime, string>();
-            var files = Directory.EnumerateFiles(folderpath, "*.log", System.IO.SearchOption.AllDirectories);
-            foreach (var file in files)
-            {
-                var datetxt = new FileInfo(file).Name.Replace(".log", "").Replace("_", "/");
-                if (!DateTime.TryParse(datetxt, out var date)) continue;
-                diaries[date] = String.Join("\r\n", File.ReadAllLines(file));
-            }
+            var diaries = new SortedDictionary<DateTime, string>(
+                Directory.EnumerateFiles(folderpath, "*.log", System.IO.SearchOption.AllDirectories)
+                .Where(file=>!file.EndsWith("taskTxt.log"))
+                .ToDictionary(file => DateTime.Parse(new FileInfo(file).Name.Replace(".log", "").Replace("_", "/"))
+                , file => File.ReadAllText(file)));
+            //var test = Directory.EnumerateFiles(folderpath, "*.log", System.IO.SearchOption.AllDirectories)
+            //    .AsParallel().Select(file => new DiaryRecord(file)).Where(x => x.DirectoryPath != null).OrderBy(x => x.Date).ToList();
             return diaries;
         }
 
@@ -28,22 +27,19 @@ namespace Dialy
             var folderpath = $"{topFolderpath}\\{day.ToString("yyyy")}";
             if (!Directory.Exists(folderpath)) Directory.CreateDirectory(folderpath);
             var filepath = $"{folderpath}\\{day.ToString("yyyy_MM_dd")}.log";
-            var alllines = txt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            File.WriteAllLines(filepath, alllines);
+            File.WriteAllText(filepath, txt);
         }
 
         public static void SaveFile(string topFolderpath, string txt)
         {
             var filepath = $"{topFolderpath}\\taskTxt.log";
-            var alllines = txt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            File.WriteAllLines(filepath, alllines);
+            File.WriteAllText(filepath, txt);
         }
 
         public static string OpenTaskFile(string topFolderpath)
         {
             var filepath = $"{topFolderpath}\\taskTxt.log";
-            if (!File.Exists(filepath)) return String.Empty;
-            return String.Join("\r\n", File.ReadAllLines(filepath));
+            return File.Exists(filepath) ? File.ReadAllText(filepath) : "";
         }
 
         public static void DeleteFile(string topFolderpath, DateTime day)
