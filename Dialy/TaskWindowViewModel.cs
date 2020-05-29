@@ -43,7 +43,7 @@ namespace Dialy
             }
             catch
             {
-                var oldfile = Task.Filepath.Replace("taskTxt.log", $"{DateTime.Now.ToString("yyyyMMdd")}taskTxt.log");
+                var oldfile = Task.Filepath.Replace("taskTxt.log", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}taskTxt.log");
                 System.IO.File.Copy(Task.Filepath, oldfile);
                 Task.Txt = $"データファイルの展開に失敗。\r\n旧データを退避しました。\r\n＜ファイルパス＞\r\n{oldfile}";
             }
