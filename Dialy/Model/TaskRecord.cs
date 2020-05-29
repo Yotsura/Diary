@@ -12,12 +12,11 @@ namespace Dialy
         public TaskRecord(string folderPath)
         {
             Filepath = $"{folderPath}\\taskTxt.log";
-            OpenTaskFile();
         }
 
-        private string Filepath { get; set; }
+        public string Filepath { get; set; }
 
-        public string Txt { get; set; }
+        public string Txt { get; set; } = string.Empty;
 
         public void SaveTaskFile()
         {

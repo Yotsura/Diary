@@ -106,10 +106,12 @@ namespace Dialy
 
         public static string FileDialog()
         {
-            var dialog = new OpenFileDialog();
-            dialog.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
-            dialog.Filter = "すべてのファイル|*,*|log ファイル|*.log";
-            dialog.FilterIndex = 2;
+            var dialog = new OpenFileDialog
+            {
+                InitialDirectory = System.IO.Directory.GetCurrentDirectory(),
+                Filter = "すべてのファイル|*,*|log ファイル|*.log",
+                FilterIndex = 2
+            };
             return dialog.ShowDialog() == true ? dialog.FileName : string.Empty;
         }
     }

@@ -9,16 +9,9 @@ namespace Dialy.Funcs
 {
     class EncryptUtils
     {
-        //! AESで使用するIV
         //private static readonly string AesIV = @""; // 半角16文字のランダムな文字列にします。
-
-        //! AESで使用するキー
         //private static readonly string AesKey = @""; // 半角32文字のランダムな文字列にします。
-
-        //! キーサイズ
         private static readonly int KeySize = 256;
-
-        //! ブロックサイズ
         private static readonly int BlockSize = 128;
 
         /**
@@ -33,24 +26,17 @@ namespace Dialy.Funcs
          */
         internal static string AesEncrypt(string value)
         {
-            // AESオブジェクトを取得します。
-            var aes = GetAesManaged();
+            using (var aes = GetAesManaged())
+            {
+                var byteValue = Encoding.UTF8.GetBytes(value);
+                var byteLength = byteValue.Length;
 
-            // 対象の文字列をバイトデータに変換します。
-            var byteValue = Encoding.UTF8.GetBytes(value);
+                var encryptor = aes.CreateEncryptor();
+                var encryptValue = encryptor.TransformFinalBlock(byteValue, 0, byteLength);
 
-            // バイトデータの長さを取得します。
-            var byteLength = byteValue.Length;
-
-            // 暗号化オブジェクトを取得します。
-            var encryptor = aes.CreateEncryptor();
-
-            // 暗号化します。
-            var encryptValue = encryptor.TransformFinalBlock(byteValue, 0, byteLength);
-
-            // 暗号化されたバイトデータをBase64文字列に変換します。
-            var base64Value = Convert.ToBase64String(encryptValue);
-            return base64Value;
+                var base64Value = Convert.ToBase64String(encryptValue);
+                return base64Value;
+            }
         }
 
         /**
@@ -61,37 +47,27 @@ namespace Dialy.Funcs
          */
         internal static string AesDecrypt(string encryptValue)
         {
-            // AESオブジェクトを取得します。
-            var aes = GetAesManaged();
+            using (var aes = GetAesManaged())
+            {
+                var byteValue = Convert.FromBase64String(encryptValue);
+                var byteLength = byteValue.Length;
 
-            // 暗号化されたBase64文字列をバイトデータに変換します。
-            var byteValue = Convert.FromBase64String(encryptValue);
+                var decryptor = aes.CreateDecryptor();
+                var decryptValue = decryptor.TransformFinalBlock(byteValue, 0, byteLength);
 
-            // バイトデータの長さを取得します。
-            var byteLength = byteValue.Length;
-
-            // 復号化オブジェクトを取得します。
-            var decryptor = aes.CreateDecryptor();
-
-            // 復号化します。
-            var decryptValue = decryptor.TransformFinalBlock(byteValue, 0, byteLength);
-
-            // 復号化されたバイトデータを文字列に変換します。
-            var stringValue = Encoding.UTF8.GetString(decryptValue);
-            return stringValue;
+                var stringValue = Encoding.UTF8.GetString(decryptValue);
+                return stringValue;
+            }
         }
 
-         /// <summary>
-         /// 
-         /// </summary>
-         /// <returns></returns>
         private static AesManaged GetAesManaged()
         {
-            // AESオブジェクトを生成し、パラメータを設定します。
-            var aes = new AesManaged();
-            aes.KeySize = KeySize;
-            aes.BlockSize = BlockSize;
-            aes.Mode = CipherMode.CBC;
+            var aes = new AesManaged
+            {
+                KeySize = KeySize,
+                BlockSize = BlockSize,
+                Mode = CipherMode.CBC
+            };
 
             //var dpapiEncriptedIV = DpapiEncrypt(AesIV);
             //var dpapiEncriptedKey = DpapiEncrypt(AesKey);
@@ -104,7 +80,7 @@ namespace Dialy.Funcs
             return aes;
         }
 
-        private static byte[] entropy = new byte[] { 0x72, 0xa2, 0x12, 0x04 };
+        private readonly static byte[] entropy = new byte[] { 0x72, 0xa2, 0x12, 0x04 };
         private static string DpapiEncrypt(string value)
         {
             //文字列をバイト型配列に変換

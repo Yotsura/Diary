@@ -41,6 +41,16 @@ namespace Dialy
         {
             IndicateSize = fontSize;
             Task = new TaskRecord(folderPath);
+            try
+            {
+                Task.OpenTaskFile();
+            }
+            catch
+            {
+                var oldfile = Task.Filepath.Replace("taskTxt.log", $"{DateTime.Now.ToString("yyyyMMdd")}taskTxt.log");
+                System.IO.File.Copy(Task.Filepath, oldfile);
+                Task.Txt = $"データファイルの展開に失敗。\r\n旧データを退避しました。\r\n＜ファイルパス＞\r\n{oldfile}";
+            }
         }
     }
 }
