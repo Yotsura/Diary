@@ -20,7 +20,7 @@
             <RowDefinition/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding TaskTxt}" Name="TaskTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Task.Txt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Name="TaskTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}" TextChanged="TaskTxt_TextChanged"/>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30"/>

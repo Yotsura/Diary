@@ -250,15 +250,9 @@ namespace Dialy
                 _taskWindow.Activate();
                 return;
             }
-            _taskWindow = new TaskWindow(FileManager.OpenTaskFile(_mwvm.FolderPath), Settings.Default.TaskFontSize);
-            _taskWindow.TaskTxt.TextChanged += TaskTxt_TextChanged;
+            _taskWindow = new TaskWindow(_mwvm.FolderPath, Settings.Default.TaskFontSize);
             _taskWindow.Closed += TaskWindow_Closed;
             _taskWindow.Show();
-        }
-        public void TaskTxt_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var test = ((TextBox)sender).Text;
-            FileManager.SaveFile(_mwvm.FolderPath, test);
         }
         private void TaskWindow_Closed(object sender, EventArgs e)
         {

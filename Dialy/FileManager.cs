@@ -30,17 +30,17 @@ namespace Dialy
             File.WriteAllText(filepath, txt);
         }
 
-        public static void SaveFile(string topFolderpath, string txt)
-        {
-            var filepath = $"{topFolderpath}\\taskTxt.log";
-            File.WriteAllText(filepath, txt);
-        }
+        //public static void SaveTaskFile(string topFolderpath, string txt)
+        //{
+        //    var filepath = $"{topFolderpath}\\taskTxt.log";
+        //    File.WriteAllText(filepath, txt);
+        //}
 
-        public static string OpenTaskFile(string topFolderpath)
-        {
-            var filepath = $"{topFolderpath}\\taskTxt.log";
-            return File.Exists(filepath) ? File.ReadAllText(filepath) : "";
-        }
+        //public static string OpenTaskFile(string topFolderpath)
+        //{
+        //    var filepath = $"{topFolderpath}\\taskTxt.log";
+        //    return File.Exists(filepath) ? File.ReadAllText(filepath) : "";
+        //}
 
         public static void DeleteFile(string topFolderpath, DateTime day)
         {
@@ -106,10 +106,12 @@ namespace Dialy
 
         public static string FileDialog()
         {
-            var dialog = new OpenFileDialog();
-            dialog.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
-            dialog.Filter = "すべてのファイル|*,*|log ファイル|*.log";
-            dialog.FilterIndex = 2;
+            var dialog = new OpenFileDialog
+            {
+                InitialDirectory = System.IO.Directory.GetCurrentDirectory(),
+                Filter = "すべてのファイル|*,*|log ファイル|*.log",
+                FilterIndex = 2
+            };
             return dialog.ShowDialog() == true ? dialog.FileName : string.Empty;
         }
     }
