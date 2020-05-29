@@ -20,14 +20,14 @@ namespace Dialy
             }
         }
 
-        private string _taskTxt;
-        public string TaskTxt
+        private TaskRecord _task;
+        public TaskRecord Task
         {
-            get => _taskTxt;
+            get => _task;
             set
             {
-                _taskTxt = value;
-                OnPropertyChanged(nameof(TaskTxt));
+                _task = value;
+                OnPropertyChanged(nameof(Task));
             }
         }
 
@@ -37,10 +37,10 @@ namespace Dialy
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public TaskWindowViewModel(string taskTxt, int fontSize)
+        public TaskWindowViewModel(string folderPath, int fontSize)
         {
             IndicateSize = fontSize;
-            TaskTxt = taskTxt;
+            Task = new TaskRecord(folderPath);
         }
     }
 }

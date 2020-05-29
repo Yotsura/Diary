@@ -21,10 +21,10 @@ namespace Dialy
     /// </summary>
     public partial class TaskWindow : MetroWindow
     {
-        public TaskWindow(string taskTxt,int fontSize)
+        public TaskWindow(string folderPath,int fontSize)
         {
             InitializeComponent();
-            _twvm = new TaskWindowViewModel(taskTxt, fontSize);
+            _twvm = new TaskWindowViewModel(folderPath, fontSize);
             this.DataContext = _twvm;
 
             if (Settings.Default.TaskWindowStat == null) return;
@@ -39,10 +39,18 @@ namespace Dialy
         {
             TaskTxt.Focus();
         }
+
         private void FontZoom(object sender, RoutedEventArgs e)
         {
             var btn = ((Button)sender).Content.ToString();
             _twvm.IndicateSize = btn == "+" ? _twvm.IndicateSize + 3 : _twvm.IndicateSize - 3;
+        }
+
+        public void TaskTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _twvm.Task.SaveTaskFile();
+            //var test = ((TextBox)sender).Text;
+            //FileManager.SaveTaskFile(_twvm.TaskTxt, test);
         }
     }
 }
