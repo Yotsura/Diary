@@ -12,6 +12,22 @@ namespace Dialy.Funcs
         private static byte[] _entropy = Convert.FromBase64String(Settings.Default.Entropy)
             ?? new byte[] { 0x72, 0xa2, 0x12, 0x04 };
 
+        internal static bool CheckKey()
+        {
+            if (_entropy == null) return false;
+            var encryptedKey = Environment.GetEnvironmentVariable("DiaryKey", EnvironmentVariableTarget.User);
+            if (string.IsNullOrEmpty(encryptedKey)) return false;
+            try
+            {
+                //環境変数の鍵と設定のエントロピーの組み合わせが正しいか確認
+                var test = DpapiDecrypt(encryptedKey);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
         internal static void UpdateKey()
         {
             //dpapi用エントロピーの更新

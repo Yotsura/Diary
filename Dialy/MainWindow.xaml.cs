@@ -242,13 +242,23 @@ namespace Dialy
         }
 
         TaskWindow _taskWindow;
-        private void OpenTaskWindow(object sender, RoutedEventArgs e)
+        private async void OpenTaskWindow(object sender, RoutedEventArgs e)
         {
             if (_taskWindow != null)
             {
                 _taskWindow.WindowState = WindowState.Normal;
                 _taskWindow.Activate();
                 return;
+            }
+            //暗号の鍵を復号できるか確認
+            if(!Funcs.EncryptUtils.CheckKey())
+            {
+                var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+                var select = await this.ShowMessageAsync("エラー", "鍵の復号に失敗しました。\r\n鍵を更新する必要があります。" +
+                    "\r\n旧データは開けなくなりますが構いませんか？",
+                    MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
+                if (select == MessageDialogResult.Negative) return;
+                Funcs.EncryptUtils.UpdateKey();
             }
             _taskWindow = new TaskWindow(_mwvm.FolderPath, Settings.Default.TaskFontSize);
             _taskWindow.Closed += TaskWindow_Closed;
