@@ -30,18 +30,6 @@ namespace Dialy
             File.WriteAllText(filepath, txt);
         }
 
-        //public static void SaveTaskFile(string topFolderpath, string txt)
-        //{
-        //    var filepath = $"{topFolderpath}\\taskTxt.log";
-        //    File.WriteAllText(filepath, txt);
-        //}
-
-        //public static string OpenTaskFile(string topFolderpath)
-        //{
-        //    var filepath = $"{topFolderpath}\\taskTxt.log";
-        //    return File.Exists(filepath) ? File.ReadAllText(filepath) : "";
-        //}
-
         public static void DeleteFile(string topFolderpath, DateTime day)
         {
             var filepath = $"{topFolderpath}\\{day.ToString("yyyy")}\\{day.ToString("yyyy_MM_dd")}.log";

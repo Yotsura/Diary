@@ -4,17 +4,33 @@ using System.Security.Cryptography;
 
 namespace Dialy.Funcs
 {
-    internal class EncryptUtils
+    internal static class EncryptUtils
     {
         private static readonly int KeySize = 256;
         private static readonly int BlockSize = 128;
-        private readonly static byte[] entropy = new byte[] { 0x72, 0xa2, 0x12, 0x04 };
-        private EncryptUtils() { }//ユーティリティクラスのため、インスタンス化させません。
+        private static string _nextKey;
+        private static byte[] _entropy = Convert.FromBase64String(Settings.Default.Entropy)
+            ?? new byte[] { 0x72, 0xa2, 0x12, 0x04 };
+
+        internal static void UpdateKey()
+        {
+            //dpapi用エントロピーの更新
+            byte[] random = new byte[4];
+            using (var rng = new RNGCryptoServiceProvider())
+                rng.GetBytes(random);
+            _entropy = random;
+            Settings.Default.Entropy = Convert.ToBase64String(random);
+            Settings.Default.Save();
+            //aesの鍵の更新
+            _nextKey = DpapiEncrypt(System.Web.Security.Membership.GeneratePassword(32, 0));
+            Environment.SetEnvironmentVariable("DiaryKey", _nextKey, EnvironmentVariableTarget.User);
+        }
 
         internal static string AesEncrypt(string value)
         {
             using (var aes = GetAesManaged())
             {
+                //先頭に16byte分ダミー挿入
                 var byteValue = Encoding.UTF8.GetBytes("0123456789ABCDEF" + value);
                 var encryptor = aes.CreateEncryptor();
                 var encryptedValue = encryptor.TransformFinalBlock(byteValue, 0, byteValue.Length);
@@ -29,6 +45,7 @@ namespace Dialy.Funcs
                 var byteValue = Convert.FromBase64String(encryptedValue);
                 var decryptor = aes.CreateDecryptor();
                 var decryptValue = decryptor.TransformFinalBlock(byteValue, 0, byteValue.Length);
+                //IVが変わっているので復号できない先頭16byteを切り捨てる
                 return Encoding.UTF8.GetString(decryptValue, 16, decryptValue.Length - 16);
             }
         }
@@ -47,8 +64,8 @@ namespace Dialy.Funcs
             if (string.IsNullOrEmpty(encryptedKey))
             {
                 //環境変数がなければ作成・設定する
-                encryptedKey = DpapiEncrypt(System.Web.Security.Membership.GeneratePassword(32, 0));
-                Environment.SetEnvironmentVariable("DiaryKey", encryptedKey, EnvironmentVariableTarget.User);
+                UpdateKey();
+                encryptedKey = _nextKey;
             }
             aes.Key = Encoding.UTF8.GetBytes(DpapiDecrypt(encryptedKey));
             aes.Padding = PaddingMode.PKCS7;
@@ -59,7 +76,7 @@ namespace Dialy.Funcs
         {
             //文字列をバイト型配列に変換
             byte[] userData = System.Text.Encoding.UTF8.GetBytes(value);
-            byte[] encryptedData = ProtectedData.Protect(userData, entropy, DataProtectionScope.CurrentUser);
+            byte[] encryptedData = ProtectedData.Protect(userData, _entropy, DataProtectionScope.CurrentUser);
             //暗号化されたデータを文字列に変換
             return System.Convert.ToBase64String(encryptedData);
         }
@@ -68,7 +85,7 @@ namespace Dialy.Funcs
         {
             //文字列を暗号化されたデータに戻す
             byte[] encryptedData = System.Convert.FromBase64String(encryptedValue);
-            byte[] userData = ProtectedData.Unprotect(encryptedData, entropy, DataProtectionScope.CurrentUser);
+            byte[] userData = ProtectedData.Unprotect(encryptedData, _entropy, DataProtectionScope.CurrentUser);
             //復号化されたデータを文字列に変換
             return System.Text.Encoding.UTF8.GetString(userData);
         }
