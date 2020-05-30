@@ -15,7 +15,7 @@ namespace Dialy.Funcs
         {
             using (var aes = GetAesManaged())
             {
-                var byteValue = Encoding.UTF8.GetBytes(value);
+                var byteValue = Encoding.UTF8.GetBytes("0123456789ABCDEF" + value);
                 var encryptor = aes.CreateEncryptor();
                 var encryptValue = encryptor.TransformFinalBlock(byteValue, 0, byteValue.Length);
                 return Convert.ToBase64String(encryptValue);
@@ -29,7 +29,8 @@ namespace Dialy.Funcs
                 var byteValue = Convert.FromBase64String(encryptValue);
                 var decryptor = aes.CreateDecryptor();
                 var decryptValue = decryptor.TransformFinalBlock(byteValue, 0, byteValue.Length);
-                return Encoding.UTF8.GetString(decryptValue);
+                var result = Encoding.UTF8.GetString(decryptValue, 16, decryptValue.Length - 16);
+                return result;
             }
         }
 
@@ -41,14 +42,8 @@ namespace Dialy.Funcs
                 BlockSize = BlockSize,
                 Mode = CipherMode.CBC
             };
-            var encriptedIV = Environment.GetEnvironmentVariable("DiaryIV", EnvironmentVariableTarget.User);
-            if (string.IsNullOrEmpty(encriptedIV))
-            {
-                //環境変数がなければ作成・設定する
-                encriptedIV = DpapiEncrypt(System.Web.Security.Membership.GeneratePassword(16, 0));
-                Environment.SetEnvironmentVariable("DiaryIV", encriptedIV, EnvironmentVariableTarget.User);
-            }
-            aes.IV = Encoding.UTF8.GetBytes(DpapiDecrypt(encriptedIV));
+            //IV初期ベクトルはあくまで同じ平文・鍵で別の暗号文を生成するためのもの。
+            aes.IV = Encoding.UTF8.GetBytes(System.Web.Security.Membership.GeneratePassword(16, 0));
             var encriptedKey = Environment.GetEnvironmentVariable("DiaryKey", EnvironmentVariableTarget.User);
             if (string.IsNullOrEmpty(encriptedKey))
             {
