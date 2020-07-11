@@ -21,7 +21,6 @@ namespace Dialy
         public void OpenTaskFile()
         {
             Txt = File.Exists(Filepath) ? Funcs.EncryptUtils.AesDecrypt(File.ReadAllText(Filepath)) : string.Empty;
-            Funcs.EncryptUtils.UpdateKey();//復号直後に鍵を更新する。
         }
     }
 }

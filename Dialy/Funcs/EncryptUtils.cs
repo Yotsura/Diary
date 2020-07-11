@@ -61,6 +61,7 @@ namespace Dialy.Funcs
                 var byteValue = Convert.FromBase64String(encryptedValue);
                 var decryptor = aes.CreateDecryptor();
                 var decryptValue = decryptor.TransformFinalBlock(byteValue, 0, byteValue.Length);
+                UpdateKey();    //復号直後に鍵を更新する。
                 //IVが変わっているので復号できない先頭16byteを切り捨てる
                 return Encoding.UTF8.GetString(decryptValue, 16, decryptValue.Length - 16);
             }
