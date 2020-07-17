@@ -16,11 +16,11 @@ namespace Dialy
             encrypt = new EncryptUtils(pass);
         }
 
-        public void CheckKey()
-        {
-            if (!encrypt.CheckKey())
-                encrypt.UpdateKey();
-        }
+        //public void CheckKey()
+        //{
+        //    if (!encrypt.CheckKey())
+        //        encrypt.UpdateKey();
+        //}
 
         public void SaveTaskFile()
         {

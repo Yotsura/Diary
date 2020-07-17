@@ -250,7 +250,6 @@ namespace Dialy
             if (string.IsNullOrEmpty(pass)) return;
             this.HideMetroDialogAsync(_customDialog);
             OpenTaskWindow(pass);
-            _taskWindow.Activate();
         }
         private void ButtonCancelOnClick(object sender, RoutedEventArgs e)
         {
@@ -279,6 +278,7 @@ namespace Dialy
             _loginCtrl.Loaded += FocusPass;
             _customDialog = new CustomDialog
             {
+                Title="PASS",
                 Content = _loginCtrl
             };
             await this.ShowMetroDialogAsync(_customDialog);
