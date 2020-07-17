@@ -16,7 +16,7 @@
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" Executed="MoveNextDay"/>
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.PrevDate}" Executed="MovePrevDay" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.Today}" Executed="IndicateToday" />
-        <CommandBinding Command="{x:Static commands:MyApplicationCommands.TaskWindow}" Executed="OpenTaskWindow" />
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.TaskWindow}" Executed="CheckTaskPass" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="Save" Gesture="Ctrl+S"/>
@@ -57,7 +57,7 @@
                 <MenuItem Header="設定" Click="OpenSettingWindow"/>
                 <MenuItem Header="バックアップ作成" Click="CreateBackUp"/>
                 <MenuItem Header="バックアップを解凍" Click="OpenBackUp"/>
-                <MenuItem Header="タスク" InputGestureText="Ctrl+Shift+T" Click="OpenTaskWindow"/>
+                <MenuItem Header="タスク" InputGestureText="Ctrl+Shift+T" Click="CheckTaskPass"/>
             </MenuItem>
             <MenuItem Header="ヘルプ(_H)" Click="ShowVerInfo">
                 <MenuItem Header="バージョン情報"/>

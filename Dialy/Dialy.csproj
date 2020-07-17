@@ -68,6 +68,9 @@
     </ApplicationDefinition>
     <Compile Include="Commands\MyApplicationCommands.cs" />
     <Compile Include="Funcs\EncryptUtils.cs" />
+    <Compile Include="LoginControl.xaml.cs">
+      <DependentUpon>LoginControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\DiaryRecord.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Funcs\TxtFuncs.cs" />
@@ -90,6 +93,10 @@
     </Compile>
     <Compile Include="TaskWindowViewModel.cs" />
     <Compile Include="Model\WindowStat.cs" />
+    <Page Include="LoginControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

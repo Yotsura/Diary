@@ -10,10 +10,10 @@ namespace Dialy
     /// </summary>
     public partial class TaskWindow : MetroWindow
     {
-        public TaskWindow(string folderPath,int fontSize)
+        public TaskWindow(int fontSize,TaskRecord taskdata)
         {
             InitializeComponent();
-            _twvm = new TaskWindowViewModel(folderPath, fontSize);
+            _twvm = new TaskWindowViewModel(fontSize, taskdata);
             this.DataContext = _twvm;
 
             if (Settings.Default.TaskWindowStat == null) return;

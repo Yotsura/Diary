@@ -241,8 +241,29 @@ namespace Dialy
             _searchWindow = null;
         }
 
+        private CustomDialog _customDialog;
+        private LoginControl _loginCtrl;
+
+        private void ButtonLoginOnClick(object sender, RoutedEventArgs e)
+        {
+            var pass = _loginCtrl.PasswordBox1.Password;
+            if (string.IsNullOrEmpty(pass)) return;
+            this.HideMetroDialogAsync(_customDialog);
+            OpenTaskWindow(pass);
+            _taskWindow.Activate();
+        }
+        private void ButtonCancelOnClick(object sender, RoutedEventArgs e)
+        {
+            this.HideMetroDialogAsync(_customDialog);
+        }
+
+        private void FocusPass(object sender, EventArgs e)
+        {
+            _loginCtrl.PasswordBox1.Focus();
+        }
+
         TaskWindow _taskWindow;
-        private async void OpenTaskWindow(object sender, RoutedEventArgs e)
+        private async void CheckTaskPass(object sender, RoutedEventArgs e)
         {
             if (_taskWindow != null)
             {
@@ -250,20 +271,49 @@ namespace Dialy
                 _taskWindow.Activate();
                 return;
             }
+
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            _loginCtrl = new LoginControl();
+            _loginCtrl.ButtonCancel.Click += ButtonCancelOnClick;
+            _loginCtrl.ButtonLogin.Click += ButtonLoginOnClick;
+            _loginCtrl.Loaded += FocusPass;
+            _customDialog = new CustomDialog
+            {
+                Content = _loginCtrl
+            };
+            await this.ShowMetroDialogAsync(_customDialog);
+        }
+
+        private async void OpenTaskWindow(string pass)
+        {
+            //pass = "ckscks3485";
+            var taskdata = new TaskRecord(_mwvm.FolderPath, pass);
             //暗号の鍵を復号できるか確認
-            if(!Funcs.EncryptUtils.CheckKey())
+            if (!taskdata.encrypt.CheckKey())
             {
                 var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
                 var select = await this.ShowMessageAsync("エラー", "鍵の復号に失敗しました。\r\n鍵を更新する必要があります。" +
                     "\r\n旧データは開けなくなりますが構いませんか？",
                     MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
                 if (select == MessageDialogResult.Negative) return;
-                Funcs.EncryptUtils.UpdateKey();
+                taskdata.encrypt.UpdateKey();
             }
-            _taskWindow = new TaskWindow(_mwvm.FolderPath, Settings.Default.TaskFontSize);
+            try
+            {
+                taskdata.OpenTaskFile();
+            }
+            catch
+            {
+                var oldfile = taskdata.Filepath.Replace("taskTxt.log", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}taskTxt.log");
+                System.IO.File.Copy(taskdata.Filepath, oldfile);
+                taskdata.Txt = $"データファイルの展開に失敗。\r\n旧データを退避しました。\r\n＜ファイルパス＞\r\n{oldfile}";
+            }
+
+            _taskWindow = new TaskWindow(Settings.Default.TaskFontSize, taskdata);
             _taskWindow.Closed += TaskWindow_Closed;
             _taskWindow.Show();
         }
+
         private void TaskWindow_Closed(object sender, EventArgs e)
         {
             Int32.TryParse(_taskWindow.FontSize.Content.ToString(), out var size);

@@ -33,20 +33,22 @@ namespace Dialy
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public TaskWindowViewModel(string folderPath, int fontSize)
+        public TaskWindowViewModel(int fontSize,TaskRecord taskdata)
         {
             IndicateSize = fontSize;
-            Task = new TaskRecord(folderPath);
-            try
-            {
-                Task.OpenTaskFile();
-            }
-            catch
-            {
-                var oldfile = Task.Filepath.Replace("taskTxt.log", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}taskTxt.log");
-                System.IO.File.Copy(Task.Filepath, oldfile);
-                Task.Txt = $"データファイルの展開に失敗。\r\n旧データを退避しました。\r\n＜ファイルパス＞\r\n{oldfile}";
-            }
+            Task = taskdata;
+            //string pass = "ckscks3485";
+            //Task = new TaskRecord(folderPath, pass);
+            //try
+            //{
+            //    Task.OpenTaskFile();
+            //}
+            //catch
+            //{
+            //    var oldfile = Task.Filepath.Replace("taskTxt.log", $"{DateTime.Now.ToString("yyyyMMddHHmmss")}taskTxt.log");
+            //    System.IO.File.Copy(Task.Filepath, oldfile);
+            //    Task.Txt = $"データファイルの展開に失敗。\r\n旧データを退避しました。\r\n＜ファイルパス＞\r\n{oldfile}";
+            //}
         }
     }
 }
