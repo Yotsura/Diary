@@ -28,6 +28,8 @@ namespace Dialy
             this.Left = Settings.Default.MainWindowStat.Left;
             this.Width = Settings.Default.MainWindowStat.Width;
             this.Height = Settings.Default.MainWindowStat.Height;
+            TaskAreaCol.Width = Settings.Default.TaskAreaWidth;
+            TaskArea.Text= Settings.Default.TaskAreaValue;
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -136,6 +138,8 @@ namespace Dialy
             }
             Settings.Default.MainWindowStat = new WindowStat { Height = this.Height, Width = this.Width, Left = this.Left, Top = this.Top };
             Settings.Default.FontSize = _mwvm.IndicateSize;
+            Settings.Default.TaskAreaWidth = TaskAreaCol.Width;
+            Settings.Default.TaskAreaValue = TaskArea.Text;
             Settings.Default.Save();
         }
 
