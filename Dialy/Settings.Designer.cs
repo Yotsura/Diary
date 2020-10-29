@@ -155,5 +155,35 @@ namespace Dialy {
                 this["Entropy"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public System.Windows.GridLength TaskAreaWidth
+        {
+            get
+            {
+                return ((System.Windows.GridLength)(this["TaskAreaWidth"]));
+            }
+            set
+            {
+                this["TaskAreaWidth"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TaskAreaValue
+        {
+            get
+            {
+                return ((string)(this["TaskAreaValue"]));
+            }
+            set
+            {
+                this["TaskAreaValue"] = value;
+            }
+        }
     }
 }

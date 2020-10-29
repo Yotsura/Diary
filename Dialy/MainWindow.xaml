@@ -63,7 +63,17 @@
                 <MenuItem Header="バージョン情報"/>
             </MenuItem>
         </Menu>
-        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding IndicatedDiary,Mode=TwoWay}" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
+        <!-- 横に分割します。 -->
+        <Grid Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition x:Name="TaskAreaCol"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Text="{Binding IndicatedDiary,Mode=TwoWay}" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"/>
+            <TextBox Grid.Column="2" Name="TaskArea" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
+        </Grid>
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30"/>
