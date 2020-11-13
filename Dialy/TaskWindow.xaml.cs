@@ -35,11 +35,9 @@ namespace Dialy
             _twvm.IndicateSize = btn == "+" ? _twvm.IndicateSize + 3 : _twvm.IndicateSize - 3;
         }
 
-        public void TaskTxt_TextChanged(object sender, TextChangedEventArgs e)
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             _twvm.Task.SaveTaskFile();
-            //var test = ((TextBox)sender).Text;
-            //FileManager.SaveTaskFile(_twvm.TaskTxt, test);
         }
     }
 }

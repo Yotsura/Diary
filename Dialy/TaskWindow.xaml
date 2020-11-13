@@ -6,7 +6,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
-        Title="TaskWindow" Height="450" Width="800" Activated="ForcusTxt">
+        Title="TaskWindow" Height="450" Width="800" Activated="ForcusTxt" Closing="MetroWindow_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -20,7 +20,7 @@
             <RowDefinition/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Task.Txt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Name="TaskTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}" TextChanged="TaskTxt_TextChanged"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Task.Txt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Name="TaskTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}"/>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30"/>
