@@ -61,6 +61,7 @@ namespace Dialy
 
         private void HitListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            TextScroll.ScrollToHome();
             if (HitListBox.SelectedValue == null)
             {
                 _swvm.RecordTxt = String.Empty;
