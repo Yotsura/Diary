@@ -406,13 +406,13 @@ namespace Dialy
         {
             if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text)) return;
             var replaced = _mwvm.IndicatedDiary.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
-            //DiaryTxt.BeginChange();
             //_mwvm.IndicatedDiary = replaced;
             //DiaryTxt.Text = replaced;
-            //DiaryTxt.EndChange();
 
+            //DiaryTxt.ClearValue(TextBox.TextProperty);
             DiaryTxt.Clear();
             DiaryTxt.AppendText(replaced);
+            //DiaryTxt.SetValue(TextBox.TextProperty, replaced);
         }
     }
 }

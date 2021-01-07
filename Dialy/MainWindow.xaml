@@ -73,7 +73,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition x:Name="TaskAreaCol"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Text="{Binding IndicatedDiary,Mode=TwoWay}" Grid.ColumnSpan="2" Name="DiaryTxt" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
+            <TextBox Grid.Column="0" Text="{Binding IndicatedDiary,Mode=TwoWay}" Grid.ColumnSpan="2" Name="DiaryTxt" IsInactiveSelectionHighlightEnabled="True"  AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DialyTxt_TextChanged" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"/>
             <TextBox Grid.Column="2" Name="TaskArea" AcceptsTab="True" Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead"/>
         </Grid>
