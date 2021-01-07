@@ -397,7 +397,7 @@ namespace Dialy
         {
             if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text) || string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text)) return;
             var selected= DiaryTxt.SelectedText.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
-            var replaced = _mwvm.IndicatedDiary.Replace(DiaryTxt.SelectedText, selected);
+            var replaced = DiaryTxt.Text.Replace(DiaryTxt.SelectedText, selected);
 
             DiaryTxt.Clear();
             DiaryTxt.AppendText(replaced);
@@ -405,7 +405,7 @@ namespace Dialy
         private void ReplaceAllTxt(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text)) return;
-            var replaced = _mwvm.IndicatedDiary.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
+            var replaced = DiaryTxt.Text.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
             //_mwvm.IndicatedDiary = replaced;
             //DiaryTxt.Text = replaced;
 
