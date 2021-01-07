@@ -61,8 +61,8 @@ namespace Dialy
             Today.IsEnabled = date.Date != DateTime.Today;
             //DiaryTxt.Clear();
             //if (_mwvm.AllDiaries.ContainsKey(date)) DiaryTxt.Text = _mwvm.AllDiaries[date];
-            DiaryTxt.IsUndoEnabled = false;
-            DiaryTxt.IsUndoEnabled = true;
+            //DiaryTxt.IsUndoEnabled = false;
+            //DiaryTxt.IsUndoEnabled = true;
             DiaryTxt.Focus();
         }
 
@@ -359,6 +359,60 @@ namespace Dialy
         {
             _settingWindow.HeadSpace.Text = String.Join("", Settings.Default.HeadSpaces);
             _settingWindow.HeadMark.Text = String.Join("", Settings.Default.HeadMarks);
+        }
+
+        ReplaceWindow _replaceWindow;
+        private void OpenReplaceWindow(object sender, RoutedEventArgs e)
+        {
+            var selectedTxt = DiaryTxt.SelectedText;
+            if (_replaceWindow != null)
+            {
+                SetOrigTxt(selectedTxt);
+                _replaceWindow.WindowState = WindowState.Normal;
+                _replaceWindow.Activate();
+                return;
+            }
+            _replaceWindow = new ReplaceWindow();
+            SetOrigTxt(selectedTxt);
+            _replaceWindow.Closed += ReplaceWindow_Closed;
+            _replaceWindow.ReplaceBtn.Click += ReplaceTxt;
+            _replaceWindow.ReplaceAllBtn.Click += ReplaceAllTxt;
+            _replaceWindow.Show();
+        }
+
+        private void SetOrigTxt(string selectedTxt)
+        {
+            if (string.IsNullOrEmpty(selectedTxt))
+                return;
+            _replaceWindow.OrigTxt.Text = selectedTxt;
+            _replaceWindow.OrigTxt.SelectAll();
+        }
+
+        private void ReplaceWindow_Closed(object sender, EventArgs e)
+        {
+            _replaceWindow = null;
+            Activate();
+        }
+        private void ReplaceTxt(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text) || string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text)) return;
+            var selected= DiaryTxt.SelectedText.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
+            var replaced = _mwvm.IndicatedDiary.Replace(DiaryTxt.SelectedText, selected);
+
+            DiaryTxt.Clear();
+            DiaryTxt.AppendText(replaced);
+        }
+        private void ReplaceAllTxt(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text)) return;
+            var replaced = _mwvm.IndicatedDiary.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
+            //DiaryTxt.BeginChange();
+            //_mwvm.IndicatedDiary = replaced;
+            //DiaryTxt.Text = replaced;
+            //DiaryTxt.EndChange();
+
+            DiaryTxt.Clear();
+            DiaryTxt.AppendText(replaced);
         }
     }
 }

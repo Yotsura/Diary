@@ -33,5 +33,9 @@ namespace Dialy.Commands
                             = new RoutedUICommand("Open Task Window",
                                                   "TaskWindow",
                                                   typeof(MyApplicationCommands));
+        public static RoutedUICommand ReplaceWindow
+                            = new RoutedUICommand("Open Replace Window",
+                                                  "ReplaceWindow",
+                                                  typeof(MyApplicationCommands));
     }
 }

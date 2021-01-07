@@ -17,6 +17,7 @@
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.PrevDate}" Executed="MovePrevDay" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.Today}" Executed="IndicateToday" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.TaskWindow}" Executed="CheckTaskPass" />
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.ReplaceWindow}" Executed="OpenReplaceWindow" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="Save" Gesture="Ctrl+S"/>
@@ -27,6 +28,7 @@
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.NextRecord}" Gesture="Ctrl+R"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.Today}" Gesture="Ctrl+T"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.TaskWindow}" Gesture="Ctrl+Shift+T"/>
+        <KeyBinding Command="{x:Static commands:MyApplicationCommands.ReplaceWindow}" Gesture="Ctrl+Shift+R"/>
     </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -51,6 +53,7 @@
             </MenuItem>
             <MenuItem Header="検索(_S)">
                 <MenuItem Header="単語を検索" InputGestureText="Ctrl+F" Command="Open"/>
+                <MenuItem Header="テキストを置換" InputGestureText="Ctrl+Shift+R" Click="OpenReplaceWindow" />
             </MenuItem>
             <MenuItem Header="オプション(_O)">
                 <MenuItem Name="TopMostCheck" IsCheckable="True" Header="最前面表示" Checked="TopMostCheck_CheckChanged" Unchecked="TopMostCheck_CheckChanged"/>
