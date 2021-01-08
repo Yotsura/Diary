@@ -370,14 +370,21 @@ namespace Dialy
                 SetOrigTxt(selectedTxt);
                 _replaceWindow.WindowState = WindowState.Normal;
                 _replaceWindow.Activate();
+                _replaceWindow.OrigTxt.SelectAll();
+                _replaceWindow.OrigTxt.Focus();
                 return;
             }
-            _replaceWindow = new ReplaceWindow();
-            SetOrigTxt(selectedTxt);
-            _replaceWindow.Closed += ReplaceWindow_Closed;
-            _replaceWindow.ReplaceBtn.Click += ReplaceTxt;
-            _replaceWindow.ReplaceAllBtn.Click += ReplaceAllTxt;
-            _replaceWindow.Show();
+            else
+            {
+                _replaceWindow = new ReplaceWindow();
+                SetOrigTxt(selectedTxt);
+                _replaceWindow.Closed += ReplaceWindow_Closed;
+                _replaceWindow.ReplaceBtn.Click += ReplaceTxt;
+                _replaceWindow.ReplaceAllBtn.Click += ReplaceAllTxt;
+                _replaceWindow.Show();
+                _replaceWindow.OrigTxt.SelectAll();
+                _replaceWindow.OrigTxt.Focus();
+            }
         }
 
         private void SetOrigTxt(string selectedTxt)
@@ -385,7 +392,6 @@ namespace Dialy
             if (string.IsNullOrEmpty(selectedTxt))
                 return;
             _replaceWindow.OrigTxt.Text = selectedTxt;
-            _replaceWindow.OrigTxt.SelectAll();
         }
 
         private void ReplaceWindow_Closed(object sender, EventArgs e)
@@ -395,12 +401,20 @@ namespace Dialy
         }
         private void ReplaceTxt(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text) || string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text)) return;
+            if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text) || string.IsNullOrEmpty(DiaryTxt.SelectedText)) return;
+
+            var startidx = DiaryTxt.CaretIndex;
+            var endIdx = startidx + DiaryTxt.SelectedText.Length;
+            var foreTxt = DiaryTxt.Text.Substring(0, startidx);
+            var rearTxt = DiaryTxt.Text.Substring(endIdx, DiaryTxt.Text.Length - endIdx);
+
             var selected= DiaryTxt.SelectedText.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
-            var replaced = DiaryTxt.Text.Replace(DiaryTxt.SelectedText, selected);
+            var replaced = foreTxt + selected + rearTxt;
+            //var replaced = DiaryTxt.Text.Replace(DiaryTxt.SelectedText, selected);
 
             DiaryTxt.Clear();
             DiaryTxt.AppendText(replaced);
+            DiaryTxt.Select(startidx, replaced.Length - startidx - rearTxt.Length);
         }
         private void ReplaceAllTxt(object sender, RoutedEventArgs e)
         {
