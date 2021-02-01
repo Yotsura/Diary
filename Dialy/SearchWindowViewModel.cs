@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Dialy.Funcs;
 
 namespace Dialy
 {
@@ -52,41 +54,49 @@ namespace Dialy
             _allDiaries = allDiaries;
             IndicateSize = fontSize;
         }
-
-        public void SearchFunc(String words, bool orsearch)
+        public void SearchFunc(String words, bool isRegSearch)
         {
-            var targetWords = words.Split(new string[] { " ", "　" }, StringSplitOptions.RemoveEmptyEntries);
-            IndicateList = orsearch ? OrSearcher(targetWords) : AndSearcher(targetWords);
-            IndicateList.Reverse();
-        }
+            //除外検索　ORはできない　：AAA -AAAA -AAAB
+            //()でくくらずにORと通常検索を併用しない
+            //OR：A OR B
+            //(A OR B OR C) D (E OR F)　半角()
+            //(A B C) OR D
+            //ワイルドカード	AA*BB
 
-        private List<DateTime> OrSearcher(string[] targetWords)
-        {
-            var hitList = new SortedDictionary<DateTime, string>();
-            foreach (var word in targetWords)
+            var Searcher = new SearchFuncs(isRegSearch);
+
+            words = words.Replace("　", " ");
+            var kakkos = new Regex(@"(?<=\().*?(?=\))").Matches(words.Trim());
+            var notkakkos = words;
+            var result = _allDiaries.Select(x => (x.Key, x.Value));
+            foreach(var kakko in kakkos)
             {
-                var temp = GetHitList(_allDiaries, word);
-                //temp.Keys.ToList().ForEach(key => hitList[key] = temp[key]);
-                temp.Keys.AsParallel().ForAll(key => hitList[key] = temp[key]);
+                notkakkos = notkakkos.Replace($"({kakko})", string.Empty);
+                //()内の検索
+                var word = kakko.ToString().Contains(" OR ") ?
+                    kakko.ToString().Split(new string[] { " OR " }, StringSplitOptions.RemoveEmptyEntries) :
+                    kakko.ToString().Split(new string[] { " "}, StringSplitOptions.RemoveEmptyEntries);
+                if(kakko.ToString().Contains(" OR "))
+                {
+                    result = Searcher.OrSearcher(result,word);
+                }
+                else
+                {
+                    result = Searcher.AndSearcher(result, word.Where(x => !x.StartsWith("-")), word.Where(x => x.StartsWith("-")));
+                }
             }
-            return hitList.Keys.ToList();
-        }
 
-        private List<DateTime> AndSearcher(string[] targetWords)
-        {
-            var hitList = _allDiaries;
-            foreach (var word in targetWords)
-            {
-                hitList = GetHitList(hitList, word);
-            }
-            return hitList.Keys.ToList();
-        }
+            var targetWords = notkakkos.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Where(x => !string.IsNullOrEmpty(x));
+            var include2 = targetWords.Where(x => !x.StartsWith("-")).ToList();
+            var exclude2 = targetWords.Where(x => x.StartsWith("-")).ToList();
+            result = Searcher.AndSearcher(result, include2, exclude2);
 
-        private SortedDictionary<DateTime, string> GetHitList(SortedDictionary<DateTime, string> hitList, string word)
-        {
-            return new SortedDictionary<DateTime, string>(hitList
-                .Where(date => date.Value.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) != -1)
-                .ToDictionary(x => x.Key, x => x.Value));
+            //IndicateList = orsearch ? OrSearcher(targetWords) : AndSearcher(targetWords);
+            if (result.Count() > 0)
+                IndicateList = result.Select(x => x.Key).OrderByDescending(x => x).ToList();
+            else
+                IndicateList = new List<DateTime>();
+            //IndicateList.Reverse();
         }
 
     }

@@ -56,7 +56,7 @@
             <Button Grid.Column="3" Name="ZoomOut" Content="-" Click="FontZoom"/>
             <Label Grid.Column="4" Name="FontSize" Content="{Binding IndicateSize}"/>
             <Button Grid.Column="5" Name="ZoomIn" Content="+" Click="FontZoom"/>
-            <CheckBox Content="OR検索" Name="OrSearch" Grid.Column="7"/>
+            <CheckBox Content="正規表現検索" Name="RegSearch" Grid.Column="7"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="5">
             <Grid.ColumnDefinitions>
