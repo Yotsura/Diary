@@ -77,7 +77,6 @@ namespace Dialy
 
         public void AddSearchLog(string word)
         {
-            word = word.Trim();
             if (string.IsNullOrEmpty(word)) return;
             var temp = new List<string>(_searchLog.Where(x => x != word));
             temp.Add(word);
@@ -86,12 +85,13 @@ namespace Dialy
             SearchLog = temp;
         }
 
-        public void SearchFunc(string words, bool isRegSearch)
+        public void SearchFunc(string origwords, bool isRegSearch)
         {
             var searcher = new SearchFuncs(isRegSearch);
-
-            words = words.Replace("　", " ");
-            var kakkos = new Regex(@"(?<=\().*?(?=\))").Matches(words.Trim());
+            var words = string.Join(" ", origwords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(x => !string.IsNullOrEmpty(x)));
+            
+            var kakkos = new Regex(@"(?<=\().*?(?=\))").Matches(words);
             var notkakkos = words;
             var result = _allDiaries.Select(x => (x.Key, x.Value));
             foreach(var kakko in kakkos)
@@ -106,6 +106,7 @@ namespace Dialy
             IndicateList = result.Count() > 0 ?
                 result.Select(x => x.Key).OrderByDescending(x => x).ToList() :
                 new List<DateTime>();
+            AddSearchLog(words);
         }
     }
 }

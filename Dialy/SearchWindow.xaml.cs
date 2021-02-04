@@ -54,7 +54,6 @@ namespace Dialy
         {
             _swvm.SearchFunc(TargetTxt.Text, RegSearch.IsChecked == true);
             if (_swvm.IndicateList == null || _swvm.IndicateList.Count < 1) return;
-            _swvm.AddSearchLog(TargetTxt.Text);
             HitListBox.SelectedIndex = 1;
             HitListBox.SelectedIndex = 0;
             HitListBox.Focus();
