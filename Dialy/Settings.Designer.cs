@@ -185,5 +185,18 @@ namespace Dialy {
                 this["TaskAreaValue"] = value;
             }
         }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public System.Collections.Generic.List<string> SearchLog
+        {
+            get
+            {
+                return ((System.Collections.Generic.List<string>)(this["SearchLog"]));
+            }
+            set
+            {
+                this["SearchLog"] = value;
+            }
+        }
     }
 }

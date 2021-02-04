@@ -11,6 +11,7 @@ namespace Dialy
     {
         public SortedDictionary<DateTime, string> _allDiaries;
         private int _indicateSize;
+        private int _limitCount = 20;
         public int IndicateSize
         {
             get => _indicateSize;
@@ -18,6 +19,24 @@ namespace Dialy
             {
                 _indicateSize = value;
                 OnPropertyChanged(nameof(IndicateSize));
+            }
+        }
+
+        private List<string> _searchLog;
+        public List<string> SearchLog
+        {
+            get
+            {
+                var temp = new List<string>(_searchLog);
+                temp.Reverse();
+                return temp;
+            }
+            set
+            {
+                _searchLog = value;
+                Settings.Default.SearchLog = _searchLog;
+                Settings.Default.Save();
+                OnPropertyChanged(nameof(SearchLog));
             }
         }
 
@@ -53,16 +72,21 @@ namespace Dialy
         {
             _allDiaries = allDiaries;
             IndicateSize = fontSize;
+            _searchLog = Settings.Default.SearchLog != null ? Settings.Default.SearchLog : new List<string>();
         }
-        public void SearchFunc(String words, bool isRegSearch)
-        {
-            //除外検索　ORはできない　：AAA -AAAA -AAAB
-            //()でくくらずにORと通常検索を併用しない
-            //OR：A OR B
-            //(A OR B OR C) D (E OR F)　半角()
-            //(A B C) OR D
-            //ワイルドカード	AA*BB
 
+        public void AddSearchLog(string word)
+        {
+            if (string.IsNullOrEmpty(word)) return;
+            var temp = new List<string>(_searchLog.Where(x => x != word));
+            temp.Add(word);
+            if (temp.Count > _limitCount)
+                temp.RemoveAt(_limitCount);
+            SearchLog = temp;
+        }
+
+        public void SearchFunc(string words, bool isRegSearch)
+        {
             var searcher = new SearchFuncs(isRegSearch);
 
             words = words.Replace("　", " ");
