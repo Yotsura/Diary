@@ -188,7 +188,7 @@ namespace Dialy
         private async void ShowVerInfo(object sender, RoutedEventArgs e)
         {
             var verInfo = App.ResourceAssembly.GetName().Version;
-            var ver = $"{verInfo.Major}.{verInfo.Minor}.{verInfo.Build}";
+            var ver = $"{verInfo.Major}.{verInfo.Minor}.{verInfo.Build}.{verInfo.Revision}";
             await this.ShowMessageAsync("バージョン情報", $"ver{ver}");
         }
 
