@@ -36,10 +36,10 @@ namespace Dialy.Funcs
             var hitList = new List<(DateTime, string)>();
             foreach (var word in targetWords)
             {
-                var temp = GetHitList(origlist, word);
+                var temp = GetHitList(origlist, word, true);
                 hitList.AddRange(temp);
             }
-            return hitList.Distinct().OrderBy(x=>x.Item1);
+            return hitList.Distinct().OrderBy(x => x.Item1);
         }
 
         public IEnumerable<(DateTime date, string value)> AndSearcher(IEnumerable<(DateTime date, string value)> origlist, IEnumerable<string> targetWords)
@@ -50,42 +50,40 @@ namespace Dialy.Funcs
             var hitList = origlist;
             foreach (var word in include)
             {
-                hitList = GetHitList(hitList, word);
+                hitList = GetHitList(hitList, word, true);
             }
             foreach (var word in exclude.Select(x => x.TrimStart('-')).Where(x => !string.IsNullOrEmpty(x)))
             {
-                hitList = hitList.Where(date => date.value.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) == -1);
-                //hitList = hitList.Where(x => !x.Item2.Contains(word));
+                hitList = GetHitList(hitList, word, false);
             }
             return hitList;
         }
 
-        public IEnumerable<(DateTime date, string value)> GetHitList(IEnumerable<(DateTime date, string value)> hitList, string word)
+        public IEnumerable<(DateTime date, string value)> GetHitList(IEnumerable<(DateTime date, string value)> hitList, string word, bool isInclude)
         {
             IEnumerable<(DateTime, string)> result = new List<(DateTime, string)>();
             if (_isRegSearch)
             {
-                //var regTxt = (word.Contains("*") && !word.Contains(".*?")) ? word.Replace("*", ".*?") : word;
-                result = hitList.Where(record => new Regex(word).IsMatch(record.value));
+                result = hitList.Where(record => new Regex(word).IsMatch(record.value) == isInclude);
             }
             else
             {
                 //正規表現ではない場合のワイルドカード
-                result = hitList.Where(record =>
-                {
-                    var searchRange = record.value;
-                    foreach (var part in word.Split('*'))
-                    {
-                        var hitIdx = searchRange.IndexOf(part, StringComparison.CurrentCultureIgnoreCase);
-                        if (hitIdx == -1)
-                            return false;
-                        searchRange = searchRange.Substring(hitIdx+part.Length);
-                    }
-                    return true;
-                });
-
+                result = hitList.Where(record => Ishit(record.value, word) == isInclude);
             }
             return result;
+        }
+        public bool Ishit(string record, string word)
+        {
+            var searchRange = record;
+            foreach (var part in word.Split('*'))
+            {
+                var hitIdx = searchRange.IndexOf(part, StringComparison.CurrentCultureIgnoreCase);
+                if (hitIdx == -1)
+                    return false;
+                searchRange = searchRange.Substring(hitIdx + part.Length);
+            }
+            return true;
         }
     }
 }

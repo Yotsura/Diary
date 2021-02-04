@@ -77,6 +77,7 @@ namespace Dialy
 
         public void AddSearchLog(string word)
         {
+            word = word.Trim();
             if (string.IsNullOrEmpty(word)) return;
             var temp = new List<string>(_searchLog.Where(x => x != word));
             temp.Add(word);
