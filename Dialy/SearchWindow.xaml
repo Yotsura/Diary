@@ -39,7 +39,7 @@
             </Grid.ColumnDefinitions>
             <TextBox TextWrapping="Wrap" Name="TargetTxt" Grid.Column="0" KeyDown="TargetTxt_KeyDown">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="・OR検索　：A OR B&#xa;・除外検索　：A -B -AB　※ORでは不可&#xa;・ORと通常検索を併用する場合は半角()で片方くくる。&#xa;・正規表現ではない場合のワイルドカード「*」"/>
+                    <ToolTip Content="・OR検索：A OR B&#xa;・除外検索：A -B -AB　※ORでは不可&#xa;・ORと通常検索を併用する場合は半角()で片方くくる。&#xa;・正規表現ではない場合のワイルドカード「*」"/>
                 </ToolTipService.ToolTip>
             </TextBox>
             <Button Content="Search" Name="SearchBtn" Grid.Column="3" Grid.Row="1" Click="SearchBtn_Click" Height="27" VerticalAlignment="Bottom"/>
