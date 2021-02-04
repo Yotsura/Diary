@@ -63,7 +63,7 @@ namespace Dialy
             //(A B C) OR D
             //ワイルドカード	AA*BB
 
-            var Searcher = new SearchFuncs(isRegSearch);
+            var searcher = new SearchFuncs(isRegSearch);
 
             words = words.Replace("　", " ");
             var kakkos = new Regex(@"(?<=\().*?(?=\))").Matches(words.Trim());
@@ -71,33 +71,16 @@ namespace Dialy
             var result = _allDiaries.Select(x => (x.Key, x.Value));
             foreach(var kakko in kakkos)
             {
-                notkakkos = notkakkos.Replace($"({kakko})", string.Empty);
+                notkakkos = notkakkos.Replace($"({kakko})", string.Empty).Replace("  ", " ").Trim();
                 //()内の検索
-                var word = kakko.ToString().Contains(" OR ") ?
-                    kakko.ToString().Split(new string[] { " OR " }, StringSplitOptions.RemoveEmptyEntries) :
-                    kakko.ToString().Split(new string[] { " "}, StringSplitOptions.RemoveEmptyEntries);
-                if(kakko.ToString().Contains(" OR "))
-                {
-                    result = Searcher.OrSearcher(result,word);
-                }
-                else
-                {
-                    result = Searcher.AndSearcher(result, word.Where(x => !x.StartsWith("-")), word.Where(x => x.StartsWith("-")));
-                }
+                result = searcher.Search(result, kakko.ToString());
             }
 
-            var targetWords = notkakkos.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Where(x => !string.IsNullOrEmpty(x));
-            var include2 = targetWords.Where(x => !x.StartsWith("-")).ToList();
-            var exclude2 = targetWords.Where(x => x.StartsWith("-")).ToList();
-            result = Searcher.AndSearcher(result, include2, exclude2);
+            result = searcher.Search(result, notkakkos);
 
-            //IndicateList = orsearch ? OrSearcher(targetWords) : AndSearcher(targetWords);
-            if (result.Count() > 0)
-                IndicateList = result.Select(x => x.Key).OrderByDescending(x => x).ToList();
-            else
-                IndicateList = new List<DateTime>();
-            //IndicateList.Reverse();
+            IndicateList = result.Count() > 0 ?
+                result.Select(x => x.Key).OrderByDescending(x => x).ToList() :
+                new List<DateTime>();
         }
-
     }
 }
