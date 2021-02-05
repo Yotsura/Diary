@@ -90,7 +90,7 @@ namespace Dialy
             var words = string.Join(" ", origwords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => !string.IsNullOrEmpty(x)));
             
-            var kakkos = new Regex(@"(?<=\().*?(?=\))").Matches(words);
+            var kakkos = new Regex(@"((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(words);
             var notkakkos = words;
             var result = _allDiaries.Select(x => (x.Key, x.Value));
             foreach(var kakko in kakkos)
@@ -99,7 +99,6 @@ namespace Dialy
                 //()内の検索
                 result = searcher.Search(result, kakko.ToString());
             }
-
             result = searcher.Search(result, notkakkos);
 
             IndicateList = result.Count() > 0 ?

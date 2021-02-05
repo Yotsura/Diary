@@ -6,7 +6,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
-        Title="SearchWindow" Height="600" Width="250" MinWidth="250" Activated="ForcusTxt">
+        Title="SearchWindow" Height="600" Width="300" MinHeight="300" MinWidth="300" Activated="ForcusTxt">
     <Window.Resources>
         <CollectionViewSource x:Key="NowDataView"  Source="{Binding IndicateList}" />
     </Window.Resources>
