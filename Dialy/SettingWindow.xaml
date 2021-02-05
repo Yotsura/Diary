@@ -32,12 +32,19 @@
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="26"/>
                 <RowDefinition Height="5"/>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="5"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="先頭空白"/>
             <Label Grid.Column="0" Grid.Row="2" Content="先頭文字"/>
+            <Label Grid.Column="0" Grid.Row="4" Content="検索履歴上限"/>
             <TextBox Grid.Column="2" Grid.Row="0" Name="HeadSpace"/>
             <TextBox Grid.Column="2" Grid.Row="2" Name="HeadMark"/>
+            <TextBox Grid.Column="2" Grid.Row="4" Name="SerchLogLimit"
+                     InputMethod.IsInputMethodEnabled="False"
+                     PreviewTextInput="textBoxPrice_PreviewTextInput"
+                     CommandManager.PreviewExecuted="textBoxPrice_PreviewExecuted"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="3">
             <Grid.ColumnDefinitions>
