@@ -61,16 +61,9 @@ namespace Dialy.Funcs
 
         public IEnumerable<(DateTime date, string value)> GetHitList(IEnumerable<(DateTime date, string value)> hitList, string word, bool isInclude)
         {
-            IEnumerable<(DateTime, string)> result = new List<(DateTime, string)>();
-            if (_isRegSearch)
-            {
-                result = hitList.Where(record => new Regex(word).IsMatch(record.value) == isInclude);
-            }
-            else
-            {
-                //正規表現ではない場合のワイルドカード
-                result = hitList.Where(record => Ishit(record.value, word) == isInclude);
-            }
+            var result = _isRegSearch ?
+                hitList.Where(record => new Regex(word).IsMatch(record.value) == isInclude) :
+                hitList.Where(record => Ishit(record.value, word) == isInclude);
             return result;
         }
         public bool Ishit(string record, string word)
