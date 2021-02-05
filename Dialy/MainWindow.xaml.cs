@@ -339,22 +339,32 @@ namespace Dialy
             _settingWindow = new SettingWindow();
             _settingWindow.HeadSpace.Text = String.Join("", Settings.Default.HeadSpaces);
             _settingWindow.HeadMark.Text = String.Join("", Settings.Default.HeadMarks);
+            _settingWindow.SerchLogLimit.Text = Settings.Default.SearchLogLimit.ToString();
             _settingWindow.SaveSettingBtn.Click += SaveSetting;
             _settingWindow.Closed += SettingWindow_Closed;
             _settingWindow.CancelChangeBtn.Click += CancelChange;
             _settingWindow.ShowDialog();
         }
+
         private void SettingWindow_Closed(object sender, EventArgs e)
         {
             _settingWindow = null;
         }
+
         private void SaveSetting(object sender, RoutedEventArgs e)
         {
             Settings.Default.HeadSpaces = _settingWindow.HeadSpace.Text.ToCharArray().ToList();
             Settings.Default.HeadMarks = _settingWindow.HeadMark.Text.ToCharArray().ToList();
+            var limit = int.Parse(_settingWindow.SerchLogLimit.Text);
+            Settings.Default.SearchLogLimit = limit;
+            if (Settings.Default.SearchLog.Count() > limit)
+            {
+                Settings.Default.SearchLog.RemoveFirst(Settings.Default.SearchLog.Count() - limit);
+            }
             Settings.Default.Save();
             _settingWindow.Close();
         }
+
         private void CancelChange(object sender, RoutedEventArgs e)
         {
             _settingWindow.HeadSpace.Text = String.Join("", Settings.Default.HeadSpaces);

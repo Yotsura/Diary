@@ -24,5 +24,18 @@ namespace Dialy
         {
             InitializeComponent();
         }
+        private void textBoxPrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // 0-9のみ
+            e.Handled = !new System.Text.RegularExpressions.Regex("[0-9]").IsMatch(e.Text);
+        }
+        private void textBoxPrice_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            // 貼り付けを許可しない
+            if (e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

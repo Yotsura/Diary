@@ -11,7 +11,6 @@ namespace Dialy
     {
         public SortedDictionary<DateTime, string> _allDiaries;
         private int _indicateSize;
-        private int _limitCount = 20;
         public int IndicateSize
         {
             get => _indicateSize;
@@ -80,8 +79,8 @@ namespace Dialy
             if (string.IsNullOrEmpty(word)) return;
             var temp = new List<string>(_searchLog.Where(x => x != word));
             temp.Add(word);
-            if (temp.Count > _limitCount)
-                temp.RemoveAt(_limitCount);
+            if (temp.Count > Settings.Default.SearchLogLimit)
+                temp.RemoveFirst(temp.Count - Settings.Default.SearchLogLimit);
             SearchLog = temp;
         }
 
