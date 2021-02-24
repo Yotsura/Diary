@@ -69,7 +69,7 @@
             </Grid.ColumnDefinitions>
             <ListBox Grid.Column="0" Name="HitListBox" ItemsSource="{Binding Source={StaticResource NowDataView}}" SelectionChanged="HitListBox_SelectionChanged"/>
             <ScrollViewer x:Name ="TextScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <TextBox IsReadOnly="True" Name="RecordTxt" Text="{Binding RecordTxt}" FontSize="{Binding IndicateSize}"/>
+                <RichTextBox IsReadOnly="True" local:RichTextBoxHelper.Document="{Binding Document}"/>
             </ScrollViewer>
         </Grid>
     </Grid>

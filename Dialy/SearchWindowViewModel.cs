@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Documents;
+using System.Windows.Media;
 using Dialy.Funcs;
 
 namespace Dialy
@@ -105,6 +107,25 @@ namespace Dialy
                 result.Select(x => x.Key).OrderByDescending(x => x).ToList() :
                 new List<DateTime>();
             AddSearchLog(words);
+        }
+
+        private FlowDocument _Document = CreateFlowDoc("FlowDocument in VM");
+        public FlowDocument Document
+        {
+            get => _Document;
+            set
+            {
+                _Document = value;
+                OnPropertyChanged(nameof(Document));
+            }
+        }
+
+        private static FlowDocument CreateFlowDoc(string innerText)
+        {
+            var paragraph = new Paragraph();
+            paragraph.Inlines.Add(new Run("FixText_"));
+            paragraph.Inlines.Add(new Run(innerText) { Foreground = new SolidColorBrush(Colors.BlueViolet) });
+            return new FlowDocument(paragraph);
         }
     }
 }
