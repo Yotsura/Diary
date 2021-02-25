@@ -23,6 +23,28 @@ namespace Dialy
             }
         }
 
+        private string _searchWords = string.Empty;
+        public string SearchWords
+        {
+            get => _searchWords;
+            set
+            {
+                _searchWords = value;
+                OnPropertyChanged(nameof(SearchWords));
+            }
+        }
+
+        private bool _isRegSearch;
+        public bool IsRegSearch
+        {
+            get => _isRegSearch;
+            set
+            {
+                _isRegSearch = value;
+                OnPropertyChanged(nameof(IsRegSearch));
+            }
+        }
+
         private List<string> _searchLog;
         public List<string> SearchLog
         {
@@ -52,14 +74,14 @@ namespace Dialy
             }
         }
 
-        private string _recordTxt;
-        public string RecordTxt
+        private FlowDocument _Document = CreateFlowDoc("検索値をハイライト表示します。");
+        public FlowDocument Document
         {
-            get => _recordTxt;
+            get => _Document;
             set
             {
-                _recordTxt = value;
-                OnPropertyChanged(nameof(RecordTxt));
+                _Document = value;
+                OnPropertyChanged(nameof(Document));
             }
         }
 
@@ -86,10 +108,10 @@ namespace Dialy
             SearchLog = temp;
         }
 
-        public void SearchFunc(string origwords, bool isRegSearch)
+        public void SearchFunc()
         {
-            var searcher = new SearchFuncs(isRegSearch);
-            var words = string.Join(" ", origwords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
+            var searcher = new SearchFuncs(IsRegSearch);
+            var words = string.Join(" ", SearchWords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => !string.IsNullOrEmpty(x)));
             
             var kakkos = new Regex(@"((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(words);
@@ -109,23 +131,42 @@ namespace Dialy
             AddSearchLog(words);
         }
 
-        private FlowDocument _Document = CreateFlowDoc("FlowDocument in VM");
-        public FlowDocument Document
-        {
-            get => _Document;
-            set
-            {
-                _Document = value;
-                OnPropertyChanged(nameof(Document));
-            }
-        }
-
         private static FlowDocument CreateFlowDoc(string innerText)
         {
             var paragraph = new Paragraph();
-            paragraph.Inlines.Add(new Run("FixText_"));
-            paragraph.Inlines.Add(new Run(innerText) { Foreground = new SolidColorBrush(Colors.BlueViolet) });
-            return new FlowDocument(paragraph);
+            paragraph.Inlines.Add(new Run(innerText));
+            //paragraph.Inlines.Add(new Run("テストテキストテストテキストテストテキスト"));
+            //paragraph.Inlines.Add(new Run(innerText) { Background = new SolidColorBrush(Colors.YellowGreen), Foreground = new SolidColorBrush(Colors.Black) });
+            //paragraph.Inlines.Add(new Run("テストテキストテストテキストテストテキストテストテキストテストテキストテスト\r\nテキストテストテキストテストテキストテストテキストテストテキストテストテキストテストテキストテストテキストテストテキスト"));
+            var result= new FlowDocument(paragraph);
+            result.PageWidth = 2000;
+            return result;
+        }
+        private static FlowDocument CreateFlowDoc(List<Run> runs)
+        {
+            var paragraph = new Paragraph();
+            paragraph.Inlines.AddRange(runs);
+            
+            var result = new FlowDocument(paragraph);
+            result.PageWidth = 2000;
+            return result;
+        }
+
+        public void IndicateRecord(DateTime date)
+        {
+            var data = _allDiaries[date];
+            if (date == null)
+                Document = new FlowDocument();
+            else
+            {
+                if (SearchWords == string.Empty)
+                    Document = CreateFlowDoc(data);
+                else
+                {
+                    var test = new Model.SearchResult(_isRegSearch,_searchWords,data).GetRuns();
+                    Document = CreateFlowDoc(test);
+                }
+            }
         }
     }
 }

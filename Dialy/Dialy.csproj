@@ -78,6 +78,7 @@
     <Compile Include="FileManager.cs" />
     <Compile Include="Funcs\TxtFuncs.cs" />
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Model\SearchResult.cs" />
     <Compile Include="Model\TaskRecord.cs" />
     <Compile Include="ReplaceWindow.xaml.cs">
       <DependentUpon>ReplaceWindow.xaml</DependentUpon>

@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+//https://qiita.com/soi/items/ac970626af21aa5a362f 方法2 添付プロパティでFlowDocumentまるごとBindingする
+
 namespace Dialy
 {
     public class RichTextBoxHelper : DependencyObject

@@ -37,7 +37,7 @@
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="95"/>
             </Grid.ColumnDefinitions>
-            <ComboBox Name="TargetTxt" Grid.Column="0" ItemsSource="{Binding Path=SearchLog}" KeyDown="TargetTxt_KeyDown" IsEditable="True">
+            <ComboBox Name="TargetTxt" Grid.Column="0" ItemsSource="{Binding Path=SearchLog}" Text="{Binding SearchWords}" KeyDown="TargetTxt_KeyDown" IsEditable="True">
                 <ToolTipService.ToolTip>
                     <ToolTip Content="・OR検索：A OR B&#xa;・除外検索：A -B -AB　※ORでは不可&#xa;・ORと通常検索を併用する場合は半角()で片方くくる。&#xa;・正規表現ではない場合のワイルドカード「*」"/>
                 </ToolTipService.ToolTip>
@@ -60,7 +60,7 @@
             <Button Grid.Column="3" Name="ZoomOut" Content="-" Click="FontZoom"/>
             <Label Grid.Column="4" Name="FontSize" Content="{Binding IndicateSize}"/>
             <Button Grid.Column="5" Name="ZoomIn" Content="+" Click="FontZoom"/>
-            <CheckBox Content="正規表現検索" Name="RegSearch" Grid.Column="7"/>
+            <CheckBox Content="正規表現検索" Name="RegSearch" IsChecked="{Binding IsRegSearch}" Grid.Column="7"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="5">
             <Grid.ColumnDefinitions>
@@ -69,7 +69,7 @@
             </Grid.ColumnDefinitions>
             <ListBox Grid.Column="0" Name="HitListBox" ItemsSource="{Binding Source={StaticResource NowDataView}}" SelectionChanged="HitListBox_SelectionChanged"/>
             <ScrollViewer x:Name ="TextScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <RichTextBox IsReadOnly="True" local:RichTextBoxHelper.Document="{Binding Document}"/>
+                <RichTextBox x:Name="IndicateTxt" IsReadOnly="True" local:RichTextBoxHelper.Document="{Binding Document}" FontSize="{Binding IndicateSize}"/>
             </ScrollViewer>
         </Grid>
     </Grid>
