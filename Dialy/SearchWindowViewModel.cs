@@ -138,6 +138,11 @@ namespace Dialy
 
         public void IndicateRecord(DateTime date)
         {
+            if (!_allDiaries.Keys.Contains(date))
+            {
+                Document = new FlowDocument();
+                return;
+            }
             var data = _allDiaries[date];
             if (date == null)
                 Document = new FlowDocument();
