@@ -17,5 +17,10 @@ namespace Dialy.Funcs
             var kakkos = reg.Matches(origTxt).Cast<Match>().Select(x => x.Value);
             return kakkos;
         }
+
+        public static bool IsNullOrEmpty(this string txt)
+        {
+            return string.IsNullOrEmpty(txt);
+        }
     }
 }
