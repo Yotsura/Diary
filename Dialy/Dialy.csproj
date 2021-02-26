@@ -71,6 +71,7 @@
     <Compile Include="Funcs\ListExtensions.cs" />
     <Compile Include="Funcs\RichTextBoxHelper.cs" />
     <Compile Include="Funcs\SearchFuncs.cs" />
+    <Compile Include="Funcs\StringExtension.cs" />
     <Compile Include="LoginControl.xaml.cs">
       <DependentUpon>LoginControl.xaml</DependentUpon>
     </Compile>

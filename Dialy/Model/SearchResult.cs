@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Dialy.Funcs;
 
 namespace Dialy.Model
 {
@@ -41,14 +42,16 @@ namespace Dialy.Model
 
         static IEnumerable<string> GetSearchWords(string txt)
         {
-            var kakkos = new Regex(@"((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(txt);
+            var kakkos = txt.GetKakkoWords();
             var notkakkos = txt;
-            var words = SplitWords(notkakkos).ToList();
+            var words = new List<string>();
             foreach (var kakko in kakkos)
             {
                 notkakkos = notkakkos.Replace($"({kakko})", string.Empty).Replace("  ", " ").Trim();
                 words.AddRange(SplitWords(kakko.ToString()));
             }
+            words.AddRange(SplitWords(notkakkos));
+
             var result = words.Where(x => !x.StartsWith("-"));
             return words;
         }
