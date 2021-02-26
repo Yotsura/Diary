@@ -74,18 +74,23 @@ namespace Dialy
             }
         }
 
-        private FlowDocument _Document = RichTextBoxHelper.CreateFlowDoc(
-            "＜正規表現メモ＞\r\n(?<=〇)	〇で始まる。※〇を含まない\r\n(?=〇)	〇で終わる。※〇を含まない\r\n^	文字列の先頭で一致。\r\n$	文字列の末尾で一致。\r\n[ ]	カッコ内の任意の1文字と一致。「-」で範囲指定可。\r\n[^ ]	カッコ内の任意の1文字と不一致。「-」で範囲指定可。\r\n\r\n"
+        private const string _defaultTxt = "＜正規表現メモ＞\r\n(?<=〇)	〇で始まる。※〇を含まない\r\n(?=〇)	〇で終わる。※〇を含まない\r\n^	文字列の先頭で一致。\r\n$	文字列の末尾で一致。\r\n[ ]	カッコ内の任意の1文字と一致。「-」で範囲指定可。\r\n[^ ]	カッコ内の任意の1文字と不一致。「-」で範囲指定可。\r\n\r\n"
             + "\\d	数値\r\n\\D	数値以外\r\n\\w	単語に使用されるUnicode文字\r\n\\W	\\w以外\r\n\\s	空白文字\r\n\\S	空白以外\r\n\\t	タブ文字\r\n\\e	エスケープ文字\r\n\r\n例）この検索は以下の条件で()くくりとみなす。\r\n"
             + @"((?<=\s\().*?\s+?.*?(?=\)))" + "\r\n"
             + @"|((?<=\().*?\s+?.*?(?=\)\s))" + "\r\n"
-            + @"|((?<=\s\().*?\s+?.*?(?=\)\s))" + "\r\n");
+            + @"|((?<=\s\().*?\s+?.*?(?=\)\s))" + "\r\n";
+        private FlowDocument _document;
         public FlowDocument Document
         {
-            get => _Document;
+            get
+            {
+                return _document == null ?
+                    RichTextBoxHelper.CreateFlowDoc(_defaultTxt) :
+                    _document;
+            }
             set
             {
-                _Document = value;
+                _document = value;
                 OnPropertyChanged(nameof(Document));
             }
         }
@@ -140,12 +145,12 @@ namespace Dialy
         {
             if (!_allDiaries.Keys.Contains(date))
             {
-                Document = new FlowDocument();
+                Document = null;
                 return;
             }
             var data = _allDiaries[date];
             if (date == null)
-                Document = new FlowDocument();
+                Document = null;
             else
             {
                 if (SearchWords == string.Empty)
