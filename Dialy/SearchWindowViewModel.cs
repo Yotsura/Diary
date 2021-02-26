@@ -119,14 +119,14 @@ namespace Dialy
             SearchWords = string.Join(" ", SearchWords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => !string.IsNullOrEmpty(x)));
             
-            var kakkos = new Regex(@"\\((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(SearchWords);
+            var kakkos = SearchWords.GetKakkoWords();
             var notkakkos = SearchWords;
             var result = _allDiaries.Select(x => (x.Key, x.Value));
             foreach(var kakko in kakkos)
             {
                 notkakkos = notkakkos.Replace($"({kakko})", string.Empty).Replace("  ", " ").Trim();
                 //()内の検索
-                result = searcher.Search(result, kakko.ToString());
+                result = searcher.Search(result, kakko);
             }
             result = searcher.Search(result, notkakkos);
 
