@@ -111,11 +111,11 @@ namespace Dialy
         public void SearchFunc()
         {
             var searcher = new SearchFuncs(IsRegSearch);
-            var words = string.Join(" ", SearchWords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
+            SearchWords = string.Join(" ", SearchWords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => !string.IsNullOrEmpty(x)));
             
-            var kakkos = new Regex(@"((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(words);
-            var notkakkos = words;
+            var kakkos = new Regex(@"((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(SearchWords);
+            var notkakkos = SearchWords;
             var result = _allDiaries.Select(x => (x.Key, x.Value));
             foreach(var kakko in kakkos)
             {
@@ -128,28 +128,7 @@ namespace Dialy
             IndicateList = result.Count() > 0 ?
                 result.Select(x => x.Key).OrderByDescending(x => x).ToList() :
                 new List<DateTime>();
-            AddSearchLog(words);
-        }
-
-        private static FlowDocument CreateFlowDoc(string innerText)
-        {
-            var paragraph = new Paragraph();
-            paragraph.Inlines.Add(new Run(innerText));
-            //paragraph.Inlines.Add(new Run("テストテキストテストテキストテストテキスト"));
-            //paragraph.Inlines.Add(new Run(innerText) { Background = new SolidColorBrush(Colors.YellowGreen), Foreground = new SolidColorBrush(Colors.Black) });
-            //paragraph.Inlines.Add(new Run("テストテキストテストテキストテストテキストテストテキストテストテキストテスト\r\nテキストテストテキストテストテキストテストテキストテストテキストテストテキストテストテキストテストテキストテストテキスト"));
-            var result= new FlowDocument(paragraph);
-            result.PageWidth = 2000;
-            return result;
-        }
-        private static FlowDocument CreateFlowDoc(List<Run> runs)
-        {
-            var paragraph = new Paragraph();
-            paragraph.Inlines.AddRange(runs);
-            
-            var result = new FlowDocument(paragraph);
-            result.PageWidth = 2000;
-            return result;
+            AddSearchLog(SearchWords);
         }
 
         public void IndicateRecord(DateTime date)
@@ -167,6 +146,23 @@ namespace Dialy
                     Document = CreateFlowDoc(test);
                 }
             }
+        }
+
+        private static FlowDocument CreateFlowDoc(string innerText)
+        {
+            var paragraph = new Paragraph();
+            paragraph.Inlines.Add(new Run(innerText));
+            var result = new FlowDocument(paragraph);
+            result.PageWidth = 2000;
+            return result;
+        }
+        private static FlowDocument CreateFlowDoc(List<Run> runs)
+        {
+            var paragraph = new Paragraph();
+            paragraph.Inlines.AddRange(runs);
+            var result = new FlowDocument(paragraph);
+            result.PageWidth = 2000;
+            return result;
         }
     }
 }

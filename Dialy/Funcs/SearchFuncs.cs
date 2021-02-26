@@ -68,15 +68,8 @@ namespace Dialy.Funcs
         }
         public bool Ishit(string record, string word)
         {
-            var searchRange = record;
-            foreach (var part in word.Split('*'))
-            {
-                var hitIdx = searchRange.IndexOf(part, StringComparison.CurrentCultureIgnoreCase);
-                if (hitIdx == -1)
-                    return false;
-                searchRange = searchRange.Substring(hitIdx + part.Length);
-            }
-            return true;
+            var hitIdx = record.IndexOf(word, StringComparison.CurrentCultureIgnoreCase);
+            return hitIdx != -1;
         }
     }
 }

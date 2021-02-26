@@ -20,29 +20,22 @@ namespace Dialy.Model
     }
     public class SearchResult
     {
-        bool _isRegSearch;
         string _origTxt;
         List<CharInfo> _origTxtInfo;
-
         IEnumerable<string> _searchWords;
-        DateTime Date { get; set; }
-        FlowDocument Val { get; set; }
 
         public SearchResult(bool isRegSearch, string searchWords, string origTxt)
         {
             //検索ワードで-になっていない物すべてハイライトする
-            _isRegSearch = isRegSearch;
             _origTxt = origTxt;
             _origTxtInfo = _origTxt.Select(x => new CharInfo(x)).ToList();
             _searchWords = GetSearchWords(searchWords);
-
-            foreach(var word in _searchWords)
+            foreach (var word in _searchWords)
             {
-                if (_isRegSearch)
+                if (isRegSearch)
                     RegHitCheck(word);
                 else
                     HitCheck(word);
-
             }
         }
 
@@ -72,18 +65,44 @@ namespace Dialy.Model
 
         public void HitCheck(string word)
         {
+            var hits = GethitIdxs(_origTxt, word);
+            var len = word.Length;
+            foreach (var idx in hits)
+            {
+                for (var i = idx; i < idx + len; i++)
+                {
+                    _origTxtInfo[i].IsHit = true;
+                }
+            }
+        }
 
+        public IEnumerable<int> GethitIdxs(string origTxt, string word)
+        {
+            var result = new List<int>();
+            var searchRange = origTxt;
+            if (string.IsNullOrEmpty(origTxt) || string.IsNullOrEmpty(word))
+                return result;
+            var hit = searchRange.IndexOf(word, StringComparison.CurrentCultureIgnoreCase);
+            if (hit == -1)
+                return result;
+
+            result.Add(hit);
+            var omitLength = hit + word.Length;
+            searchRange = searchRange.Substring(omitLength);
+
+            var temp = GethitIdxs(searchRange, word).Select(x => x += omitLength);
+            result.AddRange(temp);
+            return result;
         }
 
         public void RegHitCheck(string word)
         {
             var hits = new Regex(word).Matches(_origTxt);
-
-            foreach(Match hit in hits)
+            foreach (Match hit in hits)
             {
-                var idx = hit.Index;
                 var len = hit.Value.Length;
-                for(var i=idx;i<idx+len;i++)
+                var idx = hit.Index;
+                for (var i = idx; i < idx + len; i++)
                 {
                     _origTxtInfo[i].IsHit = true;
                 }
@@ -115,8 +134,7 @@ namespace Dialy.Model
             if (temp != string.Empty)
                 result.Add(isHit ?
                     new Run(temp) { Background = new SolidColorBrush(Colors.YellowGreen), Foreground = new SolidColorBrush(Colors.Black) } :
-                    new Run(temp)
-                    );
+                    new Run(temp));
 
             return result;
         }

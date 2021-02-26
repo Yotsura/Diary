@@ -54,8 +54,8 @@ namespace Dialy
         {
             _swvm.SearchFunc();
             if (_swvm.IndicateList == null || _swvm.IndicateList.Count < 1) return;
-            HitListBox.SelectedIndex = 1;
-            HitListBox.SelectedIndex = 0;
+            //HitListBox.SelectedIndex = 1;
+            //HitListBox.SelectedIndex = 0;
             HitListBox.Focus();
         }
 
