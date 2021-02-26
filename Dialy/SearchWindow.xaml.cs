@@ -54,8 +54,6 @@ namespace Dialy
         {
             _swvm.SearchFunc();
             if (_swvm.IndicateList == null || _swvm.IndicateList.Count < 1) return;
-            //HitListBox.SelectedIndex = 1;
-            //HitListBox.SelectedIndex = 0;
             HitListBox.Focus();
         }
 
@@ -64,14 +62,11 @@ namespace Dialy
             TextScroll.ScrollToHome();
             if (HitListBox.SelectedValue == null)
             {
-                //_swvm.RecordTxt = String.Empty;
                 _swvm.IndicateRecord(DateTime.Parse("1900/1/1"));
                 return;
             }
             var date = (DateTime)HitListBox.SelectedValue;
             _swvm.IndicateRecord(date);
-            //var txt = _swvm._allDiaries[date];
-            //_swvm.RecordTxt = txt;
         }
 
         private void FontZoom(object sender, RoutedEventArgs e)

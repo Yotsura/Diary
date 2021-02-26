@@ -57,5 +57,23 @@ namespace Dialy
             }
             return copyDoc;
         }
+
+        public static FlowDocument CreateFlowDoc(string innerText)
+        {
+            var paragraph = new Paragraph();
+            paragraph.Inlines.Add(new Run(innerText));
+            var result = new FlowDocument(paragraph);
+            result.PageWidth = 2000;
+            return result;
+        }
+
+        public static FlowDocument CreateFlowDoc(List<Run> runs)
+        {
+            var paragraph = new Paragraph();
+            paragraph.Inlines.AddRange(runs);
+            var result = new FlowDocument(paragraph);
+            result.PageWidth = 2000;
+            return result;
+        }
     }
 }

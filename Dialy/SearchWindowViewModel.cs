@@ -74,7 +74,12 @@ namespace Dialy
             }
         }
 
-        private FlowDocument _Document = CreateFlowDoc("検索値をハイライト表示します。");
+        private FlowDocument _Document = RichTextBoxHelper.CreateFlowDoc(
+            "＜正規表現メモ＞\r\n(?<=〇)	〇で始まる。※〇を含まない\r\n(?=〇)	〇で終わる。※〇を含まない\r\n^	文字列の先頭で一致。\r\n$	文字列の末尾で一致。\r\n[ ]	カッコ内の任意の1文字と一致。「-」で範囲指定可。\r\n[^ ]	カッコ内の任意の1文字と不一致。「-」で範囲指定可。\r\n\r\n"
+            + "\\d	数値\r\n\\D	数値以外\r\n\\w	単語に使用されるUnicode文字\r\n\\W	\\w以外\r\n\\s	空白文字\r\n\\S	空白以外\r\n\\t	タブ文字\r\n\\e	エスケープ文字\r\n\r\n例）この検索は以下の条件で()くくりとみなす。\r\n"
+            + @"((?<=\s\().*?\s+?.*?(?=\)))" + "\r\n"
+            + @"|((?<=\().*?\s+?.*?(?=\)\s))" + "\r\n"
+            + @"|((?<=\s\().*?\s+?.*?(?=\)\s))" + "\r\n");
         public FlowDocument Document
         {
             get => _Document;
@@ -114,7 +119,7 @@ namespace Dialy
             SearchWords = string.Join(" ", SearchWords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => !string.IsNullOrEmpty(x)));
             
-            var kakkos = new Regex(@"((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(SearchWords);
+            var kakkos = new Regex(@"\\((?<=\s\().*?\s+?.*?(?=\)))|((?<=\().*?\s+?.*?(?=\)\s))|((?<=\s\().*?\s+?.*?(?=\)\s))").Matches(SearchWords);
             var notkakkos = SearchWords;
             var result = _allDiaries.Select(x => (x.Key, x.Value));
             foreach(var kakko in kakkos)
@@ -139,30 +144,13 @@ namespace Dialy
             else
             {
                 if (SearchWords == string.Empty)
-                    Document = CreateFlowDoc(data);
+                    Document = RichTextBoxHelper.CreateFlowDoc(data);
                 else
                 {
                     var test = new Model.SearchResult(_isRegSearch,_searchWords,data).GetRuns();
-                    Document = CreateFlowDoc(test);
+                    Document = RichTextBoxHelper.CreateFlowDoc(test);
                 }
             }
-        }
-
-        private static FlowDocument CreateFlowDoc(string innerText)
-        {
-            var paragraph = new Paragraph();
-            paragraph.Inlines.Add(new Run(innerText));
-            var result = new FlowDocument(paragraph);
-            result.PageWidth = 2000;
-            return result;
-        }
-        private static FlowDocument CreateFlowDoc(List<Run> runs)
-        {
-            var paragraph = new Paragraph();
-            paragraph.Inlines.AddRange(runs);
-            var result = new FlowDocument(paragraph);
-            result.PageWidth = 2000;
-            return result;
         }
     }
 }
