@@ -44,12 +44,14 @@ namespace Dialy.Model
         {
             var kakkos = txt.GetKakkoWords();
             var notkakkos = txt;
-            var words = SplitWords(notkakkos).ToList();
+            var words = new List<string>();
             foreach (var kakko in kakkos)
             {
                 notkakkos = notkakkos.Replace($"({kakko})", string.Empty).Replace("  ", " ").Trim();
                 words.AddRange(SplitWords(kakko.ToString()));
             }
+            words.AddRange(SplitWords(notkakkos));
+
             var result = words.Where(x => !x.StartsWith("-"));
             return words;
         }
