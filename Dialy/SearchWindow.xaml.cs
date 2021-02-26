@@ -52,8 +52,10 @@ namespace Dialy
 
         private void InvokeSearch()
         {
+            HitListBox.SelectedIndex = -1;
             _swvm.SearchFunc();
             if (_swvm.IndicateList == null || _swvm.IndicateList.Count < 1) return;
+            HitListBox.SelectedIndex = 0;
             HitListBox.Focus();
         }
 
