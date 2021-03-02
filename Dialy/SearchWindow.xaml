@@ -37,7 +37,7 @@
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="95"/>
             </Grid.ColumnDefinitions>
-            <ComboBox Name="TargetTxt" Grid.Column="0" ItemsSource="{Binding Path=SearchLog}" Text="{Binding SearchWords}" KeyDown="TargetTxt_KeyDown" IsEditable="True">
+            <ComboBox Name="TargetTxt" Grid.Column="0" ItemsSource="{Binding Path=SearchLog}" Text="{Binding SearchWords}" KeyDown="TargetTxt_KeyDown" IsTextSearchEnabled="False" IsEditable="True">
                 <ToolTipService.ToolTip>
                     <ToolTip Content="・OR検索：A OR B&#xa;・除外検索：A -B -AB　※ORでは不可&#xa;・ORと通常検索を併用する場合は半角()で片方くくる。"/>
                 </ToolTipService.ToolTip>
