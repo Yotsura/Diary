@@ -88,28 +88,28 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="5" Name="Today" Content="T" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="今日のレコード"/>
+                    <ToolTip Content="今日のレコード　Ctrl+T"/>
                 </ToolTipService.ToolTip>
             </Button>
             <Button Grid.Column="0" Name="LastRecord" Content="&lt;&lt;" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="前のレコード"/>
+                    <ToolTip Content="前のレコード　Ctrl+Q"/>
                 </ToolTipService.ToolTip>
             </Button>
             <Button Grid.Column="1" Name="LastDay" Content="&lt;" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="前日"/>
+                    <ToolTip Content="前日　Ctrl+W"/>
                 </ToolTipService.ToolTip>
             </Button>
             <DatePicker Grid.Column="2" Name="DatePick" SelectedDate="{Binding SelectedDate,Mode=TwoWay}" SelectedDateChanged="DatePick_SelectedDateChanged"/>
             <Button Grid.Column="3" Name="NextDay" Content="&gt;" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="翌日"/>
+                    <ToolTip Content="翌日　Ctrl+E"/>
                 </ToolTipService.ToolTip>
             </Button>
             <Button Grid.Column="4" Name="NextRecord" Content="&gt;&gt;" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="次のレコード"/>
+                    <ToolTip Content="次のレコード　Ctrl+R"/>
                 </ToolTipService.ToolTip>
             </Button>
         </Grid>
