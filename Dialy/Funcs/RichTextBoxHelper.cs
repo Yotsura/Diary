@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 //https://qiita.com/soi/items/ac970626af21aa5a362f 方法2 添付プロパティでFlowDocumentまるごとBindingする
 
@@ -62,8 +54,7 @@ namespace Dialy
         {
             var paragraph = new Paragraph();
             paragraph.Inlines.Add(new Run(innerText));
-            var result = new FlowDocument(paragraph);
-            result.PageWidth = 2000;
+            var result = new FlowDocument(paragraph) { PageWidth = 2000 };
             return result;
         }
 
@@ -71,8 +62,7 @@ namespace Dialy
         {
             var paragraph = new Paragraph();
             paragraph.Inlines.AddRange(runs);
-            var result = new FlowDocument(paragraph);
-            result.PageWidth = 2000;
+            var result = new FlowDocument(paragraph) { PageWidth = 2000 };
             return result;
         }
     }

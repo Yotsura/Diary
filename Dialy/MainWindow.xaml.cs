@@ -206,7 +206,7 @@ namespace Dialy
                 _searchWindow.Activate();
                 return;
             }
-            _searchWindow = new SearchWindow(_mwvm.AllDiaries, Settings.Default.SearchFontSize);
+            _searchWindow = new SearchWindow(_mwvm.AllDiaries);
             _searchWindow.HitListBox.MouseDoubleClick += CheckMouseButton;
             _searchWindow.HitListBox.KeyDown += CheckKey;
             _searchWindow.Closed += SearchWindow_Closed;
@@ -215,19 +215,19 @@ namespace Dialy
         private void CheckMouseButton(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed) return;
-            ReflectSearch(sender, e);
+            ReflectSearch(sender);
         }
         private void CheckKey(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            ReflectSearch(sender, e);
+            ReflectSearch(sender);
         }
-        private async void ReflectSearch<T>(object sender, T e)
+        private async void ReflectSearch(object sender)
         {
             var s = (ListBox)sender;
             if (s.ItemsSource == null || s.SelectedIndex == -1) return;
-            var result = _searchWindow._swvm.IndicateList[s.SelectedIndex];
-            if (DatePick.SelectedDate == result) return;
+            var resultDate = (DateTime)s.SelectedValue;
+            if (DatePick.SelectedDate == resultDate) return;
             if (MessageLabel.Visibility == Visibility.Visible)
             {
                 var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
@@ -235,7 +235,7 @@ namespace Dialy
                     MessageDialogStyle.AffirmativeAndNegative, metroDialogSettings);
                 if (select == MessageDialogResult.Negative) return;
             }
-            DatePick.SelectedDate = result;
+            DatePick.SelectedDate = resultDate;
         }
         private void SearchWindow_Closed(object sender, EventArgs e)
         {

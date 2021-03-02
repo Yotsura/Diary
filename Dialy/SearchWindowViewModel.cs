@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Documents;
-using System.Windows.Media;
 using Dialy.Funcs;
 
 namespace Dialy
@@ -12,7 +10,7 @@ namespace Dialy
     public class SearchWindowViewModel : INotifyPropertyChanged
     {
         public SortedDictionary<DateTime, string> _allDiaries;
-        private int _indicateSize;
+        private int _indicateSize= Settings.Default.SearchFontSize;
         public int IndicateSize
         {
             get => _indicateSize;
@@ -45,7 +43,7 @@ namespace Dialy
             }
         }
 
-        private List<string> _searchLog;
+        private List<string> _searchLog = Settings.Default.SearchLog ?? new List<string>();
         public List<string> SearchLog
         {
             get
@@ -79,15 +77,10 @@ namespace Dialy
             + @"((?<=\s\().*?\s+?.*?(?=\)))" + "\r\n"
             + @"|((?<=\().*?\s+?.*?(?=\)\s))" + "\r\n"
             + @"|((?<=\s\().*?\s+?.*?(?=\)\s))" + "\r\n";
-        private FlowDocument _document;
+        private FlowDocument _document = RichTextBoxHelper.CreateFlowDoc(_defaultTxt);
         public FlowDocument Document
         {
-            get
-            {
-                return _document == null ?
-                    RichTextBoxHelper.CreateFlowDoc(_defaultTxt) :
-                    _document;
-            }
+            get => _document;
             set
             {
                 _document = value;
@@ -101,18 +94,15 @@ namespace Dialy
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public SearchWindowViewModel(SortedDictionary<DateTime, string> allDiaries,int fontSize)
+        public SearchWindowViewModel(SortedDictionary<DateTime, string> allDiaries)
         {
             _allDiaries = allDiaries;
-            IndicateSize = fontSize;
-            _searchLog = Settings.Default.SearchLog != null ? Settings.Default.SearchLog : new List<string>();
         }
 
         public void AddSearchLog(string word)
         {
             if (string.IsNullOrEmpty(word)) return;
-            var temp = new List<string>(_searchLog.Where(x => x != word));
-            temp.Add(word);
+            var temp = new List<string>(_searchLog.Where(x => x != word)) { word };
             if (temp.Count > Settings.Default.SearchLogLimit)
                 temp.RemoveFirst(temp.Count - Settings.Default.SearchLogLimit);
             SearchLog = temp;
@@ -120,7 +110,6 @@ namespace Dialy
 
         public void SearchFunc()
         {
-            var searcher = new SearchFuncs(IsRegSearch);
             SearchWords = string.Join(" ", SearchWords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => !string.IsNullOrEmpty(x)));
             
@@ -131,9 +120,9 @@ namespace Dialy
             {
                 notkakkos = notkakkos.Replace($"({kakko})", string.Empty).Replace("  ", " ").Trim();
                 //()内の検索
-                result = searcher.Search(result, kakko);
+                result = SearchFuncs.Search(result, kakko, IsRegSearch);
             }
-            result = searcher.Search(result, notkakkos);
+            result = SearchFuncs.Search(result, notkakkos, IsRegSearch);
 
             IndicateList = result.Count() > 0 ?
                 result.Select(x => x.Key).OrderByDescending(x => x).ToList() :
@@ -145,21 +134,16 @@ namespace Dialy
         {
             if (!_allDiaries.Keys.Contains(date))
             {
-                Document = null;
+                Document = RichTextBoxHelper.CreateFlowDoc(_defaultTxt);
                 return;
             }
             var data = _allDiaries[date];
-            if (date == null)
-                Document = null;
+            if (SearchWords == string.Empty)
+                Document = RichTextBoxHelper.CreateFlowDoc(data);
             else
             {
-                if (SearchWords == string.Empty)
-                    Document = RichTextBoxHelper.CreateFlowDoc(data);
-                else
-                {
-                    var test = new Model.SearchResult(_isRegSearch,_searchWords,data).GetRuns();
-                    Document = RichTextBoxHelper.CreateFlowDoc(test);
-                }
+                var highlighted = new Model.SearchResult(_isRegSearch,_searchWords,data).GetRuns();
+                Document = RichTextBoxHelper.CreateFlowDoc(highlighted);
             }
         }
     }
