@@ -67,7 +67,7 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListBox Grid.Column="0" Name="HitListBox" ItemsSource="{Binding Source={StaticResource NowDataView}}" SelectionChanged="HitListBox_SelectionChanged"/>
+            <ListBox Grid.Column="0" Name="HitListBox" ItemStringFormat="yyyy/MM/dd" ItemsSource="{Binding Source={StaticResource NowDataView}}" SelectionChanged="HitListBox_SelectionChanged"/>
             <ScrollViewer x:Name ="TextScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <RichTextBox x:Name="IndicateTxt" IsReadOnly="True" local:RichTextBoxHelper.Document="{Binding Document}" FontSize="{Binding IndicateSize}"/>
             </ScrollViewer>
