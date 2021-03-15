@@ -167,7 +167,8 @@ namespace Dialy {
             }
             set
             {
-                this["TaskAreaWidth"] = value;
+                var temp = System.Math.Round(value.Value);
+                this["TaskAreaWidth"] = new System.Windows.GridLength(temp);
             }
         }
 
