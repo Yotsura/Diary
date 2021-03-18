@@ -22,7 +22,21 @@ namespace Dialy {
                 return defaultInstance;
             }
         }
-        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int FontSizeSpan
+        {
+            get
+            {
+                return ((int)(this["FontSizeSpan"]));
+            }
+            set
+            {
+                this["FontSizeSpan"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("17")]

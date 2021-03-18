@@ -42,8 +42,9 @@ namespace Dialy
 
         private void FontZoom(object sender, RoutedEventArgs e)
         {
+            var fontsizespan = Settings.Default.FontSizeSpan;
             var btn = ((Button)sender).Content.ToString();
-            _mwvm.IndicateSize = btn == "+" ? _mwvm.IndicateSize + 3 : _mwvm.IndicateSize - 3;
+            _mwvm.IndicateSize = btn == "+" ? _mwvm.IndicateSize + fontsizespan : _mwvm.IndicateSize - fontsizespan;
         }
 
         private void FontSizeCtrl(object sender, MouseWheelEventArgs e)
@@ -51,16 +52,17 @@ namespace Dialy
             if (ModifierKeys.Control == System.Windows.Input.Keyboard.Modifiers)
             {
                 e.Handled = true;
+                var fontsizespan = Settings.Default.FontSizeSpan;
 
                 if ((e.Delta / 120) > 0)
                 {
                     // ホイールが上方向に動かされた場合
-                    _mwvm.IndicateSize += 3;
+                    _mwvm.IndicateSize += fontsizespan;
                 }
                 else
                 {
                     // ホイールが下方法
-                    _mwvm.IndicateSize -= 3;
+                    _mwvm.IndicateSize -= fontsizespan;
                 }
             }
         }
@@ -359,6 +361,7 @@ namespace Dialy
             _settingWindow.HeadSpace.Text = String.Join("", Settings.Default.HeadSpaces);
             _settingWindow.HeadMark.Text = String.Join("", Settings.Default.HeadMarks);
             _settingWindow.SerchLogLimit.Text = Settings.Default.SearchLogLimit.ToString();
+            _settingWindow.FontSizeSpan.Text = Settings.Default.FontSizeSpan.ToString();
             _settingWindow.SaveSettingBtn.Click += SaveSetting;
             _settingWindow.Closed += SettingWindow_Closed;
             _settingWindow.CancelChangeBtn.Click += CancelChange;
@@ -380,6 +383,7 @@ namespace Dialy
             {
                 Settings.Default.SearchLog.RemoveFirst(Settings.Default.SearchLog.Count() - limit);
             }
+            Settings.Default.FontSizeSpan = int.TryParse(_settingWindow.FontSizeSpan.Text, out var num) ? num : 1;
             Settings.Default.Save();
             _settingWindow.Close();
         }

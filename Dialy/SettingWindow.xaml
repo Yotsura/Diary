@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
         SaveWindowPosition="True"
-        Title="SettingWindow" Height="200" Width="300" MinHeight="200" MinWidth="300">
+        Title="SettingWindow" Height="250" Width="300" MinHeight="200" MinWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -34,14 +34,21 @@
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="26"/>
                 <RowDefinition Height="5"/>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="5"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="先頭空白"/>
             <Label Grid.Column="0" Grid.Row="2" Content="先頭文字"/>
             <Label Grid.Column="0" Grid.Row="4" Content="検索履歴上限"/>
+            <Label Grid.Column="0" Grid.Row="6" Content="FontSize調整幅"/>
             <TextBox Grid.Column="2" Grid.Row="0" Name="HeadSpace"/>
             <TextBox Grid.Column="2" Grid.Row="2" Name="HeadMark"/>
             <TextBox Grid.Column="2" Grid.Row="4" Name="SerchLogLimit"
+                     InputMethod.IsInputMethodEnabled="False"
+                     PreviewTextInput="textBoxPrice_PreviewTextInput"
+                     CommandManager.PreviewExecuted="textBoxPrice_PreviewExecuted"/>
+            <TextBox Grid.Column="2" Grid.Row="6" Name="FontSizeSpan"
                      InputMethod.IsInputMethodEnabled="False"
                      PreviewTextInput="textBoxPrice_PreviewTextInput"
                      CommandManager.PreviewExecuted="textBoxPrice_PreviewExecuted"/>

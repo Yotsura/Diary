@@ -19,7 +19,7 @@ namespace Dialy
             get => _indicateSize;
             set
             {
-                _indicateSize = value;
+                _indicateSize = value < 1 ? 1 : value;
                 OnPropertyChanged(nameof(IndicateSize));
             }
         }
