@@ -29,7 +29,7 @@ namespace Dialy
             this.Width = Settings.Default.MainWindowStat.Width;
             this.Height = Settings.Default.MainWindowStat.Height;
             TaskAreaCol.Width = Settings.Default.TaskAreaWidth;
-            TaskArea.Text= Settings.Default.TaskAreaValue;
+            TaskArea.Text = Settings.Default.TaskAreaValue;
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -44,6 +44,25 @@ namespace Dialy
         {
             var btn = ((Button)sender).Content.ToString();
             _mwvm.IndicateSize = btn == "+" ? _mwvm.IndicateSize + 3 : _mwvm.IndicateSize - 3;
+        }
+
+        private void FontSizeCtrl(object sender, MouseWheelEventArgs e)
+        {
+            if (ModifierKeys.Control == System.Windows.Input.Keyboard.Modifiers)
+            {
+                e.Handled = true;
+
+                if ((e.Delta / 120) > 0)
+                {
+                    // ホイールが上方向に動かされた場合
+                    _mwvm.IndicateSize += 3;
+                }
+                else
+                {
+                    // ホイールが下方法
+                    _mwvm.IndicateSize -= 3;
+                }
+            }
         }
 
         private void SaveInvoke(object sender, ExecutedRoutedEventArgs e)
