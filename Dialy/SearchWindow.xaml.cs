@@ -49,7 +49,7 @@ namespace Dialy
             //if (_swvm.SearchLog.Count > 0)
             //  TargetTxt.SelectedIndex = 0;
             if (_swvm.IndicateList == null || _swvm.IndicateList.Count < 1) return;
-            //HitListBox.SelectedIndex = 0;
+            HitListBox.SelectedIndex = 0;
             HitListBox.Focus();
         }
 
