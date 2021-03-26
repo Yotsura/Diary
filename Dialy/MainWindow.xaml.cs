@@ -432,6 +432,7 @@ namespace Dialy
             _replaceWindow = null;
             Activate();
         }
+
         private void ReplaceTxt(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text) || string.IsNullOrEmpty(DiaryTxt.SelectedText)) return;
@@ -440,8 +441,9 @@ namespace Dialy
             var endIdx = startidx + DiaryTxt.SelectedText.Length;
             var foreTxt = DiaryTxt.Text.Substring(0, startidx);
             var rearTxt = DiaryTxt.Text.Substring(endIdx, DiaryTxt.Text.Length - endIdx);
-
-            var selected= DiaryTxt.SelectedText.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
+            var selected = _replaceWindow.RegSearch.IsChecked.Value ?
+                DiaryTxt.SelectedText.RegReplace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text) :
+                DiaryTxt.SelectedText.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
             var replaced = foreTxt + selected + rearTxt;
             //var replaced = DiaryTxt.Text.Replace(DiaryTxt.SelectedText, selected);
 
@@ -452,7 +454,9 @@ namespace Dialy
         private void ReplaceAllTxt(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(_replaceWindow.OrigTxt.Text)) return;
-            var replaced = DiaryTxt.Text.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
+            var replaced = _replaceWindow.RegSearch.IsChecked.Value ?
+                DiaryTxt.Text.RegReplace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text) :
+                DiaryTxt.Text.Replace(_replaceWindow.OrigTxt.Text, _replaceWindow.ReplaceTxt.Text);
             //_mwvm.IndicatedDiary = replaced;
             //DiaryTxt.Text = replaced;
 

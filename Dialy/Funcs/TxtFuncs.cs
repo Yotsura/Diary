@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Dialy.Funcs
 {
-    class TxtFuncs
+    public static class TxtFuncs
     {
+        public static string RegReplace(this string source,string pattern, string newTxt)
+        {
+            return Regex.Replace(source, pattern, newTxt);
+        }
+
         public static void InheritLineHead(object sender, KeyEventArgs e, List<char> headSpace, List<char> headMark)
         {
             if (e.Key != Key.Enter) return;
