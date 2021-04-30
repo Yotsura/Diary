@@ -34,9 +34,7 @@ namespace Dialy
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //DatePick.Text = DateTime.Today.ToString();
             _mwvm.SelectedDate = DateTime.Today;
-            //OpenTaskWindow(sender, e);
             DiaryTxt.Focus();
         }
 
@@ -67,13 +65,9 @@ namespace Dialy
             }
         }
 
-        private void SaveInvoke(object sender, ExecutedRoutedEventArgs e)
+        private void SaveRecord(object sender, ExecutedRoutedEventArgs e)
         {
-            var txt = DiaryTxt.Text;
-            _mwvm.AllDiaries[DatePick.SelectedDate.Value] = txt;
-            //_mwvm.AllDiaries[DatePick.SelectedDate.Value] = _mwvm.IndicatedDiary;
-            FileManager.SaveFile(_mwvm.FolderPath, _mwvm.SelectedDate, txt);
-            MessageLabel.Visibility = Visibility.Collapsed;
+            _mwvm.SaveInvoke(DatePick.SelectedDate.Value, DiaryTxt.Text);
         }
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -109,7 +103,7 @@ namespace Dialy
         }
         private async void DateChangeButton(object sender, RoutedEventArgs e)
         {
-            if (MessageLabel.Visibility == Visibility.Visible)
+            if (_mwvm.IsChanged)
             {
                 var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
                 var select = await this.ShowMessageAsync("エラー", "未保存の変更があります。変更を破棄しますか？",
@@ -141,16 +135,12 @@ namespace Dialy
 
         private void DialyTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //var test = ((TextBox)sender).Text == _mwvm.IndicatedDiary;
-            MessageLabel.Visibility = ((TextBox)sender).Text == _mwvm.IndicatedDiary ? Visibility.Collapsed : Visibility.Visible;
-            //MessageLabel.Visibility = _mwvm.AllDiaries.ContainsKey(_mwvm.SelectedDate) ?
-            //    _mwvm.AllDiaries[_mwvm.SelectedDate] == _mwvm.IndicatedDiary ? Visibility.Collapsed : Visibility.Visible :
-            //    String.IsNullOrEmpty(_mwvm.IndicatedDiary) ? Visibility.Collapsed : Visibility.Visible;
+            _mwvm.CurrentTxt = ((TextBox)sender).Text;
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(MessageLabel.Visibility == Visibility.Visible 
+            if(_mwvm.IsChanged
                 && MessageBox.Show("未保存の変更があります。変更を破棄しますか？"
                 ,"警告",MessageBoxButton.OKCancel,MessageBoxImage.Warning)==MessageBoxResult.Cancel)
             {
@@ -218,6 +208,7 @@ namespace Dialy
             TxtFuncs.InheritLineHead(sender, e, Settings.Default.HeadSpaces, Settings.Default.HeadMarks);
         }
 
+        #region SearchWindow
         SearchWindow _searchWindow;
         private void OpenSearchWindow(object sender, ExecutedRoutedEventArgs e)
         {
@@ -249,7 +240,7 @@ namespace Dialy
             if (s.ItemsSource == null || s.SelectedIndex == -1) return;
             var resultDate = (DateTime)s.SelectedValue;
             if (DatePick.SelectedDate == resultDate) return;
-            if (MessageLabel.Visibility == Visibility.Visible)
+            if (_mwvm.IsChanged)
             {
                 var metroDialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
                 var select = await this.ShowMessageAsync("エラー", "未保存の変更があります。変更を破棄しますか？",
@@ -266,6 +257,9 @@ namespace Dialy
             _searchWindow = null;
         }
 
+        #endregion
+
+        #region LoginCheck
         private CustomDialog _customDialog;
         private LoginControl _loginCtrl;
 
@@ -286,6 +280,9 @@ namespace Dialy
             _loginCtrl.PasswordBox1.Focus();
         }
 
+        #endregion
+
+        #region TaskWindow
         TaskWindow _taskWindow;
         private async void CheckTaskPass(object sender, RoutedEventArgs e)
         {
@@ -347,7 +344,9 @@ namespace Dialy
             Settings.Default.Save();
             _taskWindow = null;
         }
+        #endregion
 
+        #region SettingWindow
         SettingWindow _settingWindow;
         private void OpenSettingWindow(object sender, RoutedEventArgs e)
         {
@@ -393,7 +392,9 @@ namespace Dialy
             _settingWindow.HeadSpace.Text = String.Join("", Settings.Default.HeadSpaces);
             _settingWindow.HeadMark.Text = String.Join("", Settings.Default.HeadMarks);
         }
+        #endregion
 
+        #region ReplaceWindow
         ReplaceWindow _replaceWindow;
         private void OpenReplaceWindow(object sender, RoutedEventArgs e)
         {
@@ -465,5 +466,7 @@ namespace Dialy
             DiaryTxt.AppendText(replaced);
             //DiaryTxt.SetValue(TextBox.TextProperty, replaced);
         }
+
+        #endregion
     }
 }

@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="Diary" Height="600" Width="800" MinWidth="400" Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing" PreviewMouseWheel="FontSizeCtrl">
     <Window.CommandBindings>
-        <CommandBinding Command="Save" Executed="SaveInvoke" />
+        <CommandBinding Command="Save" Executed="SaveRecord" />
         <CommandBinding Command="Open" Executed="OpenSearchWindow" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextRecord}" Executed="MoveNext"/>
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.PrevRecord}" Executed="MovePrev" />
@@ -30,6 +30,9 @@
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.TaskWindow}" Gesture="Ctrl+Shift+T"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.ReplaceWindow}" Gesture="Ctrl+Shift+R"/>
     </Window.InputBindings>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -129,13 +132,16 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1" Name="ZoomOut" Content="-" Click="FontZoom"/>
             <Button Grid.Column="3" Name="ZoomIn" Content="+" Click="FontZoom"/>
             <Label Grid.Column="2" Name="FontSize" Content="{Binding IndicateSize,Mode=OneWay}"/>
-            <Label Grid.Column="5" Name="MessageLabel" Content="*未保存の変更があります。" Visibility="Collapsed"/>
+            <Label Grid.Column="5" Content="*未保存の変更があります。" 
+                Visibility="{Binding IsChanged, Converter={StaticResource BoolVisibilityConverter}}" />
         </Grid>
     </Grid>
 </Controls:MetroWindow>

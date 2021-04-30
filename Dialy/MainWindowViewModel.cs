@@ -14,6 +14,9 @@ namespace Dialy
         private int _indicateSize;
         private DateTime _selectedDate;
         private string _indicatedDiary;
+        private string _currentTxt;
+        private bool _isChanged;
+
         public int IndicateSize
         {
             get => _indicateSize;
@@ -31,7 +34,9 @@ namespace Dialy
                 _selectedDate = value;
 
                 var date = SelectedDate;
-                IndicatedDiary = AllDiaries.ContainsKey(date) ? AllDiaries[date] : "";
+                var txt = AllDiaries.ContainsKey(date) ? AllDiaries[date] : "";
+                IndicatedDiary = txt;
+                _currentTxt = txt;
                 OnPropertyChanged(nameof(SelectedDate));
             }
         }
@@ -42,6 +47,25 @@ namespace Dialy
             {
                 _indicatedDiary = value;
                 OnPropertyChanged(nameof(IndicatedDiary));
+            }
+        }
+        public string CurrentTxt
+        {
+            get => _currentTxt;
+            set
+            {
+                _currentTxt = value;
+                IsChanged = CurrentTxt != IndicatedDiary;
+            }
+        }
+
+        public bool IsChanged
+        {
+            get => _isChanged;
+            set
+            {
+                _isChanged = value;
+                OnPropertyChanged(nameof(IsChanged));
             }
         }
 
@@ -79,6 +103,14 @@ namespace Dialy
             var next = operation == "<<" ? AllDiaries.Where(x => x.Key < indicated) : AllDiaries.Where(x => x.Key > indicated);
             if (!next.Any()) return indicated;
             return operation == "<<" ? next.Last().Key : next.First().Key;
+        }
+
+        public void SaveInvoke(DateTime date,string txt)
+        {
+            AllDiaries[date] = txt;
+            FileManager.SaveFile(FolderPath, SelectedDate, txt);
+            IndicatedDiary = txt;
+            CurrentTxt = txt;
         }
     }
 }
