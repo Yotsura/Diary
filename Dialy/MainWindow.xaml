@@ -1,10 +1,9 @@
-﻿<Controls:MetroWindow x:Class="Dialy.MainWindow"
+﻿<Controls:MetroWindow x:Class="Dialy.MainWindow" Name="topwindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:local="clr-namespace:Dialy"
         xmlns:commands="clr-namespace:Dialy.Commands"
         mc:Ignorable="d"
         Title="Diary" Height="600" Width="800" MinWidth="400" Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing" PreviewMouseWheel="FontSizeCtrl">
@@ -59,7 +58,7 @@
                 <MenuItem Header="テキストを置換" InputGestureText="Ctrl+Shift+R" Click="OpenReplaceWindow" />
             </MenuItem>
             <MenuItem Header="オプション(_O)">
-                <MenuItem Name="TopMostCheck" IsCheckable="True" Header="最前面表示" Checked="TopMostCheck_CheckChanged" Unchecked="TopMostCheck_CheckChanged"/>
+                <MenuItem IsCheckable="True" IsChecked="{Binding ElementName=topwindow, Path=Topmost}" Header="最前面表示"/>
                 <MenuItem Header="設定" Click="OpenSettingWindow"/>
                 <MenuItem Header="バックアップ作成" Click="CreateBackUp"/>
                 <MenuItem Header="バックアップを解凍" Click="OpenBackUp"/>

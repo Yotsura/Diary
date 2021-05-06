@@ -191,11 +191,6 @@ namespace Dialy
             if (FileManager.OpenBackUp(filename)) ShowMessageDialog("確認", "バックアップを解凍しました。");
         }
 
-        private void TopMostCheck_CheckChanged(object sender, RoutedEventArgs e)
-        {
-            this.Topmost = TopMostCheck.IsChecked == true;
-        }
-
         private async void ShowVerInfo(object sender, RoutedEventArgs e)
         {
             var verInfo = App.ResourceAssembly.GetName().Version;
