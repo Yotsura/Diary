@@ -38,8 +38,15 @@ namespace Dialy
                 IndicatedDiary = txt;
                 _currentTxt = txt;
                 OnPropertyChanged(nameof(SelectedDate));
+                OnPropertyChanged(nameof(SelectedWeek));
             }
         }
+
+        public string SelectedWeek
+        {
+            get => _selectedDate.ToString("(ddd)");
+        }
+
         public string IndicatedDiary
         {
             get => _indicatedDiary;
