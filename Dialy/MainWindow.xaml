@@ -98,11 +98,6 @@
                 <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="5" Name="Today" Content="T" Click="DateChangeButton">
-                <ToolTipService.ToolTip>
-                    <ToolTip Content="今日のレコード　Ctrl+T"/>
-                </ToolTipService.ToolTip>
-            </Button>
             <Button Grid.Column="0" Name="LastRecord" Content="&lt;&lt;" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
                     <ToolTip Content="前のレコード　Ctrl+Q"/>
@@ -123,6 +118,11 @@
             <Button Grid.Column="5" Name="NextRecord" Content="&gt;&gt;" Click="DateChangeButton">
                 <ToolTipService.ToolTip>
                     <ToolTip Content="次のレコード　Ctrl+R"/>
+                </ToolTipService.ToolTip>
+            </Button>
+            <Button Grid.Column="6" Name="Today" Content="T" Click="DateChangeButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="今日のレコード　Ctrl+T"/>
                 </ToolTipService.ToolTip>
             </Button>
         </Grid>
