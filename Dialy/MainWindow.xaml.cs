@@ -392,7 +392,7 @@ namespace Dialy
                 Settings.Default.SearchLog.RemoveFirst(Settings.Default.SearchLog.Count() - limit);
             }
             Settings.Default.FontSizeSpan = int.TryParse(_settingWindow.FontSizeSpan.Text, out var num) ? num : 1;
-            Settings.Default.TaskAreaDefaultWidth = new GridLength(int.TryParse(_settingWindow.TaskAreaWidth.Text, out var wnum) ? wnum : 300);
+            Settings.Default.TaskAreaDefaultWidth = new GridLength(int.TryParse(_settingWindow.TaskAreaWidth.Text, out var wnum) ? wnum : 200);
             Settings.Default.Save();
             _settingWindow.Close();
         }
