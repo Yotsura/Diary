@@ -6,7 +6,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Dialy"
         mc:Ignorable="d"
-        Title="SearchWindow" Height="600" Width="300" MinHeight="300" MinWidth="300" MaxWidth="2000" Activated="ForcusTxt">
+        Title="SearchWindow" Height="600" Width="400" MinHeight="400" MinWidth="300" MaxWidth="2000" Activated="ForcusTxt">
     <Window.Resources>
         <CollectionViewSource x:Key="NowDataView"  Source="{Binding IndicateList}" />
     </Window.Resources>
@@ -48,6 +48,9 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="30"/>
@@ -57,10 +60,14 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Hit："/>
             <Label Grid.Column="1" Name="HitCount" Content="{Binding IndicateList.Count}"/>
-            <Button Grid.Column="3" Name="ZoomOut" Content="-" Click="FontZoom"/>
-            <Label Grid.Column="4" Name="FontSize" Content="{Binding IndicateSize}"/>
-            <Button Grid.Column="5" Name="ZoomIn" Content="+" Click="FontZoom"/>
-            <CheckBox Content="正規表現検索" Name="RegSearch" IsChecked="{Binding IsRegSearch}" Grid.Column="7"/>
+
+            <Label Grid.Column="3" Content="Word："/>
+            <Label Grid.Column="4" Content="{Binding SearchedWords}"/>
+
+            <Button Grid.Column="6" Name="ZoomOut" Content="-" Click="FontZoom"/>
+            <Label Grid.Column="7" Name="FontSize" Content="{Binding IndicateSize}"/>
+            <Button Grid.Column="8" Name="ZoomIn" Content="+" Click="FontZoom"/>
+            <CheckBox Grid.Column="10" Content="正規表現検索" Name="RegSearch" IsChecked="{Binding IsRegSearch}"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="5">
             <Grid.ColumnDefinitions>

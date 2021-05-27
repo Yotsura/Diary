@@ -32,6 +32,17 @@ namespace Dialy
             }
         }
 
+        private string _searchedWords = string.Empty;
+        public string SearchedWords
+        {
+            get => _searchedWords;
+            set
+            {
+                _searchedWords = value;
+                OnPropertyChanged(nameof(SearchedWords));
+            }
+        }
+
         private bool _isRegSearch;
         public bool IsRegSearch
         {
@@ -124,6 +135,7 @@ namespace Dialy
             }
             result = SearchFuncs.Search(result, notkakkos, IsRegSearch);
 
+            SearchedWords = SearchWords;
             IndicateList = result.Count() > 0 ?
                 result.Select(x => x.Key).OrderByDescending(x => x).ToList() :
                 new List<DateTime>();
@@ -138,11 +150,11 @@ namespace Dialy
                 return;
             }
             var data = _allDiaries[date];
-            if (SearchWords == string.Empty)
+            if (SearchedWords == string.Empty)
                 Document = RichTextBoxHelper.CreateFlowDoc(data);
             else
             {
-                var highlighted = new Model.SearchResult(_isRegSearch,_searchWords,data).GetRuns();
+                var highlighted = new Model.SearchResult(_isRegSearch, SearchedWords, data).GetRuns();
                 Document = RichTextBoxHelper.CreateFlowDoc(highlighted);
             }
         }
