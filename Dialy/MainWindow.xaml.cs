@@ -41,7 +41,8 @@ namespace Dialy
         private void ShowHideTaskArea(object sender, RoutedEventArgs e)
         {
             if (TaskAreaCol.Width.Value == 0)
-                TaskAreaCol.Width = Settings.Default.TaskAreaWidth;
+                TaskAreaCol.Width = Settings.Default.TaskAreaWidth.Value != 0 ?
+                    Settings.Default.TaskAreaWidth : Settings.Default.TaskAreaDefaultWidth;
             else
             {
                 Settings.Default.TaskAreaWidth = TaskAreaCol.Width;
@@ -368,6 +369,7 @@ namespace Dialy
             _settingWindow.HeadMark.Text = String.Join("", Settings.Default.HeadMarks);
             _settingWindow.SerchLogLimit.Text = Settings.Default.SearchLogLimit.ToString();
             _settingWindow.FontSizeSpan.Text = Settings.Default.FontSizeSpan.ToString();
+            _settingWindow.TaskAreaWidth.Text = Settings.Default.TaskAreaDefaultWidth.ToString();
             _settingWindow.SaveSettingBtn.Click += SaveSetting;
             _settingWindow.Closed += SettingWindow_Closed;
             _settingWindow.CancelChangeBtn.Click += CancelChange;
@@ -390,6 +392,7 @@ namespace Dialy
                 Settings.Default.SearchLog.RemoveFirst(Settings.Default.SearchLog.Count() - limit);
             }
             Settings.Default.FontSizeSpan = int.TryParse(_settingWindow.FontSizeSpan.Text, out var num) ? num : 1;
+            Settings.Default.TaskAreaDefaultWidth = new GridLength(int.TryParse(_settingWindow.TaskAreaWidth.Text, out var wnum) ? wnum : 300);
             Settings.Default.Save();
             _settingWindow.Close();
         }

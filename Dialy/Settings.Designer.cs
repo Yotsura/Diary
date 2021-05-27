@@ -173,6 +173,22 @@ namespace Dialy {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public System.Windows.GridLength TaskAreaDefaultWidth
+        {
+            get
+            {
+                return ((System.Windows.GridLength)(this["TaskAreaDefaultWidth"]));
+            }
+            set
+            {
+                var temp = System.Math.Round(value.Value);
+                this["TaskAreaDefaultWidth"] = new System.Windows.GridLength(temp);
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
         public System.Windows.GridLength TaskAreaWidth
         {
             get
