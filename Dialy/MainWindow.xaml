@@ -10,10 +10,11 @@
     <Window.CommandBindings>
         <CommandBinding Command="Save" Executed="SaveRecord" />
         <CommandBinding Command="Open" Executed="OpenSearchWindow" />
-        <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextRecord}" Executed="MoveNext"/>
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.ShowHideTaskArea}" Executed="ShowHideTaskArea" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.PrevRecord}" Executed="MovePrev" />
-        <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" Executed="MoveNextDay"/>
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.PrevDate}" Executed="MovePrevDay" />
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" Executed="MoveNextDay"/>
+        <CommandBinding Command="{x:Static commands:MyApplicationCommands.NextRecord}" Executed="MoveNext"/>
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.Today}" Executed="IndicateToday" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.TaskWindow}" Executed="CheckTaskPass" />
         <CommandBinding Command="{x:Static commands:MyApplicationCommands.ReplaceWindow}" Executed="OpenReplaceWindow" />
@@ -21,6 +22,7 @@
     <Window.InputBindings>
         <KeyBinding Command="Save" Gesture="Ctrl+S"/>
         <KeyBinding Command="Open" Gesture="Ctrl+F"/>
+        <KeyBinding Command="{x:Static commands:MyApplicationCommands.ShowHideTaskArea}" Gesture="Ctrl+D"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.PrevRecord}" Gesture="Ctrl+Q"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.PrevDate}" Gesture="Ctrl+W"/>
         <KeyBinding Command="{x:Static commands:MyApplicationCommands.NextDate}" Gesture="Ctrl+E"/>
@@ -62,6 +64,7 @@
                 <MenuItem Header="設定" Click="OpenSettingWindow"/>
                 <MenuItem Header="バックアップ作成" Click="CreateBackUp"/>
                 <MenuItem Header="バックアップを解凍" Click="OpenBackUp"/>
+                <MenuItem Header="サブエリア表示切替" InputGestureText="Ctrl+D" Click="ShowHideTaskArea"/>
                 <MenuItem Header="タスク" InputGestureText="Ctrl+Shift+T" Click="CheckTaskPass"/>
             </MenuItem>
             <MenuItem Header="ヘルプ(_H)" Click="ShowVerInfo">

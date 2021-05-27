@@ -38,6 +38,18 @@ namespace Dialy
             DiaryTxt.Focus();
         }
 
+        private void ShowHideTaskArea(object sender, RoutedEventArgs e)
+        {
+            if (TaskAreaCol.Width.Value == 0)
+                TaskAreaCol.Width = Settings.Default.TaskAreaWidth;
+            else
+            {
+                Settings.Default.TaskAreaWidth = TaskAreaCol.Width;
+                Settings.Default.Save();
+                TaskAreaCol.Width = new GridLength(0);
+            }
+        }
+
         private void FontZoom(object sender, RoutedEventArgs e)
         {
             var fontsizespan = Settings.Default.FontSizeSpan;
