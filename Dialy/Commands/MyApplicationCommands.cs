@@ -37,5 +37,9 @@ namespace Dialy.Commands
                             = new RoutedUICommand("Open Replace Window",
                                                   "ReplaceWindow",
                                                   typeof(MyApplicationCommands));
+        public static RoutedUICommand ShowHideTaskArea
+                            = new RoutedUICommand("Show/Hide Task Area",
+                                                  "ShowHideTaskArea",
+                                                  typeof(MyApplicationCommands));
     }
 }
