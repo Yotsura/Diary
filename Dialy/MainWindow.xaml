@@ -80,7 +80,7 @@
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" Grid.ColumnSpan="2"
                      Name="DiaryTxt" Text="{Binding IndicatedDiary,Mode=TwoWay}" TextWrapping="NoWrap"
-                     IsInactiveSelectionHighlightEnabled="True" AcceptsTab="True" AcceptsReturn="True"
+                     AcceptsReturn="True" AcceptsTab="True"
                      Controls:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True"
                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                      FontSize="{Binding IndicateSize}" KeyUp="InheritLineHead" TextChanged="DialyTxt_TextChanged"/>
