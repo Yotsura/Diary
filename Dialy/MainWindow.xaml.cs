@@ -81,6 +81,8 @@ namespace Dialy
         private void SaveRecord(object sender, ExecutedRoutedEventArgs e)
         {
             _mwvm.SaveInvoke(DatePick.SelectedDate.Value, DiaryTxt.Text);
+            Settings.Default.TaskAreaValue = TaskArea.Text;
+            Settings.Default.Save();
         }
 
         private void DatePick_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
