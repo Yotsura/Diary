@@ -231,6 +231,11 @@ namespace Dialy
             _searchWindow.HitListBox.MouseDoubleClick += CheckMouseButton;
             _searchWindow.HitListBox.KeyDown += CheckKey;
             _searchWindow.Closed += SearchWindow_Closed;
+            //選択テキストがある場合は検索窓に入れる
+            if (!DiaryTxt.SelectedText.IsNullOrEmpty())
+                _searchWindow._swvm.SearchWords
+                    = string.Join(" ", System.Text.RegularExpressions.Regex.Split(DiaryTxt.SelectedText, @"\s")
+                    .Where(x => !string.IsNullOrEmpty(x)));
             _searchWindow.Show();
         }
         private void CheckMouseButton(object sender, MouseButtonEventArgs e)
