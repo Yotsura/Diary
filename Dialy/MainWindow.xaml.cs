@@ -164,6 +164,8 @@ namespace Dialy
             }
             Settings.Default.MainWindowStat = new WindowStat { Height = this.Height, Width = this.Width, Left = this.Left, Top = this.Top };
             Settings.Default.FontSize = _mwvm.IndicateSize;
+            if (TaskAreaCol.Width.Value > 0)
+                Settings.Default.TaskAreaWidth = TaskAreaCol.Width;
             Settings.Default.TaskAreaValue = TaskArea.Text;
             Settings.Default.Save();
         }
