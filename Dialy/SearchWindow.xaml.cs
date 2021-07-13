@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -44,13 +45,22 @@ namespace Dialy
 
         private void InvokeSearch()
         {
-            HitListBox.SelectedIndex = -1;
-            _swvm.SearchFunc();
-            if (_swvm.SearchLog.Count > 0)
-                TargetTxt.SelectedIndex = 0;
-            if (_swvm.IndicateList == null || _swvm.IndicateList.Count < 1) return;
-            //HitListBox.SelectedIndex = 0;
+            if (_swvm.SearchFunc())
+            {
+                HitListBox.SelectedIndex = -1;
+                if (_swvm.SearchLog.Count > 0)
+                    TargetTxt.SelectedIndex = 0;
+                if (_swvm.IndicateList == null || _swvm.IndicateList.Count < 1) return;
+                //HitListBox.SelectedIndex = 0;
+            }
+            else
+                ShowMessageDialog("確認", "不正な正規表現が含まれています。検索に失敗しました。");
             HitListBox.Focus();
+        }
+
+        private async void ShowMessageDialog(string title, string message)
+        {
+            await this.ShowMessageAsync(title, message);
         }
 
         private void HitListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

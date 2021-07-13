@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using Dialy.Funcs;
 
@@ -119,15 +120,25 @@ namespace Dialy
             SearchLog = temp;
         }
 
-        public void SearchFunc()
+        public bool SearchFunc()
         {
             SearchWords = string.Join(" ", SearchWords.Split(new string[] { " ", "　", "\t" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => !string.IsNullOrEmpty(x)));
-            
+            if (IsRegSearch)
+                try
+                {
+                    SearchFuncs.GetAllSearchWords(SearchWords).ToList().ForEach(word => new Regex(word));
+                }
+                catch (Exception e)
+                {
+                    SearchedWords = SearchWords;
+                    IndicateList = new List<DateTime>();
+                    return false;
+                }
             var kakkos = SearchWords.GetKakkoWords();
             var notkakkos = SearchWords;
             var result = _allDiaries.Select(x => (x.Key, x.Value));
-            foreach(var kakko in kakkos)
+            foreach (var kakko in kakkos)
             {
                 notkakkos = notkakkos.Replace($"({kakko})", string.Empty).Replace("  ", " ").Trim();
                 //()内の検索
@@ -140,6 +151,7 @@ namespace Dialy
                 result.Select(x => x.Key).OrderByDescending(x => x).ToList() :
                 new List<DateTime>();
             AddSearchLog(SearchWords);
+            return true;
         }
 
         public void IndicateRecord(DateTime date)
